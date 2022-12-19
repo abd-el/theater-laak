@@ -1,0 +1,31 @@
+.item-a {
+  border-style: solid;
+  border-color: black;
+    grid-area: header;
+    
+  }
+  .item-b {
+    border-style: solid;
+    border-color: black;
+    grid-area: main;
+  }
+  .item-c {
+    border-style: solid;
+    border-color: black;
+    grid-area: sidebar;
+  }
+  .item-d {
+    border-style: solid;
+    border-color: black;
+    grid-area: footer;
+  }
+  
+  .container_home {
+    display: grid;
+    grid-template-columns: 50px 50px 50px 50px;
+    grid-template-rows: auto;
+    grid-template-areas: 
+      "header header header header"
+      "main main . sidebar"
+      "footer footer footer footer";
+  }
