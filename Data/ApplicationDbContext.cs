@@ -11,6 +11,21 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
         : base(options, operationalStoreOptions)
     {
-
     }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        // Controleer op:
+        // Primary key
+        // Foreign key
+        // 
+
+        builder.Entity<Zaal>.ToTable("Zaal")
+    }
+
+
+    DbSet<Zaal> Zaal {get; set;}
+    DbSet<Voorstelling> Voorstelling {get; set;}
+    DbSet<Optreden> Optreden {get; set;}
+    DbSet<Artiest> Artiest {get; set;}
+    DbSet<ArtiestenGroep> ArtiestGroep {get; set;}
 }
