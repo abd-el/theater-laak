@@ -71,13 +71,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(zaal => zaal.Klein)
         .IsRequired();
 
-<<<<<<< Updated upstream
         builder.Entity<Zaal>()
         .Property(Zaal => Zaal.EersteRangAantalStoelen)
         .IsRequired();
-=======
-        //builder.Entity<Zaal>.ToTable("Zaal")
->>>>>>> Stashed changes
     }
 
 
