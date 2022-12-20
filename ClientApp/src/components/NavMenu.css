@@ -1,4 +1,15 @@
-﻿a.navbar-brand {
+﻿.navbar-expand-sm{
+  display: flex;
+  width: 100%;
+  position: fixed;
+  z-index: 9999;
+  top: 0px;
+  height: 65px;
+}
+
+
+
+a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
@@ -6,6 +17,7 @@
 
 html {
   font-size: 14px;
+  color: black;
 }
 @media (min-width: 768px) {
   html {

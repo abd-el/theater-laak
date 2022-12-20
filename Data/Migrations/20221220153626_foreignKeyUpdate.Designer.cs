@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221220153626_foreignKeyUpdate")]
+    partial class foreignKeyUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -365,6 +367,7 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ArtiestenGroepId")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -431,8 +434,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("OptredenId");
-
-                    b.HasIndex("VoorstellingId");
 
                     b.ToTable("Optreden");
                 });
@@ -540,28 +541,16 @@ namespace theater_laak.Data.Migrations
                 {
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
-                        .HasForeignKey("ArtiestenGroepId");
+                        .HasForeignKey("ArtiestenGroepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ArtiestenGroep");
-                });
-
-            modelBuilder.Entity("theater_laak.Models.Optreden", b =>
-                {
-                    b.HasOne("theater_laak.Models.Voorstelling", "Voorstelling")
-                        .WithMany("Optredens")
-                        .HasForeignKey("VoorstellingId");
-
-                    b.Navigation("Voorstelling");
                 });
 
             modelBuilder.Entity("theater_laak.Models.ArtiestenGroep", b =>
                 {
                     b.Navigation("Artiesten");
-                });
-
-            modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
-                {
-                    b.Navigation("Optredens");
                 });
 #pragma warning restore 612, 618
         }
