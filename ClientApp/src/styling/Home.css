@@ -17,6 +17,12 @@ body{
   width: 100%;
 }
 
+@media (max-width: 768px){
+  .container_image{
+    height: 350px;
+  }
+}
+
 .container_home{
   position: relative;
   display: flex;
@@ -26,6 +32,12 @@ body{
   background-color: blanchedalmond;
 }
 
+@media (max-width: 768px){
+  .container_home{
+    top: 415px;
+  }
+}
+
 
 .container_title{
   display: flex;
@@ -33,6 +45,7 @@ body{
   position: absolute;
   top: 0px;
   width: 100%;
+  z-index: 1;
   background-color: lightgreen;
 }
 

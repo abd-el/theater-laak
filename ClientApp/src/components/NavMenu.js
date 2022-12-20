@@ -7,7 +7,7 @@ import './NavMenu.css';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -16,7 +16,7 @@ export class NavMenu extends Component {
     };
   }
 
-  toggleNavbar () {
+  toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed
     });
@@ -25,25 +25,25 @@ export class NavMenu extends Component {
   render() {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-dark bg-dark navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">theater_laak</NavbarBrand>
+        <Navbar className="navbar-expand-sm navbar-dark bg-dark navbar-toggleable-sm ng-white box-shadow mb-3" container light>
+          <NavbarBrand tag={Link} to="/">theater laak</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-light" to="/">Home</NavLink>
+            <ul className="navbar-nav flex-grow opacity-75">
+              <NavItem className='NavItem'>
+                <NavLink tag={Link} className="text-light nav-item bg-dark" to="/">Home</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-light" to="/counter">Counter</NavLink>
+              <NavItem className='NavItem'>
+                <NavLink tag={Link} className="text-light bg-dark" to="/counter">Counter</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-light" to="/fetch-data">Fetch data</NavLink>
+              <NavItem className='NavItem'>
+                <NavLink tag={Link} className="text-light bg-dark" to="/fetch-data">Fetch data</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-light" to="/doneer">Doneer</NavLink>
+              <NavItem className='NavItem'>
+                <NavLink tag={Link} className="text-light bg-dark" to="/doneer">Doneer</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-light" to="/programmering">Programmering</NavLink>
+              <NavItem className='NavItem'>
+                <NavLink tag={Link} className="text-light bg-dark" to="/programmering">Programmering</NavLink>
               </NavItem>
               <LoginMenu>
               </LoginMenu>

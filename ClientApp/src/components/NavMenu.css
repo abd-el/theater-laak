@@ -7,7 +7,9 @@
   height: 65px;
 }
 
-
+.NavItem:hover {
+  opacity: 0.75;
+}
 
 a.navbar-brand {
   white-space: normal;
@@ -16,7 +18,7 @@ a.navbar-brand {
 }
 
 html {
-  font-size: 14px;
+  font-size: 12px;
   color: black;
 }
 @media (min-width: 768px) {
