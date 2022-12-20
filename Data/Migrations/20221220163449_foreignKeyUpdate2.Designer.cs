@@ -11,8 +11,8 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221220145915_foreignkeytest")]
-    partial class foreignkeytest
+    [Migration("20221220163449_foreignKeyUpdate2")]
+    partial class foreignKeyUpdate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -367,7 +367,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ArtiestenGroepId")
-                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -434,6 +433,8 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("OptredenId");
+
+                    b.HasIndex("VoorstellingId");
 
                     b.ToTable("Optreden");
                 });
@@ -541,16 +542,28 @@ namespace theater_laak.Data.Migrations
                 {
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
-                        .HasForeignKey("ArtiestenGroepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArtiestenGroepId");
 
                     b.Navigation("ArtiestenGroep");
+                });
+
+            modelBuilder.Entity("theater_laak.Models.Optreden", b =>
+                {
+                    b.HasOne("theater_laak.Models.Voorstelling", "Voorstelling")
+                        .WithMany("Optredens")
+                        .HasForeignKey("VoorstellingId");
+
+                    b.Navigation("Voorstelling");
                 });
 
             modelBuilder.Entity("theater_laak.Models.ArtiestenGroep", b =>
                 {
                     b.Navigation("Artiesten");
+                });
+
+            modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
+                {
+                    b.Navigation("Optredens");
                 });
 #pragma warning restore 612, 618
         }

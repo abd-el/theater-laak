@@ -432,6 +432,8 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("OptredenId");
 
+                    b.HasIndex("VoorstellingId");
+
                     b.ToTable("Optreden");
                 });
 
@@ -543,9 +545,23 @@ namespace theater_laak.Data.Migrations
                     b.Navigation("ArtiestenGroep");
                 });
 
+            modelBuilder.Entity("theater_laak.Models.Optreden", b =>
+                {
+                    b.HasOne("theater_laak.Models.Voorstelling", "Voorstelling")
+                        .WithMany("Optredens")
+                        .HasForeignKey("VoorstellingId");
+
+                    b.Navigation("Voorstelling");
+                });
+
             modelBuilder.Entity("theater_laak.Models.ArtiestenGroep", b =>
                 {
                     b.Navigation("Artiesten");
+                });
+
+            modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
+                {
+                    b.Navigation("Optredens");
                 });
 #pragma warning restore 612, 618
         }

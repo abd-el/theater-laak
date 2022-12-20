@@ -6,5 +6,6 @@ public class Voorstelling
     public string Titel {get; set;}
     public string Beschrijving {get; set;}
     public int TijdsduurInMinuten {get; set;}
+    public IEnumerable<Optreden> Optredens {get; set;}
 }
 

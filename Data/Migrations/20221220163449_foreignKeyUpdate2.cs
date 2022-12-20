@@ -4,7 +4,7 @@
 
 namespace theater_laak.Data.Migrations
 {
-    public partial class foreignkeytest2 : Migration
+    public partial class foreignKeyUpdate2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,12 +20,24 @@ namespace theater_laak.Data.Migrations
                 oldClrType: typeof(int),
                 oldType: "INTEGER");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Optreden_VoorstellingId",
+                table: "Optreden",
+                column: "VoorstellingId");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Artiest_ArtiestGroep_ArtiestenGroepId",
                 table: "Artiest",
                 column: "ArtiestenGroepId",
                 principalTable: "ArtiestGroep",
                 principalColumn: "ArtiestenGroepId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Optreden_Voorstelling_VoorstellingId",
+                table: "Optreden",
+                column: "VoorstellingId",
+                principalTable: "Voorstelling",
+                principalColumn: "VoorstellingId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -33,6 +45,14 @@ namespace theater_laak.Data.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Artiest_ArtiestGroep_ArtiestenGroepId",
                 table: "Artiest");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Optreden_Voorstelling_VoorstellingId",
+                table: "Optreden");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Optreden_VoorstellingId",
+                table: "Optreden");
 
             migrationBuilder.AlterColumn<int>(
                 name: "ArtiestenGroepId",

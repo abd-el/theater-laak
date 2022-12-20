@@ -11,8 +11,8 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221220150643_foreignkeytest2")]
-    partial class foreignkeytest2
+    [Migration("20221220153626_foreignKeyUpdate")]
+    partial class foreignKeyUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -367,6 +367,7 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ArtiestenGroepId")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
@@ -540,7 +541,9 @@ namespace theater_laak.Data.Migrations
                 {
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
-                        .HasForeignKey("ArtiestenGroepId");
+                        .HasForeignKey("ArtiestenGroepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ArtiestenGroep");
                 });

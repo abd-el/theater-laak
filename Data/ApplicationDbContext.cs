@@ -34,7 +34,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Artiest>()
         .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
         .WithMany(artiestenGroep => artiestenGroep.Artiesten)
-        .HasForeignKey(a => a.ArtiestenGroepId);
+        .HasForeignKey(a => a.ArtiestenGroepId)
+        .IsRequired(false);
 
         // Class ArtiestenGroep
         builder.Entity<ArtiestenGroep>()
@@ -49,6 +50,12 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Optreden>()
         .Property(optreden => optreden.Prijs)
         .IsRequired();
+
+        builder.Entity<Optreden>()
+        .HasOne<Voorstelling>(o => o.Voorstelling)
+        .WithMany(v => v.Optredens)
+        .HasForeignKey(o => o.VoorstellingId)
+        .IsRequired(false);
 
         // Class Voorstelling
         builder.Entity<Voorstelling>()
