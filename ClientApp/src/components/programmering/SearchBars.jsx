@@ -1,13 +1,16 @@
-import '../styling/Programmering.css';
+import './Programmering.css';
 import React, { useState } from 'react';
 
-export function Programmering() {
-
+export function SearchBars(){
     const [enteredDate, setEnteredDate] = useState('');
     const [enteredTitle, setEnteredTitle] = useState('');
 
     function setEnteredDateHandler(event) {
         setEnteredDate(event.target.value);
+    }
+
+    function setEnteredTitleHandler(event) {
+        setEnteredTitle(event.target.value);
     }
 
     function submitHandler(event) {
@@ -18,20 +21,19 @@ export function Programmering() {
 
     return (
         <form onSubmit={submitHandler}>
-            <div>
+            <div className='date-box'>
                 <label>Week:</label>
                 <input type='week' value={enteredDate} onChange={setEnteredDateHandler} />
             </div>
             <br />
-            <div>
+            <div className='text-box'>
                 <label>Voorstelling:</label>
-                <input />
+                <input value={enteredTitle} onChange={setEnteredTitleHandler} />
             </div>
             <br />
-            <div>
+            <div className='box'>
                 <button type='submit'>Zoeken</button>
             </div>
         </form>
     );
 }
-

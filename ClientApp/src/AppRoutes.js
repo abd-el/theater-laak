@@ -3,7 +3,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Doneer } from "./components/Doneer";
-import { Programmering } from "./components/Programmering";
+import { Programmering } from "./components/programmering/Programmering";
 
 const AppRoutes = [
   {

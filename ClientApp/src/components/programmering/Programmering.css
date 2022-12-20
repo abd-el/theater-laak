@@ -1,0 +1,46 @@
+.date-box label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: rgb(0, 0, 0);
+}
+
+.date-box input {
+    font: inherit;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 20rem;
+    max-width: 100%;
+}
+
+.text-box label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: rgb(0, 0, 0);
+}
+
+.text-box input {
+    font: inherit;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 20rem;
+    max-width: 100%;
+}
+
+.box button {
+    font-weight: bold;
+    background-color: rgb(230, 169, 0);
+    padding: 0.75rem;
+    border-radius: 15px;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.box button:hover {
+    background-color: rgb(255, 201, 74);
+    color: white;
+    border-color: white;
+}
