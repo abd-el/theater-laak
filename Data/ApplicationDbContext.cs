@@ -12,8 +12,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         : base(options, operationalStoreOptions)
     {
     }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+
         // Controleer op:
         // Primary key
         // Foreign key
@@ -29,9 +32,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Artiest>()
-        .HasOne(artiest => artiest.ArtiestenGroep)
+        .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
         .WithMany(artiestenGroep => artiestenGroep.Artiesten)
-        .HasForeignKey(artiest => artiest.ArtiestenGroepId);
+        .HasForeignKey(a => a.ArtiestenGroepId);
 
         // Class ArtiestenGroep
         builder.Entity<ArtiestenGroep>()
@@ -42,12 +45,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(artiestenGroep => artiestenGroep.Email)
         .IsRequired();
         
-
         // Class Optreden
         builder.Entity<Optreden>()
         .Property(optreden => optreden.Prijs)
         .IsRequired();
-
 
         // Class Voorstelling
         builder.Entity<Voorstelling>()
