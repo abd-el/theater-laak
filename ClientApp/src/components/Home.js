@@ -22,7 +22,15 @@ export function Home() {
         </div>
 
         <div className='container_cards'>
-          
+          Bla
+        </div>
+
+        <div className='container_sections'>
+          Bla
+        </div>
+
+        <div className='container_news'>
+          Bla
         </div>
 
       </div>
