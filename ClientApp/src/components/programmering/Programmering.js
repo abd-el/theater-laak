@@ -1,6 +1,6 @@
 import './Programmering.css';
 import { SearchBars } from './SearchBars';
-import { Table } from './Table';
+import { VoorstellingLijst } from './VoorstellingList';
 
 export function Programmering() {
 
@@ -32,7 +32,7 @@ export function Programmering() {
             <br />
             <br />
             <SearchBars />
-            <Table
+            <VoorstellingLijst
                 Voorstellingen={Voorstellingen}
             />
         </div>
