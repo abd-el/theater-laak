@@ -1,0 +1,14 @@
+.slider-container {
+    display: inline-block;
+    align-items: center;
+    width: 1500px;
+    height: 400px;
+    position: absolute;
+    top: 400px;
+    padding: 40px;
+  background: #419be0;
+  }
+
+  .slick-slide div {
+    margin: auto;
+  }

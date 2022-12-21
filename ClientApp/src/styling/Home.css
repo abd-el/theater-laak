@@ -23,6 +23,7 @@ body{
   }
 }
 
+
 .container_home{
   position: relative;
   display: flex;
@@ -57,6 +58,7 @@ body{
   height: 800px;
   background-color: aqua;
 }
+
 
 .container_sections{
  display: flex;
