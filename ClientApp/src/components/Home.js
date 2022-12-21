@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SimpleSlider } from './SimpleSlider';
 import '../styling/Home.css';
 
 const theater = `https://media.istockphoto.com/photos/
@@ -22,8 +23,10 @@ export function Home() {
         </div>
 
         <div className='container_cards'>
-          Bla
+            
         </div>
+
+        
 
         <div className='container_sections'>
           Bla
