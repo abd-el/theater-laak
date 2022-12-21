@@ -84,7 +84,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     DbSet<Zaal> Zaal {get; set;}
     DbSet<Voorstelling> Voorstelling {get; set;}
     DbSet<Optreden> Optreden {get; set;}
-    //DbSet<Artiest> Artiest {get; set;}
+    DbSet<Artiest> Artiest {get; set;}
     DbSet<ArtiestenGroep> ArtiestGroep {get; set;}
     DbSet<Donatie> Donatie {get; set;}
 }
