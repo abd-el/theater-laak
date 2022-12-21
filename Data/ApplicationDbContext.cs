@@ -57,6 +57,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasForeignKey(o => o.VoorstellingId)
         .IsRequired(false);
 
+        builder.Entity<Optreden>()
+        .Property(optreden => optreden.BegunstigersExclusief)
+        .IsRequired();
+
         // Class Voorstelling
         builder.Entity<Voorstelling>()
         .Property(voorstelling => voorstelling.Titel)
@@ -68,18 +72,21 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Zaal>()
-        .Property(zaal => zaal.Klein)
-        .IsRequired();
-
-        builder.Entity<Zaal>()
         .Property(Zaal => Zaal.EersteRangAantalStoelen)
         .IsRequired();
-    }
 
+        // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
+        builder.Entity<Voorstelling>()
+        .HasOne<Zaal>(v => v.Zaal)
+        .WithMany(z => z.Voorstellingen)
+        .HasForeignKey(v => v.ZaalId)
+        .IsRequired(false);
+    }
 
     DbSet<Zaal> Zaal {get; set;}
     DbSet<Voorstelling> Voorstelling {get; set;}
     DbSet<Optreden> Optreden {get; set;}
-    //DbSet<Artiest> Artiest {get; set;}
+    DbSet<Artiest> Artiest {get; set;}
     DbSet<ArtiestenGroep> ArtiestGroep {get; set;}
+    DbSet<Donatie> Donatie {get; set;}
 }

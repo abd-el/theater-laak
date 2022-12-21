@@ -8,5 +8,6 @@ public class Zaal
     public int? DerdeRangAantalStoelen {get; set;}
     public int ZaalId {get; set;}
     public Boolean Klein {get; set;}
+    public IEnumerable<Voorstelling> Voorstellingen {get; set;}
 }
 
