@@ -57,6 +57,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasForeignKey(o => o.VoorstellingId)
         .IsRequired(false);
 
+        builder.Entity<Optreden>()
+        .Property(optreden => optreden.BegunstigersExclusief)
+        .IsRequired();
+
         // Class Voorstelling
         builder.Entity<Voorstelling>()
         .Property(voorstelling => voorstelling.Titel)
