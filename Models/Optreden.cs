@@ -7,6 +7,6 @@ public class Optreden {
     public int? ArtiestenGroepId {get; set;}
     public int? ArtiestId {get; set;}
     public int VoorstellingId {get; set;}
-    public Voorstelling Voorstelling;
+    public Voorstelling Voorstelling {get; set;}
     public Boolean BegunstigersExclusief {get; set;}
 }
