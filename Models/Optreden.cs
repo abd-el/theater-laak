@@ -8,4 +8,5 @@ public class Optreden {
     public int? ArtiestId {get; set;}
     public int VoorstellingId {get; set;}
     public Voorstelling Voorstelling;
+    public Boolean BegunstigersExclusief {get; set;}
 }
