@@ -1,14 +1,37 @@
 .slider-container {
     display: inline-block;
     align-items: center;
-    width: 1500px;
-    height: 400px;
+    width: 100%;
+    height: 500px;
     position: absolute;
-    top: 400px;
+    top: 75px;
     padding: 40px;
   background: #419be0;
   }
 
   .slick-slide div {
     margin: auto;
+  }
+
+.slider-item{
+  position: relative;
+  left: 40px;
+  max-width: 300px;
+}
+
+@media (max-width: 900px) {
+  .slider-item{
+    left: -7px;
+  }
+}
+
+@media (max-width: 900px){
+  .slick-slide div{
+    width: 200px;
+    height: 330px;
+  }
+} 
+
+  .slider-item > img{
+    width: 100%;
   }

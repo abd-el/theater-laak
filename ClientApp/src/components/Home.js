@@ -23,7 +23,7 @@ export function Home() {
         </div>
 
         <div className='container_cards'>
-            
+            <SimpleSlider />
         </div>
 
         
