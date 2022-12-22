@@ -22,14 +22,27 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Foreign key
         // Required fields
 
+        // Class Admin
+        builder.Entity<Admin>()
+        .Property(admin => admin.Achternaam)
+        .IsRequired();
+
+        builder.Entity<Admin>()
+        .Property(admin => admin)
+        .HasDefaultValue("Admin");
+
+        builder.Entity<Admin>()
+        .Property(admin => admin.IP)
+        .IsRequired();
+
         // Class Artiest
         builder.Entity<Artiest>()
         .Property(artiest => artiest.Achternaam)
         .IsRequired();
 
         builder.Entity<Artiest>()
-        .Property(artiest => artiest.Telefoonnummer)
-        .IsRequired();
+        .Property(artiest => artiest.PhoneNumber)
+        .IsRequired(false);
 
         builder.Entity<Artiest>()
         .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
@@ -39,13 +52,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
         // Class ArtiestenGroep
         builder.Entity<ArtiestenGroep>()
-        .Property(artiestenGroep => artiestenGroep.Naam)
+        .Property(artiestenGroep => artiestenGroep.GroepsNaam)
         .IsRequired();
 
         builder.Entity<ArtiestenGroep>()
-        .Property(artiestenGroep => artiestenGroep.Email)
+        .Property(artiestenGroep => artiestenGroep.GroepsEmail)
         .IsRequired();
-        
+
         // Class Optreden
         builder.Entity<Optreden>()
         .Property(optreden => optreden.Prijs)
@@ -81,12 +94,26 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .WithMany(z => z.Voorstellingen)
         .HasForeignKey(v => v.ZaalId)
         .IsRequired(false);
+
+        // Class Ticket
+        builder.Entity<>
     }
 
-    DbSet<Zaal> Zaal {get; set;}
-    DbSet<Voorstelling> Voorstelling {get; set;}
-    DbSet<Optreden> Optreden {get; set;}
-    DbSet<Artiest> Artiest {get; set;}
-    DbSet<ArtiestenGroep> ArtiestGroep {get; set;}
-    DbSet<Donatie> Donatie {get; set;}
+    //Gebruiker-Systeem
+    DbSet<Admin> Admins { get; set; }
+    DbSet<Medewerker> Medewerkers { get; set; }
+    DbSet<Klant> Klanten { get; set; }
+    DbSet<Artiest> Artiesten { get; set; }
+    DbSet<ArtiestenGroep> ArtiestGroepen { get; set; }
+
+    //Programmering-Systeem 
+    DbSet<Zaal> Zalen { get; set; }
+    DbSet<Voorstelling> Voorstellingen { get; set; }
+    DbSet<Optreden> Optredens { get; set; }
+    
+    //Doneer-Systeem
+    DbSet<Donatie> Donaties { get; set; }
+    
+    //Ticket-Systeem
+    DbSet<Ticket> Tickets { get; set; }
 }
