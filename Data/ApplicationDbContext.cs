@@ -27,13 +27,29 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(user => user.Email)
         .IsRequired();
 
-        // Class Admin
-        builder.Entity<Admin>()
-        .Property(admin => admin.Achternaam)
+        builder.Entity<ApplicationUser>()
+        .Property(user => user.PasswordHash)
         .IsRequired();
 
-        builder.Entity<Admin>()
-        .Property(admin => admin.IP)
+        // Class Medewerker
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.Achternaam)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.IP)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.BankGegevens)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.DienstDatum)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.Loon)
         .IsRequired();
 
         // Class Artiest
@@ -85,6 +101,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(Zaal => Zaal.EersteRangAantalStoelen)
         .IsRequired();
 
+        builder.Entity<Zaal>()
+        .Property(Zaal => Zaal.TweedeRangAantalStoelen)
+        .IsRequired();
+
+        builder.Entity<Zaal>()
+        .Property(Zaal => Zaal.DerdeRangAantalStoelen)
+        .IsRequired();
+
         // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
         .HasOne<Zaal>(v => v.Zaal)
@@ -93,7 +117,25 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired(false);
 
         // Class Ticket
-        
+        builder.Entity<Ticket>()
+        .Property(ticket => ticket.QR)
+        .IsRequired();
+
+        builder.Entity<Ticket>()
+        .Property(ticket => ticket.TicketID)
+        .IsRequired();
+
+        builder.Entity<Ticket>()
+        .HasOne<ApplicationUser>(ticket => ticket.ApplicationUser)
+        .WithMany(user => user.Tickets)
+        .HasForeignKey(ticket => ticket.UserID)
+        .IsRequired(false);
+
+        builder.Entity<Ticket>()
+        .HasOne<Optreden>(ticket => ticket.Optreden)
+        .WithMany(optreden => optreden.Tickets)
+        .HasForeignKey(ticket => ticket.OptredenId)
+        .IsRequired();
     }
 
     //Gebruiker-Systeem

@@ -10,4 +10,5 @@ public class ApplicationUser : IdentityUser
     public string? Adres { get; set; }
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
     public bool Nieuwsbrief { get; set; }
+    public IEnumerable<Ticket> Tickets {get; set;}
 }
