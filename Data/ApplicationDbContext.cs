@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
 using theater_laak.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace theater_laak.Data;
 
@@ -88,7 +89,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(Zaal => Zaal.EersteRangAantalStoelen)
         .IsRequired();
 
-        // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
         .HasOne<Zaal>(v => v.Zaal)
         .WithMany(z => z.Voorstellingen)
@@ -96,7 +96,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired(false);
 
         // Class Ticket
-        builder.Entity<>
+
+        // Class Donatie
+        builder.Entity<Donatie>()
+        .HasOne<ApplicationUser>(d => d.ApplicationUser)
+        .WithMany(a => a.Donaties)
+        .HasForeignKey(d => d.ApplicationUser)
+        .IsRequired(false);
     }
 
     //Gebruiker-Systeem

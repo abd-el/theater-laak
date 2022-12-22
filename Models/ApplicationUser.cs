@@ -10,4 +10,6 @@ public class ApplicationUser : IdentityUser
     public string? Adres { get; set; }
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
     public bool Nieuwsbrief { get; set; }
+    public override string Id { get; set; }
+    public IEnumerable<Donatie> Donaties {get; set;}
 }
