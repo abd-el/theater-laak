@@ -1,10 +1,51 @@
-import React  from 'react';
+import React, { useEffect }  from 'react';
 import ReactDOM from 'react-dom';
 import { NavMenu } from './NavMenu';
 import Theater from './images/Theater.png';
+import { useState } from 'react';
 
 export function Doneer()
 {
+    const [gedoneerdDitJaar, setGedoneerdDitJaar] = useState(0);
+    const [gedoneerdAltijd, setGedoneerdAltijd] = useState(0);
+
+    // if gedoneerdDitJaar >= 1000 -> enable donateursportaal button
+
+    useEffect(() => {
+        // get gedoneerdDitJaar
+        if (gedoneerdDitJaar >= 1000) {
+            // enable donateursportaal button
+            document.getElementById("donateursportaal-knop").classList.remove("disabled");
+        } else {
+            // disable donateursportaal button
+            document.getElementById("donateursportaal-knop").classList.add("disabled");
+        }
+    }, []);  // <-- empty dependency array
+
+    function getalNaarEuro(getal){
+        // 1 -> € 1,-
+        // 1.5 -> € 1,50
+        // 1.99 -> € 1,99
+        // 1.999 -> € 2,-
+
+        getal = Math.round(getal * 100) / 100;
+
+        getal = `€ ${getal}`;
+        getal = getal.replace(".", ",");
+
+        if (getal.substring(getal.indexOf(",") + 1).length == 1) {
+            getal += "0";
+        }
+
+        if (getal.indexOf(",") == -1) {
+            getal += ",-";
+        }
+
+        getal = getal.substring(0, getal.indexOf(",") + 3);
+
+        return getal;
+    }
+
     return (
         <div className="container mt-3 text-white">
             <br />
@@ -12,7 +53,7 @@ export function Doneer()
             <br />
 
             <figure className="position-relative">
-                <img src={Theater} className="img-fluid">
+                <img alt="Plaatje van een " src={Theater} className="img-fluid">
                 </img>
                 <figcaption className='text-inside-image'>
                     <div className="display-3">
@@ -51,12 +92,12 @@ export function Doneer()
                 <div>
                     <div className='mt-4'>U heeft dit jaar: </div>
                     <div className='rounded bg-white text-black title h1 d-inline'>
-                        € 0,- gedoneerd
+                        {getalNaarEuro(gedoneerdDitJaar)} gedoneerd
                     </div>
 
                     <div className='mt-4'>U heeft in totaal: </div>
                     <div className='rounded bg-white text-black title h1 d-inline'>
-                        € 0,- gedoneerd
+                        {getalNaarEuro(gedoneerdAltijd)} gedoneerd
                     </div>
                 </div>
 
@@ -64,7 +105,7 @@ export function Doneer()
                     Doneer
                 </div>
 
-                <div id="doneer-knop" className="btn btn-lg btn-dark mt-4">
+                <div id="donateursportaal-knop" className="btn btn-lg disabled btn-dark mt-4">
                     Naar donateursportaal
                 </div>
             </div>
