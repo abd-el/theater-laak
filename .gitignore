@@ -232,3 +232,5 @@ _Pvt_Extensions
 .fake/
 .vscode/launch.json
 .vscode/tasks.json
+app.db-wal
+app.db-shm
