@@ -100,6 +100,15 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .WithMany(a => a.Donaties)
         .HasForeignKey(d => d.ApplicationUser)
         .IsRequired(false);
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.Datum)
+        .IsRequired();
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.TotaalBedrag)
+        .IsRequired();
+
     }
 
     //Gebruiker-Systeem
