@@ -39,26 +39,34 @@ export function SimpleSlider() {
     ]
   };
 
+  const placeholder = {
+    img_path: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
+    title: 'Card title',
+    text: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
+    btn_text: 'Go somewhere'
+    };
+    
+
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        <div className="slider-item">
-          <Card />
+        <div className="slider-item 1">
+          <Card {...placeholder}/>
         </div>
-        <div className="slider-item">
-        <Card />
+        <div className="slider-item 2">
+        <Card {...placeholder}/>
         </div>
-        <div className="slider-item">
-        <Card />
+        <div className="slider-item 3">
+        <Card {...placeholder}/>
         </div>
-        <div className="slider-item">
-        <Card />
+        <div className="slider-item 4">
+        <Card {...placeholder}/>
         </div>
-        <div className="slider-item">
-        <Card />
+        <div className="slider-item 5">
+        <Card {...placeholder}/>
         </div>
-        <div className="slider-item">
-        <Card />
+        <div className="slider-item 6">
+        <Card {...placeholder}/>
         </div>
       </Slider>
     </div>
