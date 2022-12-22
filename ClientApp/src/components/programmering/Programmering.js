@@ -31,10 +31,7 @@ export function Programmering() {
             <br />
             <br />
             <br />
-            <SearchBars />
-            <VoorstellingLijst
-                Voorstellingen={Voorstellingen}
-            />
+           
         </div>
     );
 }
