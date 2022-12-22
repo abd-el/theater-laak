@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
 using theater_laak.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace theater_laak.Data;
 
@@ -22,13 +23,39 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Foreign key
         // Required fields
 
+        // Class ApplicationUser
+        builder.Entity<ApplicationUser>()
+        .Property(user => user.Email)
+        .IsRequired();
+
+        builder.Entity<ApplicationUser>()
+        .Property(user => user.PasswordHash)
+        .IsRequired();
+
+        // Class Medewerker
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.Achternaam)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.IP)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.BankGegevens)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.DienstDatum)
+        .IsRequired();
+
+        builder.Entity<Medewerker>()
+        .Property(medewerker => medewerker.Loon)
+        .IsRequired();
+
         // Class Artiest
         builder.Entity<Artiest>()
         .Property(artiest => artiest.Achternaam)
-        .IsRequired();
-
-        builder.Entity<Artiest>()
-        .Property(artiest => artiest.Telefoonnummer)
         .IsRequired();
 
         builder.Entity<Artiest>()
@@ -39,13 +66,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
         // Class ArtiestenGroep
         builder.Entity<ArtiestenGroep>()
-        .Property(artiestenGroep => artiestenGroep.Naam)
+        .Property(artiestenGroep => artiestenGroep.GroepsNaam)
         .IsRequired();
 
         builder.Entity<ArtiestenGroep>()
-        .Property(artiestenGroep => artiestenGroep.Email)
+        .Property(artiestenGroep => artiestenGroep.GroepsEmail)
         .IsRequired();
-        
+
         // Class Optreden
         builder.Entity<Optreden>()
         .Property(optreden => optreden.Prijs)
@@ -75,18 +102,74 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(Zaal => Zaal.EersteRangAantalStoelen)
         .IsRequired();
 
+        builder.Entity<Zaal>()
+        .Property(Zaal => Zaal.TweedeRangAantalStoelen)
+        .IsRequired();
+
+        builder.Entity<Zaal>()
+        .Property(Zaal => Zaal.DerdeRangAantalStoelen)
+        .IsRequired();
+
         // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
         .HasOne<Zaal>(v => v.Zaal)
         .WithMany(z => z.Voorstellingen)
         .HasForeignKey(v => v.ZaalId)
         .IsRequired(false);
+
+        // Class Ticket
+        builder.Entity<Ticket>()
+        .Property(ticket => ticket.QR)
+        .IsRequired();
+
+        builder.Entity<Ticket>()
+        .Property(ticket => ticket.TicketID)
+        .IsRequired();
+
+        builder.Entity<Ticket>()
+        .HasOne<ApplicationUser>(ticket => ticket.ApplicationUser)
+        .WithMany(user => user.Tickets)
+        .HasForeignKey(ticket => ticket.UserID)
+        .IsRequired(false);
+
+        builder.Entity<Ticket>()
+        .HasOne<Optreden>(ticket => ticket.Optreden)
+        .WithMany(optreden => optreden.Tickets)
+        .HasForeignKey(ticket => ticket.OptredenId)
+        .IsRequired();
+
+        // Class Donatie
+        builder.Entity<Donatie>()
+        .HasOne<ApplicationUser>(d => d.ApplicationUser)
+        .WithMany(a => a.Donaties)
+        .HasForeignKey(d => d.ApplicationUser)
+        .IsRequired(false);
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.Datum)
+        .IsRequired();
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.TotaalBedrag)
+        .IsRequired();
+
     }
 
-    DbSet<Zaal> Zaal {get; set;}
-    DbSet<Voorstelling> Voorstelling {get; set;}
-    DbSet<Optreden> Optreden {get; set;}
-    DbSet<Artiest> Artiest {get; set;}
-    DbSet<ArtiestenGroep> ArtiestGroep {get; set;}
-    DbSet<Donatie> Donatie {get; set;}
+    //Gebruiker-Systeem
+    DbSet<Admin> Admins { get; set; }
+    DbSet<Medewerker> Medewerkers { get; set; }
+    DbSet<Klant> Klanten { get; set; }
+    DbSet<Artiest> Artiesten { get; set; }
+    DbSet<ArtiestenGroep> ArtiestGroepen { get; set; }
+
+    //Programmering-Systeem 
+    DbSet<Zaal> Zalen { get; set; }
+    DbSet<Voorstelling> Voorstellingen { get; set; }
+    DbSet<Optreden> Optredens { get; set; }
+    
+    //Doneer-Systeem
+    DbSet<Donatie> Donaties { get; set; }
+    
+    //Ticket-Systeem
+    DbSet<Ticket> Tickets { get; set; }
 }

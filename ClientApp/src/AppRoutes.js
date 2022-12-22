@@ -1,7 +1,7 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
-import { Home } from "./components/Home";
+import { Home } from "./components/Home/Home.js";
 import { Doneer } from "./components/Doneer";
 import { Programmering } from "./components/programmering/Programmering";
 

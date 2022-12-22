@@ -9,4 +9,5 @@ public class Optreden {
     public int VoorstellingId {get; set;}
     public Voorstelling Voorstelling {get; set;}
     public Boolean BegunstigersExclusief {get; set;}
+    public IEnumerable<Ticket> Tickets {get; set;}
 }
