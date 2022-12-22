@@ -12,3 +12,27 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.banner-img {
+  background-size: cover;
+  background-position: center;
+  height: 33vh;
+}
+
+figcaption.text-inside-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width: 768px) {
+  figcaption.text-inside-image {
+    position: relative;
+    background: none;
+    color: rgb(255, 255, 255);
+  }
+}

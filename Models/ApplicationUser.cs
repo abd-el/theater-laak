@@ -3,5 +3,5 @@
 namespace theater_laak.Models;
 
 public class ApplicationUser : IdentityUser
-{
+{    
 }

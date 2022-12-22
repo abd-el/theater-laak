@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 
 const img_url = 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg';
 
-
 export function Card() {
     return (<>
         <div className="card text-white bg-secondary mb-3" style={{width: '18rem'}}>
