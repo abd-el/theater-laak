@@ -23,14 +23,15 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Foreign key
         // Required fields
 
+        // Class ApplicationUser
+        builder.Entity<ApplicationUser>()
+        .Property(user => user.Email)
+        .IsRequired();
+
         // Class Admin
         builder.Entity<Admin>()
         .Property(admin => admin.Achternaam)
         .IsRequired();
-
-        builder.Entity<Admin>()
-        .Property(admin => admin)
-        .HasDefaultValue("Admin");
 
         builder.Entity<Admin>()
         .Property(admin => admin.IP)
@@ -40,10 +41,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Artiest>()
         .Property(artiest => artiest.Achternaam)
         .IsRequired();
-
-        builder.Entity<Artiest>()
-        .Property(artiest => artiest.PhoneNumber)
-        .IsRequired(false);
 
         builder.Entity<Artiest>()
         .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
