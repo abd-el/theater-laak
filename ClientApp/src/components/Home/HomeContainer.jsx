@@ -5,7 +5,7 @@ import { Title } from './Title';
 import { Cards } from './Cards';
 import { Sections } from './Sections';
 import { News } from './News';
-import '../../styling/Home.css';
+import '../../stylesheets/Home.css';
 
 export function HomeContainer() {
     return (

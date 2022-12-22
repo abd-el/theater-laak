@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image } from './Image';
 import { HomeContainer } from './HomeContainer';
-import '../../styling/Home.css';
+import '../../stylesheets/Home.css';
 
 export function Home() {
   return (
