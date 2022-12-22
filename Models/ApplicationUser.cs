@@ -11,4 +11,6 @@ public class ApplicationUser : IdentityUser
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
     public bool Nieuwsbrief { get; set; }
     public IEnumerable<Ticket> Tickets {get; set;}
+    public override string Id { get; set; }
+    public IEnumerable<Donatie> Donaties {get; set;}
 }

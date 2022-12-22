@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Duende.IdentityServer.EntityFramework.Options;
 using theater_laak.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace theater_laak.Data;
 
@@ -136,6 +137,22 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .WithMany(optreden => optreden.Tickets)
         .HasForeignKey(ticket => ticket.OptredenId)
         .IsRequired();
+
+        // Class Donatie
+        builder.Entity<Donatie>()
+        .HasOne<ApplicationUser>(d => d.ApplicationUser)
+        .WithMany(a => a.Donaties)
+        .HasForeignKey(d => d.ApplicationUser)
+        .IsRequired(false);
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.Datum)
+        .IsRequired();
+
+        builder.Entity<Donatie>()
+        .Property(Donatie => Donatie.TotaalBedrag)
+        .IsRequired();
+
     }
 
     //Gebruiker-Systeem
