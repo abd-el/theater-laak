@@ -5,17 +5,17 @@ public class Ticket
 
     public int TicketID { get; set; }
     public string QR { get; set; }
-    private string _UsedID;
+    private string _UserID;
     public string? UserID //FK naar APPLICATIONUSER(ASPNETUSER)
     {
         get
         {
-            return _UsedID;
+            return _UserID;
         }
 
         set
         {
-            _UsedID = ApplicationUser.Id;
+            _UserID = ApplicationUser.Id;
         }
     }
     public int OptredenId { get; set; }
