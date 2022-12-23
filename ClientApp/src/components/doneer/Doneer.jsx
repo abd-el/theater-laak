@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import ReactDOM from 'react-dom';
-import { NavMenu } from './NavMenu';
-import Theater from './images/Theater.png';
+import { NavMenu } from '../NavMenu';
+import Theater from '../images/Theater.png';
 import { useState } from 'react';
 
 export function Doneer()

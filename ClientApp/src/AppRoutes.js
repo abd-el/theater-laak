@@ -2,7 +2,7 @@ import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizati
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home/Home.js";
-import { Doneer } from "./components/Doneer";
+import { Doneer } from "./components/doneer/Doneer";
 import { Programmering } from "./components/programmering/Programmering";
 
 const AppRoutes = [
