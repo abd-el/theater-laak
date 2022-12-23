@@ -3,6 +3,7 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import { NavigatieItem } from './NavigatieItem'
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -12,7 +13,8 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      artiest: true
     };
   }
 
@@ -30,21 +32,13 @@ export class NavMenu extends Component {
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow opacity-75">
-              <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light nav-item bg-dark" to="/">Home</NavLink>
-              </NavItem>
-              <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light bg-dark" to="/counter">Counter</NavLink>
-              </NavItem>
-              <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light bg-dark" to="/fetch-data">Fetch data</NavLink>
-              </NavItem>
-              <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light bg-dark" to="/doneer">Doneer</NavLink>
-              </NavItem>
-              <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light bg-dark" to="/programmering">Programmering</NavLink>
-              </NavItem>
+              <NavigatieItem text="Home" to="/" />
+              <NavigatieItem text="Counter" to="/counter" />
+              <NavigatieItem text="Fetch data" to="/fetch-data" />
+              <NavigatieItem text="Doneer" to="/doneer" />
+              <NavigatieItem text="Programmering" to="/programmering" />
+              <NavigatieItem text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
+
               <LoginMenu>
               </LoginMenu>
             </ul>
