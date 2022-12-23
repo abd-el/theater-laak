@@ -46,6 +46,20 @@ export function SimpleSlider() {
     btn_text: 'Go somewhere'
   };
 
+  const Movies = null;
+
+  async function fetchMovies(){
+    const response = await fetch('/api');
+    const data = await response.json();
+    Movies = data;
+  };
+
+  //const Movies = [{obj : 0},{obj : 1},{obj : 2}];
+  //Movies[];
+  //<Card {...Movies[0]}/>
+  //<Card {...Movies[1]}/>
+  //<Card {...Movies[2]}/>
+
 
   return (
     <div className="slider-container">
