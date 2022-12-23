@@ -1,0 +1,23 @@
+table th, table td {
+    text-align: center;
+}
+
+table td.titel, table th.titel {
+    width: 100px;
+}
+
+table td.zaal, table th.zaal {
+    width: 80px;
+}
+
+table td.datum-tijdstip, table th.datum-tijdstip {
+    width: 200px;
+}
+
+.tot, .tijdstip {
+    width: 25%;
+}
+
+.datum {
+    width: 45%;
+}

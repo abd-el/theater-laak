@@ -14,7 +14,7 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true,
-      geselecteerd: 'home'
+      artiest: true
     };
   }
 
@@ -37,7 +37,7 @@ export class NavMenu extends Component {
               <NavigatieItem text="Fetch data" to="/fetch-data" />
               <NavigatieItem text="Doneer" to="/doneer" />
               <NavigatieItem text="Programmering" to="/programmering" />
-              <NavigatieItem text="Artiestenportaal" to="/artiestenportaal" hidden={false} />
+              <NavigatieItem text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
 
               <LoginMenu>
               </LoginMenu>

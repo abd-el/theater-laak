@@ -1,5 +1,4 @@
 import React, { useEffect }  from 'react';
-import ReactDOM from 'react-dom';
 import Theater from '../images/Theater.png';
 import { useState } from 'react';
 
@@ -50,7 +49,8 @@ export function Doneer()
             <br />
             <br />
             <br />
-
+            <br />
+            
             <figure className="position-relative">
                 <img alt="Plaatje van een " src={Theater} className="img-fluid">
                 </img>

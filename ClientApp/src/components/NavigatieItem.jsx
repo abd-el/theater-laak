@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import './NavMenu.css';
-import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export class NavigatieItem extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ export class NavigatieItem extends Component {
 
     render(){
         return (
-            <NavItem className={`${this.props.hidden ?? "d-hidden"} NavItem`}>
+            <NavItem className={`${this.props.hidden ? "d-none" : ""} NavItem`}>
                 <NavLink 
                     tag={Link}
                     className={`text-light nav-item rounded-2 ${this.state.geselecteerd ? `bg-black` : `bg-dark`}`}
