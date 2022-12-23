@@ -19,6 +19,11 @@ code {
   height: 33vh;
 }
 
+.kop-text {
+  font-weight: lighter;
+  font-size: 35px;
+}
+
 figcaption.text-inside-image {
   position: absolute;
   bottom: 0;

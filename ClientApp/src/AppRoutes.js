@@ -4,6 +4,7 @@ import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home/Home.js";
 import { Doneer } from "./components/doneer/Doneer";
 import { Programmering } from "./components/programmering/Programmering";
+import { Artiestenportaal } from './components/artiestenportaal/Artiestenportaal';
 
 const AppRoutes = [
   {
@@ -26,6 +27,10 @@ const AppRoutes = [
   {
     path: '/programmering',
     element: <Programmering />
+  },
+  {
+    path: '/artiestenportaal',
+    element: <Artiestenportaal />
   },
   ...ApiAuthorzationRoutes
 ];
