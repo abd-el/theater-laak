@@ -13,6 +13,7 @@ export function Sections() {
                 <div className='textblock'>
                     <h1>Title</h1>
                     <p>This is some text</p>
+                    <a href="#" className="btn btn-light ">Click here</a>
                 </div>
             </div>
 
@@ -21,6 +22,7 @@ export function Sections() {
                 <div className='textblock'>
                     <h1>Another Title</h1>
                     <p>This is some more text</p>
+                    <a href="#" className="btn btn-light ">Click here</a>
                 </div>
             </div>
         </div>
