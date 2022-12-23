@@ -17,7 +17,7 @@ body{
 
 @media (max-width: 768px){
   .container_image{
-    height: 350px;
+    height: 150px;
   }
 }
 
@@ -33,7 +33,7 @@ body{
 
 @media (max-width: 768px){
   .container_home{
-    top: 415px;
+    top: 215px;
   }
 }
 
