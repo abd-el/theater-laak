@@ -60,12 +60,20 @@ body{
 
 .container_sections{
  display: flex;
+ flex-direction: column;
  position: absolute;
  width: 100%;
  height: 800px;
  top: 700px;
  background-color: brown; 
 }
+
+@media (max-width: 768px){
+  .container_sections{
+    height: 700px;
+  }
+}
+
 
 .container_news{
   display: flex;

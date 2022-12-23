@@ -8,18 +8,17 @@ import { News } from './News';
 import '../../stylesheets/Home.css';
 
 export function HomeContainer() {
-    return (
-        <div className='container_home'>
-        <Title />
+  return (
+    <div className='container_home'>
+      <Title />
 
-        <Cards>
-          <SimpleSlider />
-        </Cards>
+      <Cards>
+        <SimpleSlider />
+      </Cards>
 
-        <Sections>
-        </Sections>
+      <Sections />
 
-        <News />
-      </div>
-    );
+      <News />
+    </div>
+  );
 }
