@@ -21,3 +21,11 @@ table td.datum-tijdstip, table th.datum-tijdstip {
 .datum {
     width: 45%;
 }
+
+.licht-rood {
+    color: #ff7a7a;
+}
+
+.licht-groen {
+    color: #7aff7a;
+}

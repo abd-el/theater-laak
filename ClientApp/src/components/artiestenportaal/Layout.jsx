@@ -1,9 +1,34 @@
 import React, { Component }  from 'react';
-import { KnopLayout } from './KnopLayout';
-import { HuidigeBoekingen } from './HuidigeBoekingen';
-import { BoekenFormulier } from './BoekenFormulier';
+import { MenuKnop } from './MenuKnop';
+import { Boekingen } from './Boekingen';
+import { MijnAccount } from './MijnAccount';
+import { Groepen } from './Groepen';
+import { Privacy } from './Privacy';
 
 export class Layout extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            geselecteerd: 'Mijn account',
+        };
+    }
+
+    selecteer = (e) => {
+        this.setState({ geselecteerd: e.target.innerText });
+    }
+
+    laatComponentZien = () => {
+        if (this.state.geselecteerd === 'Mijn account') {
+            return <MijnAccount />;
+        } else if (this.state.geselecteerd === 'Boekingen') {
+            return <Boekingen />
+        } else if (this.state.geselecteerd === 'Groepen') {
+            return <Groepen />;
+        } else if (this.state.geselecteerd === 'Privacy') {
+            return <Privacy />;
+        }
+    }
+
     render() {
         return (
             <div className="container">
@@ -18,14 +43,13 @@ export class Layout extends Component {
                     </div>
                     
                     <div id="zijkant" className='col-sm-2 d-inline'>
-                        <KnopLayout text="Mijn account" />
-                        <KnopLayout text="Boekingen" />
-                        <KnopLayout text="Groepen" />
-                        <KnopLayout text="Privacy" />
+                        <MenuKnop onClick={this.selecteer} text="Mijn account" />
+                        <MenuKnop onClick={this.selecteer} text="Boekingen" />
+                        <MenuKnop onClick={this.selecteer} text="Groepen" />
+                        <MenuKnop onClick={this.selecteer} text="Privacy" />
                     </div>
     
-                    <HuidigeBoekingen />
-                    <BoekenFormulier />
+                    {this.laatComponentZien()}
                 </div>
             </div>
         );
