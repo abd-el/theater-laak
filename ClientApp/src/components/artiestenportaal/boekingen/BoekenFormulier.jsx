@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import './stylesheet.css';
+import '../layout/stylesheet.css';
 
 export class BoekenFormulier extends Component {
     constructor(props) {

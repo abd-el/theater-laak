@@ -1,9 +1,9 @@
 import React, { Component }  from 'react';
 import { MenuKnop } from './MenuKnop';
-import { Boekingen } from './Boekingen';
-import { MijnAccount } from './MijnAccount';
-import { Groepen } from './Groepen';
-import { Privacy } from './Privacy';
+import { Boekingen } from '../boekingen/Boekingen';
+import { MijnAccount } from '../mijnAccount/MijnAccount';
+import { Groepen } from '../groepen/Groepen';
+import { Privacy } from '../privacy/Privacy';
 
 export class Layout extends Component {
     constructor (props) {

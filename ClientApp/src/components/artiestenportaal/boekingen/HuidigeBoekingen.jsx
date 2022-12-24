@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import './stylesheet.css';
+import '../layout/stylesheet.css';
 import { Rij } from './Rij';
 
 export class HuidigeBoekingen extends Component {

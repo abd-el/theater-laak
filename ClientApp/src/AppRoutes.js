@@ -4,7 +4,7 @@ import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home/Home.js";
 import { Doneer } from "./components/doneer/Doneer";
 import { Programmering } from "./components/programmering/Programmering";
-import { Artiestenportaal } from './components/artiestenportaal/Artiestenportaal';
+import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
 
 const AppRoutes = [
   {
