@@ -142,7 +142,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Donatie>()
         .HasOne<ApplicationUser>(d => d.ApplicationUser)
         .WithMany(a => a.Donaties)
-        .HasForeignKey(d => d.ApplicationUser)
+        .HasForeignKey(d => d.UserId)
         .IsRequired(false);
 
         builder.Entity<Donatie>()
@@ -152,7 +152,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Donatie>()
         .Property(Donatie => Donatie.TotaalBedrag)
         .IsRequired();
-
     }
 
     //Gebruiker-Systeem

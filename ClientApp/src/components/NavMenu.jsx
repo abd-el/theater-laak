@@ -14,7 +14,10 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true,
-      artiest: true
+
+      // deze informatie halen we op uit de database
+      artiest: true,
+      ingelogd: true
     };
   }
 
@@ -22,6 +25,12 @@ export class NavMenu extends Component {
     this.setState({
       collapsed: !this.state.collapsed
     });
+  }
+
+  loginMenu(){
+    if(!this.state.ingelogd){
+      return <LoginMenu />
+    }
   }
 
   render() {
@@ -38,9 +47,9 @@ export class NavMenu extends Component {
               <NavigatieItem text="Doneer" to="/doneer" />
               <NavigatieItem text="Programmering" to="/programmering" />
               <NavigatieItem text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
+              <NavigatieItem text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
 
-              <LoginMenu>
-              </LoginMenu>
+              {this.loginMenu()}
             </ul>
           </Collapse>
         </Navbar>
