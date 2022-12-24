@@ -45,10 +45,10 @@ export class BoekenFormulier extends Component {
     }
 
     valideerTijdstip = (tijdstip) => {
-        // we gaan uit van openingsuren van 8:00 tot 20:00
-        // controleer of het uur begint met ([8-9]|0[8-9]|1[0-9]|2[0]) d.w.z 8-9 of 08-09 of 10-19 of 20
+        // we gaan uit van openingsuren van 8:00 tot 23:00
+        // controleer of het uur begint met ([8-9]|0[8-9]|1[0-9]|2[0-3]) d.w.z 8-9 of 08-09 of 10-19 of 20-23
         // gevolgd door een : en dan ([0-5][0-9]) d.w.z 00-59
-        let tijdstipRegex = new RegExp('^([8-9]|0[8-9]|1[0-9]|2[0]):([0-5][0-9])$');
+        let tijdstipRegex = new RegExp('^([8-9]|0[8-9]|1[0-9]|2[0-3]):([0-5][0-9])$');
 
         return tijdstipRegex.test(tijdstip);
     };
@@ -101,7 +101,7 @@ export class BoekenFormulier extends Component {
 
         if (!this.valideerTijdstip(this.state.tijdstip)) {
             this.setState({
-                resultaat: 'Het tijdstip is verplicht met het formaat XX:XX, tussen 08:00 en 20:00',
+                resultaat: 'Het tijdstip is verplicht met het formaat XX:XX, tussen 08:00 en 23:00',
                 resultaatSuccess: false
             });
             return false;
@@ -109,7 +109,7 @@ export class BoekenFormulier extends Component {
 
         if (!this.valideerTijdstip(this.state.eindTijdstip)) {
             this.setState({
-                resultaat: 'Het eind-tijdstip is verplicht met het formaat XX:XX, tussen 08:00 en 20:00',
+                resultaat: 'Het eind-tijdstip is verplicht met het formaat XX:XX, tussen 08:00 en 23:00',
                 resultaatSuccess: false
             });
             return false;
