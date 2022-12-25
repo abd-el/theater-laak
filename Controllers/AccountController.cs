@@ -33,7 +33,7 @@ public class UserDTO : RoleDTO
 public class AccountController : ControllerBase
 {
     private readonly UserManager<Medewerker> _userManager;
-    private readonly SignInManager<Medewerker> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     //private readonly SignInManager<Artiest> _signInManager_artiest;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ApplicationDbContext _context;
@@ -42,7 +42,7 @@ public class AccountController : ControllerBase
 
 
 
-    public AccountController(UserManager<Medewerker> u, SignInManager<Medewerker> s, RoleManager<IdentityRole> r, ApplicationDbContext c, ILogger<AccountController> logger)
+    public AccountController(UserManager<Medewerker> u, SignInManager<ApplicationUser> s, RoleManager<IdentityRole> r, ApplicationDbContext c, ILogger<AccountController> logger)
     {
         _userManager = u;
         _signInManager = s;
@@ -64,7 +64,7 @@ public class AccountController : ControllerBase
         else
         {
             var user = await _userManager.FindByIdAsync(medewerker.Id);
-            await _userManager.AddToRoleAsync(user, "medewerker");
+            // await _userManager.AddToRoleAsync(user, "medewerker");
             return StatusCode(201);
         }
 
