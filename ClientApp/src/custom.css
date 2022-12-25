@@ -41,3 +41,15 @@ figcaption.text-inside-image {
     color: rgb(255, 255, 255);
   }
 }
+
+.border-grey {
+  border-color: #545454;
+}
+
+.licht-rood {
+  color: #ff7a7a;
+}
+
+.licht-groen {
+  color: #7aff7a;
+}

@@ -22,12 +22,12 @@ table td.datum-tijdstip, table th.datum-tijdstip {
     width: 45%;
 }
 
-.licht-rood {
-    color: #ff7a7a;
+.dropdown-icon {
+    background-image: url('../../images/dropdown-icon.png');
 }
 
-.licht-groen {
-    color: #7aff7a;
+.dropdown-icon {
+    background-image: url('../../images/dropdown-icon.png');
 }
 
 .groepNaam:hover {

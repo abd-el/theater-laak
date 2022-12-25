@@ -15,7 +15,7 @@ export class HuidigeBoekingen extends Component {
         let huidigeBoekingen = [
             { titel: 'Roodkapje', zaal: 3, bevestigd: '✅', datumtijdstip: '01-01-2023 15:00' },
             { titel: 'Roodkapje', zaal: 2, bevestigd: '⏳', datumtijdstip: '04-01-2023 17:00' },
-            { titel: 'Roodkapje', zaal: 3, bevestigd: '❌', datumtijdstip: '09-01-2023 20:00' },
+            { titel: 'Roodkapje', zaal: 4, bevestigd: '❌', datumtijdstip: '09-01-2023 20:00' },
         ];
 
         this.setState({ huidigeBoekingen: huidigeBoekingen });

@@ -5,6 +5,7 @@ import { Home } from "./components/Home/Home";
 import { Doneer } from "./components/doneer/Doneer";
 import { Programmering } from "./components/programmering/Programmering";
 import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
+import { AccountInstellingen } from './components/accountinstellingen/AccountInstellingen';
 
 const AppRoutes = [
   {
@@ -31,6 +32,10 @@ const AppRoutes = [
   {
     path: '/artiestenportaal',
     element: <Artiestenportaal />
+  },
+  {
+    path: '/accountinstellingen',
+    element: <AccountInstellingen />
   },
   ...ApiAuthorzationRoutes
 ];

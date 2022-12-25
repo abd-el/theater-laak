@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import '../layout/stylesheet.css';
+import '../../../custom.css';
 
 export class BoekenFormulier extends Component {
     constructor(props) {
@@ -93,7 +94,7 @@ export class BoekenFormulier extends Component {
 
         if (!this.valideerDatum(this.state.datum)) {
             this.setState({
-                resultaat: 'Datum is verplicht met het formaat DD-MM-JJJJ en moet minimaal morgen zijn',
+                resultaat: 'Datum is verplicht met het formaat dd-mm-jjjj en moet minimaal morgen zijn',
                 resultaatSuccess: false
             });
             return false;
@@ -151,14 +152,14 @@ export class BoekenFormulier extends Component {
 
                 <div className='mb-2'>
                     <div>Groep</div>
-                    <select onChange={this.veranderGroep} className='form-control text-white' placeholder='Kies een groep'>
+                    <select onChange={this.veranderGroep} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een groep'>
                         <option id="groep-invoer" value="geen">Geen</option>
                     </select>
                 </div>
 
                 <div className='mb-2'>
                     <div>Zaal*</div>
-                    <select onChange={this.veranderZaal} className='form-control text-white'>
+                    <select onChange={this.veranderZaal} className='form-select dropdown-icon bg-dark border-grey text-white'>
                         <option id="zaal-invoer" value="geen">Kies een zaal</option>
                         <option id="zaal-invoer" value="1">1</option>
                     </select>
@@ -167,7 +168,7 @@ export class BoekenFormulier extends Component {
                 <div>
                     <div className='mb-2 d-inline-block datum'>
                         <div>Datum*</div>
-                        <input onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='DD-MM-JJJJ'></input>
+                        <input onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='dd-mm-jjjj'></input>
                     </div>
 
                     <div className='mb-2 d-inline-block ms-2 tijdstip'>
@@ -185,7 +186,7 @@ export class BoekenFormulier extends Component {
                     Maak een verzoek voor een reservering
                 </button>
 
-                <div className={`resultaat mt-2 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
+                <div id="resultaat" className={`mt-2 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
                     {this.state.resultaat}
                 </div>
             </div>
