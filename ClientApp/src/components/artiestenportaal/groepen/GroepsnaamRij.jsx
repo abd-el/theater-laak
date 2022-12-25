@@ -1,10 +1,10 @@
 import React, { Component }  from 'react';
 
-export class GroepNaamRij extends Component {
+export class GroepsnaamRij extends Component {
     render() {
         return (
             <tr>
-                <td className="groepNaam">
+                <td className="groepsnaam">
                     {this.props.naam}
                 </td>
             </tr>

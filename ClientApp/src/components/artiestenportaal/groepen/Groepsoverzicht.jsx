@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import '../layout/stylesheet.css';
+import { Groepsleden } from "./Groepsleden";
+import { GroepsnaamRij } from "./GroepsnaamRij";
 
-export class GroepOverzicht extends Component {
+export class Groepsoverzicht extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
+        this.state = {  // deze informatie halen we op uit de database
+            groepOverzicht: []
         };
     }
 

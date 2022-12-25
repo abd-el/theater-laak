@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../layout/stylesheet.css';
-import { GroepNaamRij } from "./GroepNaamRij";
+import { GroepsnaamRij } from "./GroepsnaamRij";
 
 export class HuidigeGroepen extends Component {
     constructor(props) {
@@ -34,22 +34,16 @@ export class HuidigeGroepen extends Component {
                         <thead>
                             <tr>
                                 <th scope="col">
-                                    Naam
+                                    Groepsnaam
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.huidigeGroepen.map((groep, index) => (
-                                <GroepNaamRij key={index} naam={groep.naam} />
+                                <GroepsnaamRij key={index} naam={groep.naam} />
                             ))}
                         </tbody>
                     </table>
-                </div>
-
-                <div>
-                    <button className="groepToevoegen">
-                        Groep toevoegen
-                    </button>                   
                 </div>
             </div>
         )

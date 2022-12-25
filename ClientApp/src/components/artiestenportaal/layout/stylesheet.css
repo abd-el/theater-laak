@@ -38,7 +38,7 @@ table td.datum-tijdstip, table th.datum-tijdstip {
     color: #7aff7a;
 }
 
-.groepNaam:hover {
+.groepsnaam:hover {
     background-color: #686868;
     cursor: pointer;
 }

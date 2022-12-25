@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
-import { GroepOverzicht } from './GroepOverzicht';
 import { HuidigeGroepen} from './HuidigeGroepen'
+import { Groepsformulier } from './Groepsformulier';
+import { Groepsoverzicht } from './Groepsoverzicht';
 
 export class Groepen extends Component {
     render() {
@@ -8,7 +9,7 @@ export class Groepen extends Component {
             <div className='col-sm-10'>
                 <div className='row'>
                     <HuidigeGroepen />
-                    <GroepOverzicht />
+                    <Groepsformulier />
                 </div>
             </div>
         )
