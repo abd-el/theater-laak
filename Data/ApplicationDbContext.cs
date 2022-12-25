@@ -98,18 +98,6 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(zaal => zaal.AantalStoelen)
         .IsRequired();
 
-        builder.Entity<Zaal>()
-        .Property(Zaal => Zaal.EersteRangAantalStoelen)
-        .IsRequired();
-
-        builder.Entity<Zaal>()
-        .Property(Zaal => Zaal.TweedeRangAantalStoelen)
-        .IsRequired();
-
-        builder.Entity<Zaal>()
-        .Property(Zaal => Zaal.DerdeRangAantalStoelen)
-        .IsRequired();
-
         // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
         .HasOne<Zaal>(v => v.Zaal)
@@ -138,6 +126,12 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasForeignKey(ticket => ticket.OptredenId)
         .IsRequired();
 
+        builder.Entity<Ticket>()
+        .HasOne<Stoel>(ticket => ticket.Stoel)
+        .WithMany(stoel => stoel.Tickets)
+        .HasForeignKey(ticket => ticket.StoelId)
+        .IsRequired();
+
         // Class Donatie
         builder.Entity<Donatie>()
         .HasOne<ApplicationUser>(d => d.ApplicationUser)
@@ -152,6 +146,24 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Donatie>()
         .Property(Donatie => Donatie.TotaalBedrag)
         .IsRequired();
+
+        // Class Stoel
+        builder.Entity<Stoel>()
+        .Property(s => s.Id)
+        .IsRequired();
+
+        builder.Entity<Stoel>()
+        .Property(s => s.Zaal)
+        .IsRequired();
+
+        builder.Entity<Stoel>()
+        .Property(s => s.Rang)
+        .IsRequired();
+
+        builder.Entity<Stoel>()
+        .HasOne<Zaal>(stoel => stoel._Zaal)
+        .WithMany(zaal => zaal.AantalStoelen)
+        .HasForeignKey(stoel => stoel.Zaal);
     }
 
     //Gebruiker-Systeem
