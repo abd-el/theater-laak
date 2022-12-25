@@ -100,7 +100,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys");
+                    b.ToTable("Keys", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -397,7 +397,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("ArtiestenGroepId");
 
-                    b.ToTable("ArtiestGroepen");
+                    b.ToTable("ArtiestGroepen", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Donatie", b =>
@@ -422,7 +422,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Donaties");
+                    b.ToTable("Donaties", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Optreden", b =>
@@ -453,7 +453,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("VoorstellingId");
 
-                    b.ToTable("Optredens");
+                    b.ToTable("Optredens", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Ticket", b =>
@@ -478,7 +478,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
@@ -505,7 +505,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("ZaalId");
 
-                    b.ToTable("Voorstellingen");
+                    b.ToTable("Voorstellingen", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Zaal", b =>
@@ -532,7 +532,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("ZaalId");
 
-                    b.ToTable("Zalen");
+                    b.ToTable("Zalen", (string)null);
                 });
 
             modelBuilder.Entity("theater_laak.Models.Artiest", b =>

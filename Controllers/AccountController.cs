@@ -102,7 +102,8 @@ public class AccountController : ControllerBase
     [Route("AddRole")]
     public async Task<ActionResult> addRole([FromBody] RoleDTO roleDTO)
     {
-        var roleExists = await _roleManager.RoleExistsAsync(roleDTO.Role);
+        var roleExists = await _roleManager
+        .RoleExistsAsync(roleDTO.Role);
         if (!roleExists)
         {
             var result = await _roleManager.CreateAsync(new IdentityRole(roleDTO.Role));
@@ -118,14 +119,15 @@ public class AccountController : ControllerBase
     [Route("AssignRole")]
     public async Task<ActionResult> assignRole([FromBody] UserDTO userDTO)
     {
-        var user = await _medewerkerManager.FindByNameAsync(userDTO.UserName);
-        var userEmail = await _medewerkerManager.FindByEmailAsync(userDTO.UserName);
+        var user = await _userManager
+        .FindByNameAsync(userDTO.UserName);
+
         if (user == null)
         {
             return NotFound();
         }
 
-        var result = await _medewerkerManager
+        var result = await _userManager
         .AddToRoleAsync(user, userDTO.Role);
         if (!result.Succeeded)
         {
@@ -139,7 +141,9 @@ public class AccountController : ControllerBase
     [Route("RegistreerArtiest")]
     public async Task<ActionResult> RegistreerArtiest(ArtiestDTO artiestDTO)
     {
-        var result = await _artiestManager.CreateAsync(artiestDTO, artiestDTO.Password);
+        var result = await _artiestManager
+        .CreateAsync(artiestDTO, artiestDTO.Password);
+
         if (!result.Succeeded)
         {
             return new BadRequestObjectResult(result);
@@ -151,13 +155,37 @@ public class AccountController : ControllerBase
     [Route("RegistreerAdmin")]
     public async Task<ActionResult> RegistreerAdmin(AdminDTO adminDTO)
     {
-        var result = await _adminManager.CreateAsync(adminDTO, adminDTO.Password);
+        var result = await _adminManager
+        .CreateAsync(adminDTO, adminDTO.Password);
+
         if (!result.Succeeded)
         {
             return new BadRequestObjectResult(result);
         }
         return StatusCode(201);
     }
+
+    [HttpPost]
+    [Route("RegistreerGroep")]
+    public async Task<ActionResult> RegistreerGroep(ArtiestenGroep artiestengroep)
+    {
+        var result = await _context
+        .ArtiestGroepen
+        .FirstOrDefaultAsync(a => a.GroepsNaam.Equals(artiestengroep.GroepsNaam));
+
+        if (result != null)
+        {
+            return new ConflictResult();
+        }
+
+        await _context
+        .ArtiestGroepen
+        .AddAsync(artiestengroep);
+
+        await _context.SaveChangesAsync();
+        return StatusCode(201);
+    }
+
 
     [HttpGet]
     [Route("GetMedewerkers")]
@@ -182,6 +210,35 @@ public class AccountController : ControllerBase
         return await _artiestManager.Users.ToListAsync();
     }
 
+    [HttpGet]
+    [Route("GetGroepen")]
+    public async Task<ActionResult<IEnumerable<ArtiestenGroep>>> GetGroepen()
+    {
+        var result = await _context.ArtiestGroepen.ToListAsync();
+        if(result == null){
+            return NotFound();
+        }
+        return result;
+    }
+
+    [HttpGet]
+    [Route("GetAdmins")]
+    public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+    {
+        var result = await _context.Admins.ToListAsync();
+        if(result == null){
+            return NotFound();
+        }
+        return result;
+    }
+
+    [HttpPost]
+    //[Route("/")]
+    public ActionResult testy(){
+       
+        return StatusCode(201);
+    }
+
     [HttpDelete("{userName}")]
     public async Task<IActionResult> DeleteMedewerker(string _userName)
     {
@@ -200,7 +257,7 @@ public class AccountController : ControllerBase
 
         return NoContent();
     }
-    
+
     [HttpDelete("{userName}")]
     public async Task<IActionResult> DeleteArtiest(string _userName)
     {
