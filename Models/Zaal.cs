@@ -2,32 +2,19 @@ namespace theater_laak.Models;
 
 public class Zaal
 {
-    private int _AantalStoelen;
     public int AantalStoelen
     {
         get
         {
-            return _AantalStoelen;
+            return Stoelen.Count();
         }
-        set
+        private set
         {
-            if (EersteRangAantalStoelen > 0 || TweedeRangAantalStoelen > 0 || DerdeRangAantalStoelen > 0)
-            {
-                value = (EersteRangAantalStoelen + TweedeRangAantalStoelen + DerdeRangAantalStoelen);
-            }
-            else if (EersteRangAantalStoelen == 0 && TweedeRangAantalStoelen == 0 && DerdeRangAantalStoelen == 0)
-            {
-
-            }
-
-            _AantalStoelen = value;
+            
         }
     }
-    public int EersteRangAantalStoelen { get; set; }
-    public int TweedeRangAantalStoelen { get; set; }
-    public int DerdeRangAantalStoelen { get; set; }
     public int ZaalId { get; set; }
-    public string _Grootte;
+    private string _Grootte;
     public string Grootte
     {
         get
@@ -36,15 +23,15 @@ public class Zaal
         }
         private set
         {
-            if (EersteRangAantalStoelen == 0 && TweedeRangAantalStoelen == 0 && DerdeRangAantalStoelen == 0 && AantalStoelen == 30)
+            if (AantalStoelen == 30)
             {
                 value = "Ruimte";
             }
-            else if (EersteRangAantalStoelen > 0 || TweedeRangAantalStoelen > 0 || DerdeRangAantalStoelen > 0 && AantalStoelen < 150)
+            else if (AantalStoelen < 150 && AantalStoelen > 0)
             {
                 value = "Klein";
             }
-            else if (EersteRangAantalStoelen > 0 || TweedeRangAantalStoelen > 0 || DerdeRangAantalStoelen > 0 && AantalStoelen > 150)
+            else if (AantalStoelen > 150 && AantalStoelen > 0)
             {
                 value = "Groot";
             }
@@ -56,6 +43,7 @@ public class Zaal
             _Grootte = value;
         }
     }
+    public IEnumerable<Stoel> Stoelen { get; set; }
     public IEnumerable<Voorstelling> Voorstellingen { get; set; }
 }
 

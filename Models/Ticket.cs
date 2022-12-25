@@ -18,7 +18,9 @@ public class Ticket
             _UserID = ApplicationUser.Id;
         }
     }
-    public int OptredenId { get; set; }
+    public int OptredenId { get; set; } //FK naar OPTREDEN
+    public string StoelId { get; set; } //FK naar STOEL
+    public Stoel Stoel { get; set; }
     public Optreden Optreden { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
 }

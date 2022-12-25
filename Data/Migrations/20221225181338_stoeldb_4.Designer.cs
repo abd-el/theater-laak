@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221225181338_stoeldb_4")]
+    partial class stoeldb_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -100,7 +102,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys", (string)null);
+                    b.ToTable("Keys");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
@@ -397,7 +399,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("ArtiestenGroepId");
 
-                    b.ToTable("ArtiestGroepen", (string)null);
+                    b.ToTable("ArtiestGroepen");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Donatie", b =>
@@ -422,7 +424,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Donaties", (string)null);
+                    b.ToTable("Donaties");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Optreden", b =>
@@ -453,7 +455,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("VoorstellingId");
 
-                    b.ToTable("Optredens", (string)null);
+                    b.ToTable("Optredens");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Stoel", b =>
@@ -502,7 +504,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
@@ -529,7 +531,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasIndex("ZaalId");
 
-                    b.ToTable("Voorstellingen", (string)null);
+                    b.ToTable("Voorstellingen");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Zaal", b =>
@@ -547,7 +549,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("ZaalId");
 
-                    b.ToTable("Zalen", (string)null);
+                    b.ToTable("Zalen");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Artiest", b =>

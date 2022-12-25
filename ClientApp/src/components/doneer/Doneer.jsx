@@ -1,6 +1,7 @@
 import React, { useEffect }  from 'react';
 import Theater from '../images/Theater.png';
 import { useState } from 'react';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 export function Doneer()
 {
@@ -100,13 +101,19 @@ export function Doneer()
                     </div>
                 </div>
 
-                <div id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3">
+                <button id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3">
                     Doneer
-                </div>
+                </button>
 
-                <div id="donateursportaal-knop" className="btn btn-lg disabled btn-dark mt-4">
+                <button id="donateursportaal-knop" className="btn btn-lg disabled btn-dark mt-4 me-3">
                     Naar donateursportaal
-                </div>
+                </button>
+
+                <a href={`https://ikdoneer.azurewebsites.net//Toegang?url=${window.location.origin}`}>
+                    <button id="donateursportaal-knop" className="btn btn-lg btn-dark mt-4">
+                        Verleen toegang tot jouw IkDoneer.nl account aan Theater Laak
+                    </button>
+                </a>
             </div>
         </div>
     );
