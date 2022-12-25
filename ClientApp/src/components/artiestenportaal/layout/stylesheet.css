@@ -25,3 +25,25 @@ table td.datum-tijdstip, table th.datum-tijdstip {
 .dropdown-icon {
     background-image: url('../../images/dropdown-icon.png');
 }
+
+.dropdown-icon {
+    background-image: url('../../images/dropdown-icon.png');
+}
+
+.licht-rood {
+    color: #ff7a7a;
+}
+
+.licht-groen {
+    color: #7aff7a;
+}
+
+.groepsnaam:hover {
+    background-color: #686868;
+    cursor: pointer;
+}
+
+.info {
+    font-size: 30px;
+    font-weight: lighter;
+}

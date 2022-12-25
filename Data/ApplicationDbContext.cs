@@ -155,20 +155,20 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     }
 
     //Gebruiker-Systeem
-    DbSet<Admin> Admins { get; set; }
-    DbSet<Medewerker> Medewerkers { get; set; }
-    DbSet<Klant> Klanten { get; set; }
-    DbSet<Artiest> Artiesten { get; set; }
-    DbSet<ArtiestenGroep> ArtiestGroepen { get; set; }
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Medewerker> Medewerkers { get; set; }
+    public DbSet<Klant> Klanten { get; set; }
+    public DbSet<Artiest> Artiesten { get; set; }
+    public DbSet<ArtiestenGroep> ArtiestGroepen { get; set; }
 
     //Programmering-Systeem 
-    DbSet<Zaal> Zalen { get; set; }
-    DbSet<Voorstelling> Voorstellingen { get; set; }
-    DbSet<Optreden> Optredens { get; set; }
+    public DbSet<Zaal> Zalen { get; set; }
+    public DbSet<Voorstelling> Voorstellingen { get; set; }
+    public DbSet<Optreden> Optredens { get; set; }
     
     //Doneer-Systeem
-    DbSet<Donatie> Donaties { get; set; }
+    public DbSet<Donatie> Donaties { get; set; }
     
     //Ticket-Systeem
-    DbSet<Ticket> Tickets { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 }
