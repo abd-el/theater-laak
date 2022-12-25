@@ -29,3 +29,13 @@ table td.datum-tijdstip, table th.datum-tijdstip {
 .licht-groen {
     color: #7aff7a;
 }
+
+.groepNaam:hover {
+    background-color: #686868;
+    cursor: pointer;
+}
+
+.info {
+    font-size: 30px;
+    font-weight: lighter;
+}

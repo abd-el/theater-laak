@@ -1,18 +1,15 @@
 import React, { Component }  from 'react';
-import '../layout/stylesheet.css';
+import { GroepOverzicht } from './GroepOverzicht';
+import { HuidigeGroepen} from './HuidigeGroepen'
 
 export class Groepen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { // deze informatie halen we op uit de database
-            groepen: []
-        };
-    }
-
     render() {
         return (
-            <div>
-
+            <div className='col-sm-10'>
+                <div className='row'>
+                    <HuidigeGroepen />
+                    <GroepOverzicht />
+                </div>
             </div>
         )
     }
