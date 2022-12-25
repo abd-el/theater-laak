@@ -53,3 +53,50 @@ figcaption.text-inside-image {
 .licht-groen {
   color: #7aff7a;
 }
+
+.modal {
+  text-align: center;
+  border-color: #545454;
+  z-index:100000;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  background-color: rgb(16, 16, 16);
+  color: white;
+  width: 80vw;
+}
+
+.modal-header {
+  background-color: rgb(16, 16, 16);
+  color: white;
+  border-bottom: 1px solid rgb(98, 98, 98);
+}
+
+.modal-footer {
+  border-top: 1px solid rgb(98, 98, 98);
+  background-color: rgb(16, 16, 16);
+  color: white;
+}
+
+.modal-body {
+  background-color: rgb(16, 16, 16);
+  color: white;
+  border:rgb(16, 16, 16)
+}
+
+.modal-content {
+  background-color: rgb(16, 16, 16);
+  color: white;
+}

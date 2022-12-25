@@ -1,15 +1,13 @@
 import React, { Component }  from 'react';
 import { MenuKnop } from './MenuKnop';
 import { Boekingen } from '../boekingen/Boekingen';
-import { MijnAccount } from '../mijnAccount/MijnAccount';
 import { Groepen } from '../groepen/Groepen';
-import { Privacy } from '../privacy/Privacy';
 
 export class Layout extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            geselecteerd: 'Mijn account',
+            geselecteerd: 'Boekingen',
         };
     }
 
@@ -18,14 +16,10 @@ export class Layout extends Component {
     }
 
     laatComponentZien = () => {
-        if (this.state.geselecteerd === 'Mijn account') {
-            return <MijnAccount />;
-        } else if (this.state.geselecteerd === 'Boekingen') {
+        if (this.state.geselecteerd === 'Boekingen') {
             return <Boekingen />
         } else if (this.state.geselecteerd === 'Groepen') {
             return <Groepen />;
-        } else if (this.state.geselecteerd === 'Privacy') {
-            return <Privacy />;
         }
     }
 
@@ -43,10 +37,8 @@ export class Layout extends Component {
                     </div>
                     
                     <div id="zijkant" className='col-sm-2 d-inline'>
-                        <MenuKnop onClick={this.selecteer} text="Mijn account" />
-                        <MenuKnop onClick={this.selecteer} text="Boekingen" />
-                        <MenuKnop onClick={this.selecteer} text="Groepen" />
-                        <MenuKnop onClick={this.selecteer} text="Privacy" />
+                        <MenuKnop classes={this.state.geselecteerd === "Boekingen" && "bg-black"} onClick={this.selecteer} text="Boekingen" />
+                        <MenuKnop classes={this.state.geselecteerd === "Groepen" && "bg-black"} onClick={this.selecteer} text="Groepen" />
                     </div>
     
                     {this.laatComponentZien()}

@@ -101,8 +101,6 @@ export class AccountInstellingen extends Component {
     render() {
         return (
             <div className='container'>
-                <VeranderWachtwoordModal />
-
                 <br />
                 <br />
                 <br />
@@ -116,29 +114,29 @@ export class AccountInstellingen extends Component {
                     <div className='row mb-2'>
                         <div className='col-sm-2 mb-2'>
                             <div className='mb-2'>Voornaam*</div>
-                            <input onChange={this.veranderVoornaam} id="titel-invoer" className='form-control text-white' placeholder='Geef je voornaam op' value={this.state.voornaam}/>
+                            <input onChange={this.veranderVoornaam} id="voornaam-invoer" className='form-control text-white' placeholder='Geef je voornaam op' value={this.state.voornaam}/>
                         </div>
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Achternaam*</div>
-                            <input onChange={this.veranderAchternaam} id="titel-invoer" className='form-control text-white' placeholder='Geef je achternaam op' value={this.state.achternaam}/>
+                            <input onChange={this.veranderAchternaam} id="achternaam-invoer" className='form-control text-white' placeholder='Geef je achternaam op' value={this.state.achternaam}/>
                         </div>
 
                         <div className='col-sm-2 mb-2'>
                             <div className='mb-2'>Geboortedatum*</div>
-                            <input onChange={this.veranderGeboortedatum} id="titel-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum}/>
+                            <input onChange={this.veranderGeboortedatum} id="geboortedatum-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum}/>
                         </div>
                     </div>
 
                     <div className='row mb-2'>
                         <div className='col-sm-4 mb-2'>
                             <div className='mb-2'>Emailadres*</div>
-                            <input onChange={this.veranderEmail} id="titel-invoer" className='form-control text-white' placeholder='Geef je email-adress op' value={this.state.email}/>
+                            <input onChange={this.veranderEmail} id="email-invoer" className='form-control text-white' placeholder='Geef je email-adress op' value={this.state.email}/>
                         </div>
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Telefoonnummer</div>
-                            <input onChange={this.veranderTelefoonnummer} id="titel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' />
+                            <input onChange={this.veranderTelefoonnummer} id="tel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' />
                         </div>
                     </div>
 
@@ -167,9 +165,7 @@ export class AccountInstellingen extends Component {
                             </div>
 
                             <div className='d-inline ms-3'>
-                                <button className="btn btn-light" data-bs-toggle="modal" data-bs-target="#veranderWachtwoordModal">
-                                    Verander wachtwoord
-                                </button>
+                                <VeranderWachtwoordModal />
                             </div>
                         </div>
 
