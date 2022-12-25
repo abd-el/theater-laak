@@ -1,37 +1,129 @@
 import React, { Component }  from 'react';
 import '../../custom.css'
+import Modal from 'bootstrap' // <-- ⚠️ zonder deze import werkt het niet ⚠️
 
 export class VeranderWachtwoordModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            huidigeWachtwoord: '',
             wachtwoord: '',
-            wachtwoordHerhaal: ''
+            wachtwoordHerhaal: '',
+
+            resultaat: '',
+            resultaatSuccess: undefined
         };
     }
 
+    veranderHuidigeWachtwoord = (e) => { this.setState({ huidigeWachtwoord: e.target.value }); }
     veranderWachtwoord = (e) => { this.setState({ wachtwoord: e.target.value }); }
     veranderWachtwoordHerhaal = (e) => { this.setState({ wachtwoordHerhaal: e.target.value }); }
 
+    controleerWachtwoord = () => {
+        if (this.state.huidigeWachtwoord === '') {
+            this.setState({
+                resultaat: 'Je wachtwoord is verkeerd.',
+                resultaatSuccess: false
+            });
+
+            return false;
+        }
+
+        if (this.state.wachtwoord !== this.state.wachtwoordHerhaal) {
+            this.setState({
+                resultaat: 'Wachtwoorden komen niet overeen.',
+                resultaatSuccess: false
+            });
+
+            return false;
+        }
+
+        // minstens 1 hoofdletter
+        // minstens 1 kleine letter
+        // minstens 1 cijfer
+        // minstens 1 speciaal karakter
+
+        if (
+            this.state.wachtwoord.length < 8
+            || !/[A-Z]/.test(this.state.wachtwoord)
+            || !/[a-z]/.test(this.state.wachtwoord)
+            || !/[0-9]/.test(this.state.wachtwoord)
+            || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(this.state.wachtwoord)
+        ){
+            this.setState({
+                resultaat: 'Wachtwoord moet minstens 8 karakters lang zijn en 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal karakter bevatten.',
+                resultaatSuccess: false
+            });
+
+            return false;
+        }
+
+        // hier zou een POST request naar de server moeten gaan om het wachtwoord te veranderen
+        // en de response van de server moet hieronder worden verwerkt in state.resultaat en state.resultaatSuccess
+        // maar nu hebben we nog geen backend dus doen we het even zo
+
+        this.setState({
+            resultaat: 'Wachtwoord successvol veranderd!',
+            resultaatSuccess: true
+        });
+
+        return true;
+    }
+
     render() {
         return (
-            <div className="modal fade" id="veranderWachtwoordModal" tabIndex="-1" aria-labelledby="veranderWachtwoordModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="veranderWachtwoordModalLabel">Modal title</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div className="modal-body">
-                        
-                    </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+            <>
+                <button type="button" className="btn btn-light" data-bs-toggle="modal" data-bs-target="#veranderWachtwoordModal">
+                    Verander wachtwoord
+                </button>
+                
+                <div className="modal fade" id="veranderWachtwoordModal" 
+                    data-bs-backdrop="static" 
+                    data-bs-keyboard="false" 
+                    tabIndex="-1" 
+                    aria-labelledby="veranderWachtwoordModalLabel"
+                    aria-hidden="true">
+
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="veranderWachtwoordModalLabel">Verander wachtwoord</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <div>
+                                    Verander je wachtwoord.
+                                </div>
+
+                                <div className='mt-3'>
+                                    <label htmlFor="huidigeWachtwoord">Huidige wachtwoord</label>
+                                    <input type="password" className="form-control text-white" id="huidigeWachtwoord" placeholder="Huidige wachtwoord" value={this.state.huidigeWachtwoord} onChange={this.veranderHuidigeWachtwoord} />
+                                </div>
+
+                                <div className='mt-3'>
+                                    <label htmlFor="wachtwoord">Nieuw wachtwoord</label>
+                                    <input type="password" className="form-control text-white" id="wachtwoord" placeholder="Wachtwoord" value={this.state.wachtwoord} onChange={this.veranderWachtwoord} />
+                                </div>
+
+                                <div className='mt-3'>
+                                    <label htmlFor="wachtwoordHerhaal">Herhaal wachtwoord</label>
+                                    <input type="password" className="form-control text-white" id="wachtwoordHerhaal" placeholder="Herhaal wachtwoord" value={this.state.wachtwoordHerhaal} onChange={this.veranderWachtwoordHerhaal} />
+                                </div>
+
+                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
+                                    {this.state.resultaat}
+                                </div>
+                            </div>
+                        </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Sluit</button>
+                                <button type="button" className="btn btn-primary" onClick={this.controleerWachtwoord}>Bevestig</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
