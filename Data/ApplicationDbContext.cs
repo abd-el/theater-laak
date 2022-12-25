@@ -95,6 +95,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
         // Class Zaal
         builder.Entity<Zaal>()
+        .Property(zaal => zaal.ZaalId)
+        .IsRequired();
+
+        builder.Entity<Zaal>()
+        .Property(zaal => zaal.Grootte)
+        .IsRequired();
+
+        builder.Entity<Zaal>()
         .Property(zaal => zaal.AantalStoelen)
         .IsRequired();
 
@@ -153,7 +161,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Stoel>()
-        .Property(s => s.Zaal)
+        .Property(s => s.ZaalId)
         .IsRequired();
 
         builder.Entity<Stoel>()
@@ -161,9 +169,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Stoel>()
-        .HasOne<Zaal>(stoel => stoel._Zaal)
-        .WithMany(zaal => zaal.AantalStoelen)
-        .HasForeignKey(stoel => stoel.Zaal);
+        .HasOne<Zaal>(stoel => stoel.Zaal)
+        .WithMany(zaal => zaal.Stoelen)
+        .HasForeignKey(stoel => stoel.ZaalId);
     }
 
     //Gebruiker-Systeem

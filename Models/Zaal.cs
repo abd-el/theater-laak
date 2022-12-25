@@ -2,8 +2,17 @@ namespace theater_laak.Models;
 
 public class Zaal
 {
-    public IEnumerable<Stoel> AantalStoelen { get; set; }
-
+    public int AantalStoelen
+    {
+        get
+        {
+            return Stoelen.Count();
+        }
+        private set
+        {
+            
+        }
+    }
     public int ZaalId { get; set; }
     private string _Grootte;
     public string Grootte
@@ -14,15 +23,15 @@ public class Zaal
         }
         private set
         {
-            if (AantalStoelen.Count() == 30)
+            if (AantalStoelen == 30)
             {
                 value = "Ruimte";
             }
-            else if (AantalStoelen.Count() < 150 && AantalStoelen.Count() > 0)
+            else if (AantalStoelen < 150 && AantalStoelen > 0)
             {
                 value = "Klein";
             }
-            else if (AantalStoelen.Count() > 150 && AantalStoelen.Count() > 0)
+            else if (AantalStoelen > 150 && AantalStoelen > 0)
             {
                 value = "Groot";
             }
@@ -34,6 +43,7 @@ public class Zaal
             _Grootte = value;
         }
     }
+    public IEnumerable<Stoel> Stoelen { get; set; }
     public IEnumerable<Voorstelling> Voorstellingen { get; set; }
 }
 

@@ -2,7 +2,7 @@ namespace theater_laak.Models;
 public class Stoel
 {
     public string Id { get; set; }
-    public string Zaal { get; set; } //FK naar Zaal
+    public int ZaalId { get; set; } //FK naar Zaal
     private int _rang;
     public int Rang
     {
@@ -21,5 +21,5 @@ public class Stoel
 
     public IEnumerable<Ticket> Tickets { get; set; }
 
-    public Zaal _Zaal { get; set; }
+    public Zaal Zaal { get; set; }
 }
