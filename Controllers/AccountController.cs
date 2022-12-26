@@ -101,23 +101,23 @@ public class AccountController : ControllerBase
 
     }
 
-    [HttpPost]
-    //[Authorize(Roles = "Admin")]
-    [Route("AddRole")]
-    public async Task<ActionResult> addRole([FromBody] RoleDTO roleDTO)
-    {
-        var roleExists = await _roleManager
-        .RoleExistsAsync(roleDTO.Role);
-        if (!roleExists)
-        {
-            var result = await _roleManager.CreateAsync(new IdentityRole(roleDTO.Role));
-            return !result.Succeeded ? new BadRequestObjectResult(result) : StatusCode(201);
-        }
-        else
-        {
-            return new ConflictResult();
-        }
-    }
+    // [HttpPost]
+    // //[Authorize(Roles = "Admin")]
+    // [Route("AddRole")]
+    // public async Task<ActionResult> addRole([FromBody] RoleDTO roleDTO)
+    // {
+    //     var roleExists = await _roleManager
+    //     .RoleExistsAsync(roleDTO.Role);
+    //     if (!roleExists)
+    //     {
+    //         var result = await _roleManager.CreateAsync(new IdentityRole(roleDTO.Role));
+    //         return !result.Succeeded ? new BadRequestObjectResult(result) : StatusCode(201);
+    //     }
+    //     else
+    //     {
+    //         return new ConflictResult();
+    //     }
+    // }
 
     [HttpPost]
     [Route("AssignRole")]
@@ -215,30 +215,96 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetAdmins")]
+    public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+    {
+        if (_adminManager.Users == null)
+        {
+            return NotFound();
+        }
+        return await _adminManager.Users.ToListAsync();
+    }
+
+    [HttpGet]
     [Route("GetGroepen")]
     public async Task<ActionResult<IEnumerable<ArtiestenGroep>>> GetGroepen()
     {
-        var result = await _context.ArtiestGroepen.ToListAsync();
-        if(result == null){
+        var result = await _context
+        .ArtiestGroepen
+        .ToListAsync();
+
+        if (result == null)
+        {
             return NotFound();
         }
         return result;
     }
 
     [HttpGet]
-    [Route("GetAdmins")]
-    public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+    [Route("GetDonateurs")]
+    public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetDonateurs()
     {
-        var result = await _context.Admins.ToListAsync();
-        if(result == null){
+        var users = await _userManager.Users.ToListAsync();
+        var gedoneerd = users.Where(u => u.Donaties != null).ToList();
+
+        if (gedoneerd == null){
             return NotFound();
         }
-        return result;
+
+        var donateurs = gedoneerd.Where(x => x.Donaties.Any(x => x.TotaalBedrag >= 1000)).ToList();
+
+        if (donateurs == null)
+        {
+            return NotFound();
+        }
+        
+        return donateurs;
     }
 
 
+    [HttpDelete("{userName}")]
+    [Route("DeleteUser")]
+    public async Task<IActionResult> DeleteUser(string userName){
+
+        if(_userManager.Users == null){
+            return NotFound();
+        }
+        
+       var user = await _userManager
+       .Users
+       .FirstOrDefaultAsync(x=>x.UserName.Equals(userName));
+
+        if(user == null){
+            return NotFound();
+        }
+
+        await _userManager.DeleteAsync(user);
+        return Ok();
+    }
+
+    [HttpDelete("{groepsNaam}")]
+    [Route("DeleteGroep")]
+    public async Task<IActionResult> DeleteGroep(string groepsnaam){
+        if(_userManager.Users == null){
+            return NotFound();
+        }
+        
+       var groep = await _context
+       .ArtiestGroepen
+       .FirstOrDefaultAsync(x=>x.GroepsNaam.Equals(groepsnaam));
+
+        if(groep == null){
+            return NotFound();
+        }
+
+        _context.Remove(groep);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
 
     // [HttpDelete("{userName}")]
+    // [Route("DeleteMedewerker")]
     // public async Task<IActionResult> DeleteMedewerker(string _userName)
     // {
     //     if (_context.Medewerkers == null)
@@ -258,6 +324,7 @@ public class AccountController : ControllerBase
     // }
 
     // [HttpDelete("{userName}")]
+    // [Route("DeleteArtiest")]
     // public async Task<IActionResult> DeleteArtiest(string _userName)
     // {
     //     if (_context.Artiesten == null)
