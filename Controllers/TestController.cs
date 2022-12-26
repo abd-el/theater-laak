@@ -10,15 +10,22 @@ using theater_laak.Models;
 namespace theater_laak.Controllers;
 
 //[Authorize]
-[Route("/")]
+[Route("api/[controller]")]
 [ApiController]
-public class BaseController : ControllerBase {
+public class TestController : ControllerBase {
     private readonly UserManager<ApplicationUser> _userManager;
 
     [HttpPost]
-    [Route("/")]
-    public ActionResult Token([FromQuery] string token){
+    [Route("DoeIets")]
+    public ActionResult Token([FromForm] string token){
         System.Console.WriteLine(token);
         return Ok();
+
+    // var html = "<a href='https://localhost:44461/'>Klik hier om terug te gaan</a>";
+    // return new ContentResult
+    // {
+    //     Content = html,
+    //     ContentType = "text/html"
+    // };
     }
 }
