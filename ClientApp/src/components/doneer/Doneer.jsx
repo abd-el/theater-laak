@@ -109,7 +109,7 @@ export function Doneer()
                     Naar donateursportaal
                 </button>
 
-                <a href={`https://ikdoneer.azurewebsites.net//Toegang?url=${window.location.origin}`}>
+                <a href={`https://ikdoneer.azurewebsites.net//Toegang?url=https://localhost:7209/api/Test/DoeIets`}>
                     <button id="donateursportaal-knop" className="btn btn-lg btn-dark mt-4">
                         Verleen toegang tot jouw IkDoneer.nl account aan Theater Laak
                     </button>
