@@ -30,6 +30,10 @@ public class MedewerkerDTO : Medewerker
 
 }
 
+// public class TokenDTO{
+//     public string 
+// }
+
 public class RoleDTO
 {
 
@@ -232,48 +236,43 @@ public class AccountController : ControllerBase
         return result;
     }
 
-    [HttpPost]
-    //[Route("/")]
-    public ActionResult testy(){
-       
-        return StatusCode(201);
-    }
 
-    [HttpDelete("{userName}")]
-    public async Task<IActionResult> DeleteMedewerker(string _userName)
-    {
-        if (_context.Medewerkers == null)
-        {
-            return NotFound();
-        }
-        var medewerker = await _context.Medewerkers.FindAsync(_userName);
-        if (medewerker == null)
-        {
-            return NotFound();
-        }
 
-        _context.Medewerkers.Remove(medewerker);
-        await _context.SaveChangesAsync();
+    // [HttpDelete("{userName}")]
+    // public async Task<IActionResult> DeleteMedewerker(string _userName)
+    // {
+    //     if (_context.Medewerkers == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     var medewerker = await _context.Medewerkers.FindAsync(_userName);
+    //     if (medewerker == null)
+    //     {
+    //         return NotFound();
+    //     }
 
-        return NoContent();
-    }
+    //     _context.Medewerkers.Remove(medewerker);
+    //     await _context.SaveChangesAsync();
 
-    [HttpDelete("{userName}")]
-    public async Task<IActionResult> DeleteArtiest(string _userName)
-    {
-        if (_context.Artiesten == null)
-        {
-            return NotFound();
-        }
-        var artiest = await _context.Artiesten.FindAsync(_userName);
-        if (artiest == null)
-        {
-            return NotFound();
-        }
+    //     return NoContent();
+    // }
 
-        _context.Artiesten.Remove(artiest);
-        await _context.SaveChangesAsync();
+    // [HttpDelete("{userName}")]
+    // public async Task<IActionResult> DeleteArtiest(string _userName)
+    // {
+    //     if (_context.Artiesten == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     var artiest = await _context.Artiesten.FindAsync(_userName);
+    //     if (artiest == null)
+    //     {
+    //         return NotFound();
+    //     }
 
-        return NoContent();
-    }
+    //     _context.Artiesten.Remove(artiest);
+    //     await _context.SaveChangesAsync();
+
+    //     return NoContent();
+    // }
 }
