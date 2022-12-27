@@ -51,7 +51,7 @@ export class AccountInstellingen extends Component {
         return emailRegex.test(email);
     }
 
-    controleer = () => {
+    controleer = async () => {
         if (!this.state.voornaam) {
             this.setState({ 
                 resultaat: 'Voornaam is verplicht',
@@ -88,10 +88,22 @@ export class AccountInstellingen extends Component {
             return;
         }
 
-        // hierna doen we een POST request naar de server
-        // het resultaat van de POST request wordt in de state gezet
+        let res = await fetch('/api/Account/UpdateInstellingen', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                voornaam: this.state.voornaam,
+                achternaam: this.state.achternaam,
+                email: this.state.email,
+                telefoonnummer: this.state.telefoonnummer,
+                geboortedatum: this.state.geboortedatum,
+                emailvoorkeur: this.state.emailvoorkeur,
+                geslacht: this.state.geslacht
+            })
+        });
 
-        // maar nu hebben we nog geen backend dus we doen het even zo
         this.setState({
             resultaat: 'Account is succesvol aangepast! ',
             resultaatSuccess: true

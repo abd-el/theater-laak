@@ -7,15 +7,16 @@ public class ApplicationUser : IdentityUser
 {
     public string? Voornaam { get; set; }
     public string Achternaam { get; set; }
-    public DateOnly? GeboorteDatum { get; set; }
+    public string? GeboorteDatum { get; set; }
     public string? Adres { get; set; }
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
-    private string _EmailVoorkeur;
-    public string EmailVoorkeur {
-        get { return _EmailVoorkeur; }
+    public string? Telefoonnummer { get; set; }
+    private string _Emailvoorkeur;
+    public string Emailvoorkeur {
+        get { return _Emailvoorkeur; }
         set {
             if (value == "nieuwsbrief" || value == "belangrijke informatie" || value == "geen") {
-                _EmailVoorkeur = value;
+                _Emailvoorkeur = value;
             } else {
                 throw new System.ArgumentException("Emailvoorkeur moet 'nieuwsbrief', 'belangrijke informatie' of 'geen' zijn.");
             }

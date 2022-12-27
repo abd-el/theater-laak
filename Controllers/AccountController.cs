@@ -47,9 +47,6 @@ public class AccountController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly ILogger<AccountController> _logger;
 
-
-
-
     public AccountController(UserManager<ApplicationUser> p, UserManager<Medewerker> u, UserManager<Artiest> a, UserManager<Admin> ad,
     SignInManager<ApplicationUser> s, RoleManager<IdentityRole> r, ApplicationDbContext c, ILogger<AccountController> logger)
     {
@@ -297,4 +294,34 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [HttpPut]
+    [Route("UpdateInstellingen")]
+    public async Task<IActionResult> UpdateInstellingen([FromBody]
+        string voornaam, 
+        string achternaam,
+        string email,
+        string telefoonnummer,
+        string geboorteDatum,
+        string emailvoorkeur,
+        string geslacht
+    ){
+        var user = await _userManager
+        .Users
+        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        user.Voornaam = voornaam;
+        user.Achternaam = achternaam;
+        user.Email = email;
+        user.Telefoonnummer = telefoonnummer;
+        user.GeboorteDatum = geboorteDatum;
+        user.Emailvoorkeur = emailvoorkeur;
+
+        await _userManager.UpdateAsync(user);
+        return Ok();
+    }
 }
