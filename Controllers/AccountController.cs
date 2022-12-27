@@ -102,8 +102,6 @@ public class AccountController : ControllerBase
 
     }
 
-
-
     [HttpPost]
     [Authorize(Roles = "Admin")]
     [Authorize(Roles = "Medewerker")]

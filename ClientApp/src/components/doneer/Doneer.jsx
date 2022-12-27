@@ -1,6 +1,8 @@
 import React, { useEffect }  from 'react';
 import Theater from '../images/Theater.png';
 import { useState } from 'react';
+import { DoneerModal } from './DoneerModal';
+import { getalNaarEuro } from './getalNaarEuro';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 export function Doneer()
@@ -20,30 +22,6 @@ export function Doneer()
             document.getElementById("donateursportaal-knop").classList.add("disabled");
         }
     }, []);  // <-- empty dependency array
-
-    function getalNaarEuro(getal){
-        // 1 -> € 1,-
-        // 1.5 -> € 1,50
-        // 1.99 -> € 1,99
-        // 1.999 -> € 2,-
-
-        getal = Math.round(getal * 100) / 100;
-
-        getal = `€ ${getal}`;
-        getal = getal.replace(".", ",");
-
-        if (getal.substring(getal.indexOf(",") + 1).length == 1) {
-            getal += "0";
-        }
-
-        if (getal.indexOf(",") == -1) {
-            getal += ",-";
-        }
-
-        getal = getal.substring(0, getal.indexOf(",") + 3);
-
-        return getal;
-    }
 
     return (
         <div className="container mt-3 text-white">
@@ -101,15 +79,13 @@ export function Doneer()
                     </div>
                 </div>
 
-                <button id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3">
-                    Doneer
-                </button>
+                <DoneerModal />
 
                 <button id="donateursportaal-knop" className="btn btn-lg disabled btn-dark mt-4 me-3">
                     Naar donateursportaal
                 </button>
 
-                <a href={`https://ikdoneer.azurewebsites.net//Toegang?url=https://localhost:7209/api/Test/DoeIets`}>
+                <a href={`https://ikdoneer.azurewebsites.net//Toegang?url=https://localhost:7209/api/Donatie/Authoriseer`}>
                     <button id="donateursportaal-knop" className="btn btn-lg btn-dark mt-4">
                         Verleen toegang tot jouw IkDoneer.nl account aan Theater Laak
                     </button>

@@ -24,5 +24,5 @@ public class ApplicationUser : IdentityUser
     public IEnumerable<Ticket> Tickets {get; set;}
     public override string Id { get; set; }
     public IEnumerable<Donatie> Donaties {get; set;}
-    public bool ToegangVerleendAanIkDoneer {get; set;}
+    public string? IkDoneerToken {get; set;}
 }
