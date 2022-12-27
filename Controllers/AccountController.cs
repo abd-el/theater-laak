@@ -70,7 +70,7 @@ public class AccountController : ControllerBase
             await _roleManager.CreateAsync(new IdentityRole(role));
         }
 
-        var user = await _artiestManager.FindByNameAsync(username);
+        var user = await _userManager.FindByNameAsync(username);
         var result = await _userManager.AddToRoleAsync(user, role);
 
         if (!result.Succeeded)
