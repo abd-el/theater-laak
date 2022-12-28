@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,16 @@ public class LoginController : ControllerBase
     {
         _usermanager = u;
     }
+
+    // [HttpGet]
+    // [Authorize(Roles="Medewerker")]
+    // [Route("test")]
+    // public void DoSomething(){
+    //     Console.WriteLine("this ran");
+    //    //var x =  User.Claims.Where(x=>x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
+    //     //Console.WriteLine(x);
+    //     Console.WriteLine(User.Identity.Name);
+    // }
 
     [HttpPost]
     [Route("login")]
