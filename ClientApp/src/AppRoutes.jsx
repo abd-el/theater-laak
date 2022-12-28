@@ -3,6 +3,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home/Home";
 import { Doneer } from "./components/doneer/Doneer";
+import { LoginForm } from "./components/login/LoginForm"
 import { Programmering } from "./components/programmering/Programmering";
 import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
 import { AccountInstellingen } from './components/accountinstellingen/AccountInstellingen';
@@ -36,6 +37,10 @@ const AppRoutes = [
   {
     path: '/accountinstellingen',
     element: <AccountInstellingen />
+  },
+  {
+    path: '/login',
+    element: <LoginForm />
   },
   ...ApiAuthorzationRoutes
 ];
