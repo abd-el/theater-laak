@@ -14,7 +14,7 @@ export class NavMenu extends Component {
     this.links = {
       "/": "home",
       "/counter": "counter",
-      "/fetch-data": "fetch",
+      "/login": "login",
       "/doneer": "doneer",
       "/programmering": "programmering",
       "/artiestenportaal": "artiestenportaal",
@@ -63,7 +63,7 @@ export class NavMenu extends Component {
 
               <NavigatieItem onClick={this.selecteer} geselecteerd={"home"==this.state.geselecteerd} text="Home" to="/" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"counter"==this.state.geselecteerd} text="Counter" to="/counter" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"fetch"==this.state.geselecteerd} text="Fetch data" to="/fetch-data" />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"login"==this.state.geselecteerd} text="Login" to="/login" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer"==this.state.geselecteerd} text="Doneer" to="/doneer" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering"==this.state.geselecteerd} text="Programmering" to="/programmering" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal"==this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
