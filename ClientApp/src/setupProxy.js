@@ -12,7 +12,9 @@ const context =  [
   "/connect",
   "/ApplyDatabaseMigrations",
   "/_framework",
-  "/api/login"
+  "/api/login",
+  "/api/Account/UpdateInstellingen",
+  "api/Donatie/MaakDonatie"
 ];
 
 module.exports = function(app) {
