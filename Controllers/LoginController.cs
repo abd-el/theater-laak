@@ -28,7 +28,7 @@ public class LoginController : ControllerBase
     }
 
     // [HttpGet]
-    // [Authorize(Roles="Medewerker")]
+    // //[Authorize(Roles="Medewerker")]
     // [Route("test")]
     // public void DoSomething(){
     //     Console.WriteLine("this ran");
@@ -69,5 +69,12 @@ public class LoginController : ControllerBase
         );
         return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions) });
 
+    }
+
+    [HttpGet]
+    [Route("verifyToken")]
+    [Authorize]
+    public ActionResult verifyToken (){
+        return Ok("Token Verified");
     }
 }
