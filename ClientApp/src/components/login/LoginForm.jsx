@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import './LoginForm.css';
 import { useRef, useState } from "react";
+import { useAuth } from "../Auth";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -12,23 +14,35 @@ export function LoginForm() {
     const username = useRef();
     const password = useRef();
 
-    async function login() {
+    const auth = useAuth();
+
+    function HandleClick (){
+    auth.login(username.current.value, password.current.value, 
+        (msg) => {
+        setErrorMsg(msg);
+     });
+     
+     //setErrorMsg(auth.message);
+     
+    }  
+
+    // async function login() {
         
-        const payload = {
-            username: username.current.value,
-            password: password.current.value
-        }
+    //     const payload = {
+    //         username: username.current.value,
+    //         password: password.current.value
+    //     }
 
-        const url = window.location.origin + '/api/login';
+    //     const url = window.location.origin + '/api/login';
 
-        try {
-            await axios.post(url, payload);
-            setErrorMsg("login gelukt");
-        } catch (error) {
-            setErrorMsg("login mislukt, controleer uw gegevens");
-        }
+    //     try {
+    //         await axios.post(url, payload);
+    //         setErrorMsg("login gelukt");
+    //     } catch (error) {
+    //         setErrorMsg("login mislukt, controleer uw gegevens");
+    //     }
 
-    }
+    // }
 
 
     return (
@@ -51,7 +65,7 @@ export function LoginForm() {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="remember-me" className="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
-                                        <button type="button" name="button" className="btn btn-info btn-md" value="submit" onClick={login}>Submit</button>
+                                        <button type="button" name="button" className="btn btn-info btn-md" value="submit" onClick={HandleClick}>Submit</button>
                                     </div>
                                     <div id="register-link" className="text-right">
                                         <a href="#" className="text-info">Register here</a>
