@@ -2,47 +2,26 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import './LoginForm.css';
 import { useRef, useState } from "react";
-import { useAuth } from "../Auth";
+import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 
 
 
 export function LoginForm() {
-
-    const [errorMsg, setErrorMsg] = useState();
+    const { login, response } = useLogin();
 
     const username = useRef();
     const password = useRef();
 
-    const auth = useAuth();
 
-    function HandleClick (){
-    auth.login(username.current.value, password.current.value, 
-        (msg) => {
-        setErrorMsg(msg);
-     });
-     
-     //setErrorMsg(auth.message);
-     
-    }  
+    async function HandleClick() {
 
-    // async function login() {
-        
-    //     const payload = {
-    //         username: username.current.value,
-    //         password: password.current.value
-    //     }
+        await login(
+            username.current.value,
+            password.current.value
+        );
 
-    //     const url = window.location.origin + '/api/login';
-
-    //     try {
-    //         await axios.post(url, payload);
-    //         setErrorMsg("login gelukt");
-    //     } catch (error) {
-    //         setErrorMsg("login mislukt, controleer uw gegevens");
-    //     }
-
-    // }
+    }
 
 
     return (
@@ -71,7 +50,7 @@ export function LoginForm() {
                                         <a href="#" className="text-info">Register here</a>
                                     </div>
                                     <div className="errorMsg text-center text-white pt-5">
-                                        <h5>{errorMsg}</h5>
+                                        <h5>{response}</h5>
                                     </div>
                                 </form>
                             </div>
