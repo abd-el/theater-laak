@@ -244,11 +244,11 @@ public class AccountController : ControllerBase
     }
 
 
-    [HttpDelete("{userName}")]
+    [HttpDelete]
     [Authorize(Roles = "Admin")]
     [Authorize(Roles = "Medewerker")]
     [Route("DeleteUser")]
-    public async Task<IActionResult> DeleteUser(string userName)
+    public async Task<IActionResult> DeleteUser([FromQuery]string userName)
     {
 
         if (_userManager.Users == null)
@@ -269,11 +269,11 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{groepsNaam}")]
+    [HttpDelete]
     [Authorize(Roles = "Admin")]
     [Authorize(Roles = "Medewerker")]
     [Route("DeleteGroep")]
-    public async Task<IActionResult> DeleteGroep(string groepsnaam)
+    public async Task<IActionResult> DeleteGroep([FromQuery]string groepsnaam)
     {
         if (_userManager.Users == null)
         {
