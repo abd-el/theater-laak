@@ -60,7 +60,9 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
-    public async Task<ActionResult> assignRole(string username, string role)
+    [HttpPost]
+    [Route("assignRole")]
+    public async Task<ActionResult> assignRole([FromBody]string username, string role)
     {
 
         bool exists = await _roleManager.RoleExistsAsync(role);
