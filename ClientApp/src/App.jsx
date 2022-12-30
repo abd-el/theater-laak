@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AuthProvider } from './components/Auth';
+import { AuthContextProvider } from './components/context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -11,7 +11,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <AuthProvider>
+      <AuthContextProvider>
         <Layout>
           <Routes>
             {AppRoutes.map((route, index) => {
@@ -20,7 +20,7 @@ export default class App extends Component {
             })}
           </Routes>
         </Layout>
-      </AuthProvider>
+      </AuthContextProvider>
     );
   }
 }
