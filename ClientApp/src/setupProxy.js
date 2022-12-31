@@ -15,7 +15,7 @@ const context =  [
   "/api/login",
   "/api/Account/UpdateInstellingen",
   "/api/Donatie/MaakDonatie",
-  "/api/verifyToken"
+  "/api/validateToken"
 ];
 
 module.exports = function(app) {
