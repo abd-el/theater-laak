@@ -1,4 +1,4 @@
-import { useState, createContext, useReducer, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 
 export const AuthContext = createContext();
@@ -8,28 +8,38 @@ export const api = axios.create({
     validateStatus: () => true
 });
 
-export function userReducer(user, action) {
+export function userReducer(state, action) {
     switch (action.type) {
-        case 'SET_USER':
-            return {
-                user: action.payload
-            }
-        case 'DELETE_USER':
-            return {
-                user: null
-            }
+        case 'SET_STATE':
+            return action.payload
+            
+        case 'DELETE_STATE':
+            return null;
+            
         default:
-            return user;
+            return state;
     }
 }
 
 
 export function AuthContextProvider({ children }) {
-    const [user, dispatch] = useReducer(userReducer, '');
+    const [state, dispatch] = useReducer(userReducer, null);
+
+
+    useEffect(() => {
+
+        const storage = JSON.parse(localStorage.getItem('state'));
+        
+        if (storage != null) {
+            dispatch({ type: 'SET_STATE', payload: storage });
+        }
+
+    }, []
+    );
 
 
     return (
-        <AuthContext.Provider value={{ user, dispatch, api }}>
+        <AuthContext.Provider value={{ state, dispatch, api }}>
             {children}
         </AuthContext.Provider>
     );

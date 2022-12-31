@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export function useLogin() {
     const [response, setResponse] = useState();
-    const { user, dispatch, api } = useAuthContext();
+    const { state, dispatch, api } = useAuthContext();
 
     async function login(username, password) {
 
@@ -22,11 +22,11 @@ export function useLogin() {
             setResponse('login gelukt');
 
             dispatch({
-                type: 'SET_USER',
-                payload: resp.data.userName 
+                type: 'SET_STATE',
+                payload: resp.data
             });
+            localStorage.setItem('state', JSON.stringify(resp.data));
             
-            localStorage.setItem('user', resp.data.token);
         }
         else {
             setResponse('login mislukt, controleer uw gegevens');
@@ -34,6 +34,11 @@ export function useLogin() {
 
     }
 
+    function logout(){
+        dispatch({type: 'DELETE_STATE'});
+        localStorage.clear();
+    }
 
-    return { login, response };
+
+    return { login, logout, response };
 }
