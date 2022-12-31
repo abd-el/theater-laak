@@ -4,11 +4,16 @@ import './LoginForm.css';
 import { useRef, useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 
 
 export function LoginForm() {
     const { login, response } = useLogin();
+    const { state } = useAuthContext();
+    if(state != null){
+        console.log('the state object ' + state.user.userName);
+    }
 
     const username = useRef();
     const password = useRef();

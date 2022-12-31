@@ -5,17 +5,23 @@ import { useValidation } from "./hooks/useValidation";
 import { LoginForm } from "./login/LoginForm";
 
 export function RequireAuth({ children }) {
-    const { verifyToken, result } = useValidation();
+    const { validateToken, validated } = useValidation();
     const navigate = useNavigate();
+    
+    useEffect(()=>{
+        async function test(){
+            await validateToken();
+        }
+        test();
+    }, []);
 
-    verifyToken();
-    console.log(result);
 
-    if (result) {
+        
+    if (validated) {
         return children;
     }
     else {
-        return navigate('/login');
+        navigate('/login');
     }
 
 }

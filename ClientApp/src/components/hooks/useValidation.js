@@ -1,24 +1,53 @@
-import { useContext } from "react";
-import { api } from "../context/AuthContext";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
+import { useAuthContext } from "./useAuthContext";
+import { useLogin } from "./useLogin";
 
 
 export function useValidation(){
-    const [result, setResult] = useState();
+    const [validated, setValidated] = useState();
+    const { api } = useAuthContext();
+    const { logout } = useLogin();
 
+    useEffect(()=>{
+        const storage = localStorage.getItem('validated');
+        if(storage == null){
+            setValidated(true);
+            return
+        }
+        setValidated(storage);
+    }, []);
 
-    async function verifyToken(){
+    useEffect(()=>{
+        localStorage.setItem('validated', validated);
+        console.log('useEffect');
+    },[validated]);
+
+    async function validateToken(){
         
-        const token = localStorage.getItem('user');
+        let storage = JSON.parse(localStorage.getItem('state'));
 
-        const resp = await api.get('/api/verifyToken', {
-            headers: { 'Authorization' : 'Bearer ' + token}
+        if(storage == null){
+            storage = '';
+        }
+
+
+        const resp = await api.get('/api/validateToken', {
+            headers: { 'Authorization' : 'Bearer ' + storage.token}
         });
         
-        const bool = resp.status == 200;
-        setResult(bool);
+        
+        if(resp.status == 200){
+            setValidated(true);
+        }
+        
+        else{
+            logout();
+            setValidated(false);
+        }
+        
         
     }
 
-    return {verifyToken, result}
+    return {validateToken, validated}
 }
