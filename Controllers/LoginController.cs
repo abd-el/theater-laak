@@ -32,7 +32,6 @@ public class LoginController : ControllerBase
     [Route("login")]
     public async Task<ActionResult> login([FromBody] loginDTO credentials)
     {
-        System.Console.WriteLine("authenticating user: " + credentials.username);
         var user = await _usermanager.FindByNameAsync(credentials.username);
 
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export function useLogin() {
     const [response, setResponse] = useState();
-    const { state, dispatch, api } = useAuthContext();
+    const { dispatch, api } = useAuthContext();
 
     async function login(username, password) {
 
@@ -25,7 +25,7 @@ export function useLogin() {
                 type: 'SET_STATE',
                 payload: resp.data
             });
-            localStorage.setItem('state', JSON.stringify(resp.data));
+            localStorage.setItem('authState', JSON.stringify(resp.data));
             
         }
         else {

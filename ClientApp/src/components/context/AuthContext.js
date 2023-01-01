@@ -8,7 +8,7 @@ export const api = axios.create({
     validateStatus: () => true
 });
 
-export function userReducer(state, action) {
+export function userReducer(authState, action) {
     switch (action.type) {
         case 'SET_STATE':
             return action.payload
@@ -17,29 +17,29 @@ export function userReducer(state, action) {
             return null;
             
         default:
-            return state;
+            return authState;
     }
 }
 
 
 export function AuthContextProvider({ children }) {
-    const [state, dispatch] = useReducer(userReducer, null);
+    const [authState, dispatch] = useReducer(userReducer, null);
 
 
     useEffect(() => {
 
-        const storage = JSON.parse(localStorage.getItem('state'));
+        const storage = JSON.parse(localStorage.getItem('authState'));
         
         if (storage != null) {
             dispatch({ type: 'SET_STATE', payload: storage });
         }
 
-    }, []
+    }, [],
     );
 
 
     return (
-        <AuthContext.Provider value={{ state, dispatch, api }}>
+        <AuthContext.Provider value={{ authState, dispatch, api }}>
             {children}
         </AuthContext.Provider>
     );

@@ -20,12 +20,11 @@ export function useValidation(){
 
     useEffect(()=>{
         localStorage.setItem('validated', validated);
-        console.log('useEffect');
     },[validated]);
 
     async function validateToken(){
         
-        let storage = JSON.parse(localStorage.getItem('state'));
+        let storage = JSON.parse(localStorage.getItem('authState'));
 
         if(storage == null){
             storage = '';

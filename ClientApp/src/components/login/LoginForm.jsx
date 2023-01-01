@@ -10,14 +10,9 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 export function LoginForm() {
     const { login, response } = useLogin();
-    const { state } = useAuthContext();
-    if(state != null){
-        console.log('the state object ' + state.user.userName);
-    }
 
     const username = useRef();
     const password = useRef();
-
 
     async function HandleClick() {
 
@@ -27,7 +22,6 @@ export function LoginForm() {
         );
 
     }
-
 
     return (
         <>
