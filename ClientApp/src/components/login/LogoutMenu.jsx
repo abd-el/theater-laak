@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 export function LogoutMenu() {
     const { logout } = useLogin();
     const { authState } = useAuthContext();
+    
     let message;
     authState == null ? (message = '') : (message = authState.user.userName)
 

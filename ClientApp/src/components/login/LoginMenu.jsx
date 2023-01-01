@@ -6,7 +6,7 @@ export function LoginMenu() {
     return (
         <>
             <NavItem className='NavItem'>
-                <NavLink tag={Link} className="text-light bg-dark" to=''>Registreer</NavLink>
+                <NavLink tag={Link} className="text-light bg-dark" to='/registreer'>Registreer</NavLink>
             </NavItem>
 
             <NavItem className='NavItem'>
