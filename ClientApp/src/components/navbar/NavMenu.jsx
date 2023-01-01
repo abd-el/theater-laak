@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { LoginMenu } from '../api-authorization/LoginMenu';
+import { LoginMenu } from '../login/LoginMenu';
+import { LogoutMenu } from '../login/LogoutMenu';
+import { AuthContext } from '../context/AuthContext';
 import './NavMenu.css';
 import { NavigatieItem } from './NavigatieItem'
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
+  static contextType = AuthContext;
+
 
   constructor(props) {
     super(props);
@@ -29,7 +33,7 @@ export class NavMenu extends Component {
 
       // deze informatie halen we op uit de database
       artiest: true,
-      ingelogd: true
+      ingelogd: false
     };
   }
 
@@ -40,10 +44,15 @@ export class NavMenu extends Component {
   }
 
   loginMenu = () => {
-    if(!this.state.ingelogd){
+    if (!this.state.ingelogd) {
       return <LoginMenu />
     }
+
+    else {
+      return <LogoutMenu />
+    }
   }
+
 
   selecteer = (e) => {
     let url = e.target.href.split(window.location.origin)[1]
@@ -51,6 +60,17 @@ export class NavMenu extends Component {
       geselecteerd: this.links[url]
     })
   }
+
+  componentDidUpdate() {
+      const { authState } = this.context;
+
+      if (authState != null && this.state.ingelogd == false)
+        this.setState({ ingelogd: true });
+
+      if (authState == null && this.state.ingelogd == true)
+        this.setState({ ingelogd: false });
+  }
+
 
   render() {
     return (
@@ -61,15 +81,14 @@ export class NavMenu extends Component {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow opacity-75">
 
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"home"==this.state.geselecteerd} text="Home" to="/" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"counter"==this.state.geselecteerd} text="Counter" to="/counter" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"login"==this.state.geselecteerd} text="Login" to="/login" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer"==this.state.geselecteerd} text="Doneer" to="/doneer" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering"==this.state.geselecteerd} text="Programmering" to="/programmering" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal"==this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen"==this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"home" == this.state.geselecteerd} text="Home" to="/" />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer" == this.state.geselecteerd} text="Doneer" to="/doneer" />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering" == this.state.geselecteerd} text="Programmering" to="/programmering" />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
 
               {this.loginMenu()}
+
             </ul>
           </Collapse>
         </Navbar>
