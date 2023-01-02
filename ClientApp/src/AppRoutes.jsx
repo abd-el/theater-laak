@@ -18,12 +18,7 @@ const AppRoutes = [
   },
   {
     path: '/counter',
-    element: <RequireAuth><Counter /></RequireAuth>
-  },
-  {
-    path: '/fetch-data',
-    requireAuth: true,
-    element: <FetchData />
+    element: <RequireAuth AllowedRoles={['Artiest', 'Admin']}><Counter /></RequireAuth>
   },
   {
     path: '/doneer',
