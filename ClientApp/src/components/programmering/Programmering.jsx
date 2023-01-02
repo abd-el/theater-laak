@@ -8,7 +8,7 @@ export function Programmering() {
     const Voorstellingen = [
         {
             VoorstellingId: 1,
-            Afbeelding: '../images/voorstellingVoorbeeld.jpg',
+            Afbeelding: 'https://imageio.forbes.com/specials-images/imageserve/61116cea2313e8bae55a536a/-Dune-/0x0.jpg?format=jpg&width=960',
             Titel: 'Voorbeeld 1',
             Beschrijving: 'Some text...',
             TijdsduurInMinuten: 120
@@ -16,6 +16,7 @@ export function Programmering() {
 
         {
             VoorstellingId: 2,
+            Afbeelding:'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1667397461/amc-cdn/production/2/movies/53700/53699/PosterDynamic/145397.jpg',
             Titel: 'Voorbeeld 2',
             Beschrijving: 'Some text...',
             TijdsduurInMinuten: 60
@@ -23,6 +24,7 @@ export function Programmering() {
 
         {
             VoorstellingId: 3,
+            Afbeelding:'https://upload.wikimedia.org/wikipedia/en/a/a9/Black_Adam_%28film%29_poster.jpg',
             Titel: 'Voorbeeld 3',
             Beschrijving: 'Some text...',
             TijdsduurInMinuten: 240
@@ -68,7 +70,11 @@ export function Programmering() {
                     <tbody>
                     {Voorstellingen.map((Voorstellingen) =>(
                                     <tr>
-                                    <td className="afbeelding"><img src='../images/voorstellingVoorbeeld.jpg' alt='voorstellingsafbeelding'/>
+                                    <td className="afbeelding"><img src={Voorstellingen.Afbeelding} 
+                                    alt='voorstellingsafbeelding'
+                                    width='150'
+                                    height='200'
+                                    />
                                     </td>
                                     <td className="titel">
                                         {Voorstellingen.Titel}
