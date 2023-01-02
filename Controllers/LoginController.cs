@@ -27,21 +27,11 @@ public class LoginController : ControllerBase
         _usermanager = u;
     }
 
-    // [HttpGet]
-    // //[Authorize(Roles="Medewerker")]
-    // [Route("test")]
-    // public void DoSomething(){
-    //     Console.WriteLine("this ran");
-    //    //var x =  User.Claims.Where(x=>x.Type == ClaimTypes.Name).FirstOrDefault()?.Value;
-    //     //Console.WriteLine(x);
-    //     Console.WriteLine(User.Identity.Name);
-    // }
 
     [HttpPost]
     [Route("login")]
     public async Task<ActionResult> login([FromBody] loginDTO credentials)
     {
-        System.Console.Write("validating login crededentials of user: " + credentials.username);
         var user = await _usermanager.FindByNameAsync(credentials.username);
 
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
@@ -67,14 +57,14 @@ public class LoginController : ControllerBase
             expires: DateTime.Now.AddMinutes(10),
             signingCredentials: signingCredentials
         );
-        return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions) });
+        return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
 
     }
 
     [HttpGet]
-    [Route("verifyToken")]
+    [Route("validateToken")]
     [Authorize]
-    public ActionResult verifyToken (){
+    public ActionResult validateToken (){
         return Ok("Token Verified");
     }
 }

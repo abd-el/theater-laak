@@ -1,17 +1,27 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "./Auth";
+import { useEffect } from "react";
+import { Route, Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import { useValidation } from "./hooks/useValidation";
+import { LoginForm } from "./login/LoginForm";
 
 export function RequireAuth({ children }) {
-    const auth = useAuth();
+    const { validateToken, validated } = useValidation();
+    const navigate = useNavigate();
+    
+    useEffect(()=>{
+        async function test(){
+            await validateToken();
+        }
+        test();
+    }, []);
 
 
-    const userIsAuthorised = true;
-    if (userIsAuthorised) {
-        return <Navigate to='/login' />
+        
+    if (validated) {
+        return children;
     }
     else {
-        return children
+        navigate('/login');
     }
-
 
 }
