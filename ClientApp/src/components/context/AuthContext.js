@@ -34,7 +34,7 @@ export function AuthContextProvider({ children }) {
             dispatch({ type: 'SET_STATE', payload: storage });
         }
 
-    }, [],
+    }, []
     );
 
 
