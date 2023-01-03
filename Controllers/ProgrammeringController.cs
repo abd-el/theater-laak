@@ -27,13 +27,10 @@ public class ProgrammeringController : ControllerBase
         {
             await _context.Voorstellingen.AddAsync(voorstelling);
             await _context.SaveChangesAsync();
-            return Ok(voorstelling);
+            return Ok($"Voorstelling {voorstelling.Titel} is toegevoegd!");
         }
         
-        else 
-        {
-            return Ok(StatusCode(403));
-        }
+        return Forbid($"{voorstelling.Titel} is al eerder toegevoegd.");
     }
 
 
@@ -45,6 +42,6 @@ public class ProgrammeringController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(await _context.Voorstellingen.ToListAsync()); 
+        return await _context.Voorstellingen.ToListAsync(); 
     }
 }

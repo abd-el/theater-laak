@@ -1,9 +1,12 @@
 import React from 'react';
 
 export function Voorstelling(props) {
-    <li className={props.classes}>
+
+    return(
+    <li>
         <h2>{props.titel}</h2>
         <h3>{props.beschrijving}</h3>
-        <p>{props.TijdsduurInMinuten}</p>
+        <p>{props.tijdsduurInMinuten}</p>
     </li>
+    );
 }

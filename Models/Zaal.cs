@@ -2,20 +2,21 @@ namespace theater_laak.Models;
 
 public class Zaal
 {
-    public int AantalStoelen
-    {
-        get
-        {
-            return Stoelen.Count();
-        }
-        private set
-        {
+    public int AantalStoelen {get; set;}
+    // onder hoe het hoort te zijn
+    // {
+    //     get
+    //     {
+    //         return Stoelen.Count();
+    //     }
+    //     private set
+    //     {
             
-        }
-    }
+    //     }
+    // }
     public int ZaalId { get; set; }
-    private string _Grootte;
-    public string Grootte
+    private string? _Grootte;
+    public string? Grootte
     {
         get
         {

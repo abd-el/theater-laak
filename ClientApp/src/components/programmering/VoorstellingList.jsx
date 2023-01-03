@@ -4,7 +4,7 @@ import { Voorstelling } from './Voorstelling';
 export function VoorstellingLijst(props) {
 
     return (
-<ul className={props.classes['voorstelling-lijst']}>
+<ul>
     {props.voorstellingen.map((voorstelling) => (
         <Voorstelling
             titel={voorstelling.titel}

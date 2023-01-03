@@ -98,13 +98,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(zaal => zaal.ZaalId)
         .IsRequired();
 
-        builder.Entity<Zaal>()
-        .Property(zaal => zaal.Grootte)
-        .IsRequired();
 
-        builder.Entity<Zaal>()
-        .Property(zaal => zaal.AantalStoelen)
-        .IsRequired();
 
         // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
