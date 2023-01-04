@@ -76,7 +76,8 @@ export function Programmering() {
             <br />
             <div className='buttons'>
                 <button id='day'>Dag</button>
-                <button id='week' onClick={getVoorstellingen}>Week</button>
+                <button id='week' >Week</button>
+                <button id='refresh' onClick={getVoorstellingen}>Voorstellingen Ophalen</button>
             </div>
             <br />
             <br />
@@ -102,7 +103,7 @@ export function Programmering() {
                     <tbody>
                         {!isLoading && Voorstellingen.length > 0 && Voorstellingen.map((Voorstelling) => (
                             <tr>
-                                <td className="afbeelding"><img src={Voorstelling.Afbeelding}
+                                <td className="afbeelding"><img src={Voorstelling.afbeelding}
                                     alt='voorstellingsafbeelding'
                                     width='150'
                                     height='200'
@@ -112,7 +113,7 @@ export function Programmering() {
                                     {Voorstelling.titel}
                                 </td>
                                 <td className="dag-datum">
-                                    Vandaag
+                                    {Voorstelling.voorstellingId}
                                 </td>
                                 <td className="tijdstip">
                                     {Voorstelling.beschrijving}
