@@ -16,19 +16,31 @@ public class DonatieController : ControllerBase {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _context;
 
+    public DonatieController(UserManager<ApplicationUser> p, ApplicationDbContext c)
+    {
+        _userManager = p;
+        _context = c;
+    }
+
     [HttpPost]
     [Route("Authoriseer")]
     public async Task<ActionResult> Authoriseer([FromForm] string token){
         System.Console.WriteLine(token);
 
-        var user = await _userManager.GetUserAsync(User);
+        if(User == null) {
+            return Unauthorized();
+        }
+
+        var user = await _userManager
+        .Users
+        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
 
         await _context.Donaties.AddAsync(new Donatie {
             UserId = user?.Id,
         });
 
-        var userInDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-        userInDb.IkDoneerToken = token;
+        user.IkDoneerToken = token;
+        _context.SaveChanges();
 
         var html = "<a href='https://localhost:44461/'>Klik hier om terug te gaan</a>";
         return new ContentResult
