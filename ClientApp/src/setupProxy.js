@@ -13,9 +13,9 @@ const context =  [
   "/ApplyDatabaseMigrations",
   "/_framework",
   "/api/login",
-  "/api/Account/UpdateInstellingen",
-  "/api/Donatie/MaakDonatie",
-  "/api/validateToken"
+  "/api/account/UpdateInstellingen",
+  "/api/donatie/MaakDonatie",
+  "/api/validateToken",
 ];
 
 module.exports = function(app) {
