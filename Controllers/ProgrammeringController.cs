@@ -27,13 +27,10 @@ public class ProgrammeringController : ControllerBase
         {
             await _context.Voorstellingen.AddAsync(voorstelling);
             await _context.SaveChangesAsync();
-            return Ok(voorstelling);
+            return Ok($"Voorstelling {voorstelling.Titel} is toegevoegd!");
         }
         
-        else 
-        {
-            return Ok(StatusCode(403));
-        }
+        return StatusCode(403, $"{voorstelling.Titel} is al eerder toegevoegd.");
     }
 
 
@@ -45,6 +42,28 @@ public class ProgrammeringController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(await _context.Voorstellingen.ToListAsync()); 
+        return await _context.Voorstellingen.ToListAsync(); 
+    }
+
+    [HttpDelete]
+    [Route("Voorstelling")]
+    public async Task<ActionResult> VerwijderVoorstelling(int VoorstellingId)
+    {
+        if(_context.Voorstellingen.Count() == 0)
+        {
+            return NotFound("Er zijn geen voorstellingen beschikbaar.");
+        }
+
+        var voorstelling = await _context.Voorstellingen.FindAsync(VoorstellingId);
+
+        if(voorstelling == null)
+        {
+            return NotFound($"Voorstelling met de Id: {VoorstellingId} niet gevonden.");
+        }
+        
+        _context.Voorstellingen.Remove(voorstelling);
+        await _context.SaveChangesAsync();
+
+        return Ok($"Voorstelling met de Id: {VoorstellingId} is verwijderd!");
     }
 }

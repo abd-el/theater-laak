@@ -13,10 +13,11 @@ const context =  [
   "/ApplyDatabaseMigrations",
   "/_framework",
   "/api/login",
-  "/api/account/UpdateInstellingen",
-  "/api/donatie/MaakDonatie",
+  "/api/Account/UpdateInstellingen",
+  "/api/Donatie/MaakDonatie",
   "/api/validateToken",
-  "/api/account/RegistreerKlant"
+  "/api/Programmering/Voorstellingen",
+  "/api/Programmering/Voorstelling"
 ];
 
 module.exports = function(app) {

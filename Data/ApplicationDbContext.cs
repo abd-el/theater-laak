@@ -23,7 +23,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Foreign key
         // Required fields
 
-        // Class ApplicationUser
+    // Class ApplicationUser
         builder.Entity<ApplicationUser>()
         .Property(user => user.Email)
         .IsRequired();
@@ -32,7 +32,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(user => user.PasswordHash)
         .IsRequired();
 
-        // Class Medewerker
+
+    // Class Medewerker
         builder.Entity<Medewerker>()
         .Property(medewerker => medewerker.Achternaam)
         .IsRequired();
@@ -53,18 +54,14 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(medewerker => medewerker.Loon)
         .IsRequired();
 
-        // Class Artiest
+
+    // Class Artiest
         builder.Entity<Artiest>()
         .Property(artiest => artiest.Achternaam)
         .IsRequired();
 
-        builder.Entity<Artiest>()
-        .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
-        .WithMany(artiestenGroep => artiestenGroep.Artiesten)
-        .HasForeignKey(a => a.ArtiestenGroepId)
-        .IsRequired(false);
 
-        // Class ArtiestenGroep
+    // Class ArtiestenGroep
         builder.Entity<ArtiestenGroep>()
         .Property(artiestenGroep => artiestenGroep.GroepsNaam)
         .IsRequired();
@@ -73,105 +70,200 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(artiestenGroep => artiestenGroep.GroepsEmail)
         .IsRequired();
 
-        // Class Optreden
-        builder.Entity<Optreden>()
-        .Property(optreden => optreden.Prijs)
-        .IsRequired();
+
+    // Class Optreden
+        builder.Entity<Optreden>() //Table Name en Primary Key instellen
+        .ToTable("Optredens")
+        .HasKey(o => o.OptredenId);
 
         builder.Entity<Optreden>()
-        .HasOne<Voorstelling>(o => o.Voorstelling)
-        .WithMany(v => v.Optredens)
-        .HasForeignKey(o => o.VoorstellingId)
-        .IsRequired(false);
+        .Property(optreden => optreden.Prijs)
+        .HasColumnType("decimal(18,2)")
+        .IsRequired();
 
         builder.Entity<Optreden>()
         .Property(optreden => optreden.BegunstigersExclusief)
         .IsRequired();
 
-        // Class Voorstelling
+        builder.Entity<Optreden>()
+        .Property(optreden => optreden.VoorstellingId)
+        .IsRequired();
+
+        builder.Entity<Optreden>()
+        .Property(optreden => optreden.DatumTijdstip)
+        .HasColumnType("datetime")
+        .IsRequired();
+
+
+    // Class Voorstelling
+        builder.Entity<Voorstelling>() //Table Name en Primary Key instellen
+        .ToTable("Voorstellingen")
+        .HasKey(v => v.VoorstellingId);
+
+        builder.Entity<Voorstelling>()
+        .Property(voorstelling => voorstelling.Afbeelding)
+        .IsRequired();
+
         builder.Entity<Voorstelling>()
         .Property(voorstelling => voorstelling.Titel)
         .IsRequired();
 
-        // Class Zaal
-        builder.Entity<Zaal>()
-        .Property(zaal => zaal.ZaalId)
-        .IsRequired();
-
-        builder.Entity<Zaal>()
-        .Property(zaal => zaal.Grootte)
-        .IsRequired();
-
-        builder.Entity<Zaal>()
-        .Property(zaal => zaal.AantalStoelen)
-        .IsRequired();
-
-        // create a foreign key constraint between Voorstelling.ZaalId and Zaal.ZaalId
         builder.Entity<Voorstelling>()
-        .HasOne<Zaal>(v => v.Zaal)
-        .WithMany(z => z.Voorstellingen)
-        .HasForeignKey(v => v.ZaalId)
-        .IsRequired(false);
+        .Property(voorstelling => voorstelling.Beschrijving)
+        .IsRequired();
 
-        // Class Ticket
+        builder.Entity<Voorstelling>()
+        .Property(voorstelling => voorstelling.TijdsduurInMinuten)
+        .IsRequired();
+
+
+    // Class Zaal
+        builder.Entity<Zaal>() //Table Name en Primary Key instellen
+        .ToTable("Zalen")
+        .HasKey(z => z.ZaalId);
+
+
+    // Class Ticket
+        builder.Entity<Ticket>() //Table Name en Primary Key instellen
+        .ToTable("Tickets")
+        .HasKey(t => t.TicketID);
+
         builder.Entity<Ticket>()
         .Property(ticket => ticket.QR)
         .IsRequired();
 
-        builder.Entity<Ticket>()
-        .Property(ticket => ticket.TicketID)
-        .IsRequired();
 
-        builder.Entity<Ticket>()
-        .HasOne<ApplicationUser>(ticket => ticket.ApplicationUser)
-        .WithMany(user => user.Tickets)
-        .HasForeignKey(ticket => ticket.UserID)
-        .IsRequired(false);
-
-        builder.Entity<Ticket>()
-        .HasOne<Optreden>(ticket => ticket.Optreden)
-        .WithMany(optreden => optreden.Tickets)
-        .HasForeignKey(ticket => ticket.OptredenId)
-        .IsRequired();
-
-        builder.Entity<Ticket>()
-        .HasOne<Stoel>(ticket => ticket.Stoel)
-        .WithMany(stoel => stoel.Tickets)
-        .HasForeignKey(ticket => ticket.StoelId)
-        .IsRequired();
-
-        // Class Donatie
+    // Class Donatie
         builder.Entity<Donatie>()
-        .HasOne<ApplicationUser>(d => d.ApplicationUser)
-        .WithMany(a => a.Donaties)
-        .HasForeignKey(d => d.UserId)
-        .IsRequired(false);
+        .ToTable("Donaties")
+        .HasKey(d => d.DonatieId);
 
         builder.Entity<Donatie>()
         .Property(Donatie => Donatie.Datum)
+        .HasColumnType("datetime")
         .IsRequired();
 
         builder.Entity<Donatie>()
         .Property(Donatie => Donatie.TotaalBedrag)
+        .HasColumnType("decimal(18,2)")
         .IsRequired();
 
-        // Class Stoel
-        builder.Entity<Stoel>()
-        .Property(s => s.Id)
-        .IsRequired();
 
+    // Class Stoel
         builder.Entity<Stoel>()
-        .Property(s => s.ZaalId)
-        .IsRequired();
+        .ToTable("Stoelen")
+        .HasKey(s => s.Id);
 
         builder.Entity<Stoel>()
         .Property(s => s.Rang)
         .IsRequired();
 
+
+    //-------------- * FOREIGN KEY's * --------------
+    
+    // Artiest FK naar ArtiestenGroep
+        builder.Entity<Artiest>() 
+        .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
+        .WithMany(ag => ag.Artiesten)
+        .HasForeignKey(a => a.ArtiestenGroepId)
+        .HasConstraintName("FK_Artiest_ArtiestenGroep_1");
+
+        builder.Entity<ArtiestenGroep>()
+        .HasMany<Artiest>(ag => ag.Artiesten)
+        .WithOne(a => a.ArtiestenGroep)
+        .HasForeignKey(a => a.ArtiestenGroepId)
+        .HasConstraintName("FK_Artiest_ArtiestenGroep_2");
+    
+    // Donatie FK naar ApplicationUser
+        builder.Entity<Donatie>()
+        .HasOne<ApplicationUser>(d => d.ApplicationUser)
+        .WithMany(au => au.Donaties)
+        .HasForeignKey(d => d.UserId)
+        .HasConstraintName("FK_Donatie_ApplicationUser_1");
+
+        builder.Entity<ApplicationUser>()
+        .HasMany<Donatie>(au => au.Donaties)
+        .WithOne(d => d.ApplicationUser)
+        .HasForeignKey(d => d.UserId)
+        .HasConstraintName("FK_Donatie_ApplicationUser_2");
+
+    // Ticket FK naar ApplicationUser
+        builder.Entity<Ticket>()
+        .HasOne<ApplicationUser>(t => t.ApplicationUser)
+        .WithMany(au => au.Tickets)
+        .HasForeignKey(t => t.UserID)
+        .HasConstraintName("FK_Ticket_ApplicationUser_1");
+
+        builder.Entity<ApplicationUser>()
+        .HasMany<Ticket>(au => au.Tickets)
+        .WithOne(t => t.ApplicationUser)
+        .HasForeignKey(t => t.UserID)
+        .HasConstraintName("FK_Ticket_ApplicationUser_2");
+        
+    // Ticket FK naar Optreden
+        builder.Entity<Ticket>()
+        .HasOne<Optreden>(t => t.Optreden)
+        .WithMany(o => o.Tickets)
+        .HasForeignKey(t => t.OptredenId)
+        .HasConstraintName("FK_Ticket_Optreden_1");
+
+        builder.Entity<Optreden>()
+        .HasMany<Ticket>(o => o.Tickets)
+        .WithOne(t => t.Optreden)
+        .HasForeignKey(t => t.OptredenId)
+        .HasConstraintName("FK_Ticket_Optreden_2");
+
+    // Ticket FK naar Stoel
+        builder.Entity<Ticket>()
+        .HasOne<Stoel>(t => t.Stoel)
+        .WithMany(s => s.Tickets)
+        .HasForeignKey(t => t.StoelId)
+        .HasConstraintName("FK_Ticket_Stoel_1");
+
         builder.Entity<Stoel>()
-        .HasOne<Zaal>(stoel => stoel.Zaal)
-        .WithMany(zaal => zaal.Stoelen)
-        .HasForeignKey(stoel => stoel.ZaalId);
+        .HasMany<Ticket>(s => s.Tickets)
+        .WithOne(t => t.Stoel)
+        .HasForeignKey(t => t.StoelId)
+        .HasConstraintName("FK_Ticket_Stoel_2");
+
+    // Optreden FK naar Voorstelling
+        builder.Entity<Optreden>()
+        .HasOne<Voorstelling>(o => o.Voorstelling)
+        .WithMany(v => v.Optredens)
+        .HasForeignKey(o => o.VoorstellingId)
+        .HasConstraintName("FK_Optreden_Voorstelling_1");
+
+        builder.Entity<Voorstelling>()
+        .HasMany<Optreden>(v => v.Optredens)
+        .WithOne(o => o.Voorstelling)
+        .HasForeignKey(o => o.VoorstellingId)
+        .HasConstraintName("FK_Optreden_Voorstelling_2");
+
+    // Stoel FK naar Zaal    
+        builder.Entity<Stoel>()
+        .HasOne<Zaal>(s => s.Zaal)
+        .WithMany(z => z.Stoelen)
+        .HasForeignKey(s => s.ZaalId)
+        .HasConstraintName("FK_Stoel_Zaal_1");
+
+        builder.Entity<Zaal>()
+        .HasMany<Stoel>(z => z.Stoelen)
+        .WithOne(s => s.Zaal)
+        .HasForeignKey(s => s.ZaalId)
+        .HasConstraintName("FK_Stoel_Zaal_2");
+
+    // Voorstelling FK naar Zaal    
+        builder.Entity<Voorstelling>()
+        .HasOne<Zaal>(v => v.Zaal)
+        .WithMany(z => z.Voorstellingen)
+        .HasForeignKey(v => v.ZaalId)
+        .HasConstraintName("FK_Voorstelling_Zaal_1");
+
+        builder.Entity<Zaal>()
+        .HasMany<Voorstelling>(z => z.Voorstellingen)
+        .WithOne(v => v.Zaal)
+        .HasForeignKey(v => v.ZaalId)
+        .HasConstraintName("FK_Voorstelling_Zaal_2");
     }
 
     //Gebruiker-Systeem

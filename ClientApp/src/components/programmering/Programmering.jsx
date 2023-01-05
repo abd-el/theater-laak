@@ -1,11 +1,12 @@
 import './Programmering.css';
 import { SearchBars } from './SearchBars';
 import { VoorstellingLijst } from './VoorstellingList';
-import '../../components/images/voorstellingVoorbeeld.jpg';
+import { Voorstelling } from './Voorstelling';
+import React, { useState, useEffect, useCallback } from 'react';
 
 export function Programmering() {
 
-    const Voorstellingen = [
+    const Dummy_voorstellingen = [
         {
             VoorstellingId: 1,
             Afbeelding: 'https://imageio.forbes.com/specials-images/imageserve/61116cea2313e8bae55a536a/-Dune-/0x0.jpg?format=jpg&width=960',
@@ -16,7 +17,7 @@ export function Programmering() {
 
         {
             VoorstellingId: 2,
-            Afbeelding:'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1667397461/amc-cdn/production/2/movies/53700/53699/PosterDynamic/145397.jpg',
+            Afbeelding: 'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1667397461/amc-cdn/production/2/movies/53700/53699/PosterDynamic/145397.jpg',
             Titel: 'Voorbeeld 2',
             Beschrijving: 'Some text...',
             TijdsduurInMinuten: 60
@@ -24,12 +25,43 @@ export function Programmering() {
 
         {
             VoorstellingId: 3,
-            Afbeelding:'https://upload.wikimedia.org/wikipedia/en/a/a9/Black_Adam_%28film%29_poster.jpg',
+            Afbeelding: 'https://upload.wikimedia.org/wikipedia/en/a/a9/Black_Adam_%28film%29_poster.jpg',
             Titel: 'Voorbeeld 3',
             Beschrijving: 'Some text...',
             TijdsduurInMinuten: 240
         },
     ]
+
+    //const [items, setItems] = useState([]);
+    const [Voorstellingen, setV] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const getVoorstellingen = useCallback(async function () {
+        //event.preventDefault();
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await fetch('https://localhost:44461/api/Programmering/Voorstellingen');
+
+            if (!response.ok) {
+                throw new Error('Er is iets fout gegaan!');
+            }
+
+            const data = await response.json();
+
+            setV(data);
+            console.log(data);
+        } catch (error) {
+            setError(error.message);
+        }
+        setIsLoading(false);
+    }, []);
+
+    useEffect(() => {
+        getVoorstellingen();
+    }, [getVoorstellingen]);
+
     return (
         <div>
             <br />
@@ -44,7 +76,8 @@ export function Programmering() {
             <br />
             <div className='buttons'>
                 <button id='day'>Dag</button>
-                <button id='week'>Week</button>
+                <button id='week' >Week</button>
+                <button id='refresh' onClick={getVoorstellingen}>Voorstellingen Ophalen</button>
             </div>
             <br />
             <br />
@@ -68,25 +101,29 @@ export function Programmering() {
                         </tr>
                     </thead>
                     <tbody>
-                    {Voorstellingen.map((Voorstellingen) =>(
-                                    <tr>
-                                    <td className="afbeelding"><img src={Voorstellingen.Afbeelding} 
+                        {!isLoading && Voorstellingen.length > 0 && Voorstellingen.map((Voorstelling) => (
+                            <tr>
+                                <td className="afbeelding"><img src={Voorstelling.afbeelding}
                                     alt='voorstellingsafbeelding'
                                     width='150'
                                     height='200'
-                                    />
-                                    </td>
-                                    <td className="titel">
-                                        {Voorstellingen.Titel}
-                                    </td>
-                                    <td className="dag-datum">
-                                        Vandaag
-                                    </td>
-                                    <td className="tijdstip">
-                                        15:30 - 17:15
-                                    </td>
-                                </tr>
-                    ))}
+                                />
+                                </td>
+                                <td className="titel">
+                                    {Voorstelling.titel}
+                                </td>
+                                <td className="dag-datum">
+                                    {Voorstelling.voorstellingId}
+                                </td>
+                                <td className="tijdstip">
+                                    {Voorstelling.beschrijving}
+                                </td>
+                            </tr>
+                        ))}
+                        {!isLoading && Voorstellingen.length === 0 && !error && <p>Geen Voorstellingen gevonden.</p>}
+                        {!isLoading && error && <p>{error}</p>}
+                        {isLoading && <p>Loading...</p>}
+
                     </tbody>
                 </table>
             </div>
