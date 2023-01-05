@@ -13,8 +13,9 @@ const context =  [
   "/ApplyDatabaseMigrations",
   "/_framework",
   "/api/login",
-  "/api/Account/UpdateInstellingen",
-  "/api/Donatie/MaakDonatie",
+  "/api/account/UpdateInstellingen",
+  "/api/account/RegistreerKlant",
+  "/api/donatie/MaakDonatie",
   "/api/validateToken",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling"
