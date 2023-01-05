@@ -2,11 +2,6 @@ import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 
 export const AuthContext = createContext();
-export const api = axios.create({
-    baseURL: window.location.origin,
-    timeout: 1000,
-    validateStatus: () => true
-});
 
 export function userReducer(authState, action) {
     switch (action.type) {
@@ -39,7 +34,7 @@ export function AuthContextProvider({ children }) {
 
 
     return (
-        <AuthContext.Provider value={{ authState, dispatch, api }}>
+        <AuthContext.Provider value={{ authState, dispatch }}>
             {children}
         </AuthContext.Provider>
     );

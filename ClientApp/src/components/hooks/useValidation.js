@@ -1,12 +1,11 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
+import { api } from "../api";
 import { useLogin } from "./useLogin";
 
 
 export function useValidation(){
     const [validated, setValidated] = useState();
-    const { api } = useAuthContext();
     const { logout } = useLogin();
 
     useEffect(()=>{

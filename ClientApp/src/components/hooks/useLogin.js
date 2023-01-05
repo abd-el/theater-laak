@@ -1,10 +1,11 @@
 import { useAuthContext } from "./useAuthContext";
+import { api } from "../api";
 import { useState } from "react";
 
 
 export function useLogin() {
     const [response, setResponse] = useState();
-    const { dispatch, api } = useAuthContext();
+    const { dispatch } = useAuthContext();
 
     async function login(username, password) {
 
