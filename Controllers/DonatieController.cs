@@ -39,6 +39,11 @@ public class DonatieController : ControllerBase {
             UserId = user?.Id,
         });
 
+        // check if user is not null
+        if (user == null) {
+            return Unauthorized();
+        }
+
         user.IkDoneerToken = token;
         _context.SaveChanges();
 
