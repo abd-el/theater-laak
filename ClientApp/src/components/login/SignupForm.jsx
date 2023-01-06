@@ -1,8 +1,29 @@
 import React, { useEffect } from "react";
 import './SignupForm.css';
-import { api } from "../api";
+import { backendApi } from "../api";
 import { useRef } from 'react';
 import { useState } from "react";
+import axios from "axios";
+
+
+async function testfunction(word) {
+    const options = {
+        method: 'GET',
+        url: 'https://lexicala1.p.rapidapi.com/search-entries',
+        params: {text: word},
+        headers: {
+            'X-RapidAPI-Key': '83779a1a0emsh0af178fe9b1d8eep1d0ae4jsn2be25937891c',
+            'X-RapidAPI-Host': 'lexicala1.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await axios.request(options);
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export function SignupForm() {
 
@@ -29,29 +50,31 @@ export function SignupForm() {
 		[telefoonnummer, telError]
 	]);
 
-	useEffect(()=>{
-		
+	useEffect(() => {
+
 		let errors = false;
-		
-			for (const item of state ) {
-				if(item[1].current.value != '✔️') {
-					errors = true;
-					break;
-				}
+
+		for (const item of state) {
+			if (item[1].current.value != '✔️') {
+				errors = true;
+				break;
 			}
-	
-		console.log(errors);
-		if(errors) return;
-		
+		}
+
+		if (errors) return;
+
 		const form = document.getElementById('registration');
 		const formData = new FormData(form);
-		
+		formData.append('Tickets', []);
+		formData.append('Donaties', []);
+		formData.append('Emailvoorkeur', 'geen'); //formcontrol voor maken
+
 		for (let [key, value] of formData.entries()) {
 			console.log(key, value);
 		}
 
 		const makePostRequest = async () => {
-			const resp = await api.postForm('/api/account/RegistreerKlant', formData);
+			const resp = await backendApi.postForm('/api/account/RegistreerKlant', formData);
 			console.log(resp);
 		}
 		makePostRequest();
@@ -61,6 +84,14 @@ export function SignupForm() {
 		return /^[a-zA-Z]+$/.test(name);
 	}
 
+	const oneCapitalLetter = (str) => {
+		return /.*[A-Z].*/.test(str);
+	}
+
+	const oneLowerCaseLetter = (str) => {
+		return /.*[a-z].*/.test(str);
+	}
+
 	const onlyLettersAndNumbers = (username) => {
 		return /^[A-Za-z0-9]*$/.test(username);
 	}
@@ -68,7 +99,7 @@ export function SignupForm() {
 	const containsSpaces = (str) => {
 		return /^(?!.* )$/.test(str);
 	}
-
+	
 	const isEmail = (email) => {
 		return /\S+@\S+\.\S+/.test(email);
 	}
@@ -85,12 +116,13 @@ export function SignupForm() {
 	// 	return response.data == username ? true : false;
 	// }
 
-	const validate = (item) => {
+	const validate = async (item) => {
+		console.log('test');
 		const inputname = item[0].current.name;
 		const input = item[0];
 		let error = item[1];
 
-		if ((input.current.value == '' || input.current.value == null) && inputname != 'phonenumber') {
+		if ((input.current.value == '' || input.current.value == null) && inputname != 'PhoneNumber') {
 			error.current.value = 'Dit veld is verplicht om in te vullen';
 			return item;
 		}
@@ -98,7 +130,7 @@ export function SignupForm() {
 			error.current.value = '✔️';
 		}
 
-		if (inputname == 'firstname') {
+		if (inputname == 'Voornaam') {
 			if (input.current.value.length == 1) {
 				error.current.value = 'voornaam mag niet minder dan 2 letters bevatten'
 			}
@@ -106,9 +138,9 @@ export function SignupForm() {
 				error.current.value = 'voornaam mag alleen letters bevatten'
 			}
 			return item;
-		} 
+		}
 
-		if (inputname == 'lastname') {
+		if (inputname == 'Achternaam') {
 			if (state[0][0].current.value == input.current.value) {
 				error.current.value = 'achternaam komt overeen met voornaam'
 			}
@@ -116,9 +148,9 @@ export function SignupForm() {
 				error.current.value = 'achternaam mag alleen letters bevatten'
 			}
 			return item;
-		} 
+		}
 
-		if (inputname == 'username') {
+		if (inputname == 'userName') {
 			if (input.current.value.length < 6) {
 				error.current.value = 'de minimale toegestane lengte is 6 karakters'
 			}
@@ -134,9 +166,9 @@ export function SignupForm() {
 			// 	notice.current.value = 'de opgegeven gebruikersnaam bestaat al';
 			// 	return test;
 			// }
-		} 
+		}
 
-		if (inputname == 'email') {
+		if (inputname == 'Email') {
 			if (input.current.value.length < 6) {
 				error.current.value = 'de minimale toegestane lengte is 6 karakters'
 			}
@@ -147,25 +179,37 @@ export function SignupForm() {
 				error.current.value = 'dit is geen geldige email adres, voorbeeld van een geldige email adres: <naam>@<domain>.<nl/com>'
 			}
 			return item;
-		} 
+		}
 
-		if (inputname == 'password') {
-			if (input.current.value.length < 8) {
-				error.current.value = 'uw wachtwoord mag niet minder dan 8 karakters bevatten'
+		if (inputname == 'Password') {
+			await testfunction('auto');
+			console.log('test2');
+
+			if (input.current.value.length < 7) {
+				error.current.value = 'uw wachtwoord mag niet minder dan 7 karakters bevatten'
 			}
 			if (input.current.value.length > 30) {
 				error.current.value = 'uw wachtwoord mag niet meer dan 30 karakters bevatten'
 			}
+			if (oneCapitalLetter(input.current.value == false)) {
+				error.current.value = 'uw wachtwoord moet minstens een hoofdletter bevatten'
+			}
+			if (oneLowerCaseLetter(input.current.value == false)) {
+				error.current.value = 'uw wachtwoord moet minstens een kleine letter bevatten'
+			}
 			if (containsSpaces(input.current.value)) {
-
+				error.current.value = 'uw wachtwoord mag geen spaties bevatten';
 			}
 			if (onlyLettersAndNumbers(input.current.value)) {
 				error.current.value = 'uw wachtwoord moet tenminste een van de volgende karakters bevatten: !@#$%^&'
 			}
+			if (state[2][0].current.value == input.current.value) {
+				error.current.value = 'uw wachtwoord mag niet overeenkomen met uw gebruikersnaam'
+			}
 			return item;
-		} 
+		}
 
-		if (inputname == 'phonenumber' && input.current.value != '') {
+		if (inputname == 'PhoneNumber' && input.current.value != '') {
 			if (input.current.value.length < 12) {
 				error.current.value = 'uw telefoonnummer mag niet minder dan 10 cijfers bevatten'
 			}
@@ -176,14 +220,15 @@ export function SignupForm() {
 				error.current.value = 'dit is geen geldige tel nr, voorbeeld van een tel nr: +316XXXXXX'
 			}
 			return item;
-		} 
+		}
 
 		return item;
 	}
 
-	const HandleSubmit = (e) => {
+	const HandleSubmit = async (e) => {
 		e.preventDefault();
-		const arr = state.map(validate);
+		//await testfunction('paard');
+		const arr = await Promise.all(state.map(validate));
 		setState(arr);
 
 
@@ -244,36 +289,36 @@ export function SignupForm() {
 										<form onSubmit={HandleSubmit} name="registration" id="registration">
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Voornaam</label>
-												<input ref={voornaam} type="text" name="firstname" className="form-control" id="firstname" aria-describedby="emailHelp" placeholder="verplicht" />
+												<input ref={voornaam} type="text" name="Voornaam" className="form-control" id="firstname" aria-describedby="emailHelp" placeholder="verplicht" />
 												<label ref={naamError} className="text-danger">{state[0][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Achternaam</label>
-												<input ref={achternaam} type="text" name="lastname" className="form-control" id="lastname" aria-describedby="emailHelp" placeholder="verplicht" />
+												<input ref={achternaam} type="text" name="Achternaam" className="form-control" id="lastname" aria-describedby="emailHelp" placeholder="verplicht" />
 												<label ref={achterError} className="text-danger">{state[1][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Gebruikersnaam</label>
-												<input ref={gebruikersnaam} type="text" name="username" id="username" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
+												<input ref={gebruikersnaam} type="text" name="userName" id="username" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
 												<label ref={gebruikerError} className="text-danger">{state[2][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Email</label>
-												<input ref={email} type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="verplicht" />
+												<input ref={email} type="email" name="Email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="verplicht" />
 												<label ref={mailError} className="text-danger">{state[3][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Wachtwoord</label>
-												<input ref={wachtwoord} type="password" name="password" id="password" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
+												<input ref={wachtwoord} type="Password" name="Password" id="password" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
 												<label ref={wwError} className="text-danger">{state[4][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Telefoonnummer</label>
-												<input ref={telefoonnummer} type='tel' name="phonenumber" id="phonenumber" className="form-control" aria-describedby="emailHelp" placeholder="niet verplicht" />
+												<input ref={telefoonnummer} type='tel' name="PhoneNumber" id="phonenumber" className="form-control" aria-describedby="emailHelp" placeholder="niet verplicht" />
 												<label ref={telError} className="text-danger">{state[5][1].current.value}</label>
 											</div>
 											<div className="form-check-padding-start mt-2">
-												<label className="form-check-label" >Bent u een artiest?</label>
+												<label className="form-check-label" >ik heb het privacybeleid gelezen en ga hiermee akkoord</label>
 												<input checked={toggleArtiest} type="checkbox" name="toggleArtiest" id="toggleArtiest" className="form-check-input mx-2" aria-describedby="emailHelp" />
 											</div>
 											<div className="col-md-12 text-center mb-3 mt-3">
