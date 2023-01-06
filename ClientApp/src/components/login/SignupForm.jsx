@@ -166,11 +166,11 @@ export function SignupForm() {
 		} 
 
 		if (inputname == 'phonenumber' && input.current.value != '') {
-			if (input.current.value.length < 12) {
-				error.current.value = 'uw telefoonnummer mag niet minder dan 10 cijfers bevatten'
+			if (input.current.value.length < 10) {
+				error.current.value = 'Uw telefoonnummer mag niet minder dan 10 cijfers bevatten'
 			}
 			if (input.current.value.length > 12) {
-				error.current.value = 'uw telefoonnummer mag niet meer dan 10 cijfers bevatten'
+				error.current.value = 'Uw telefoonnummer mag niet meer dan 12 cijfers bevatten'
 			}
 			if (isPhoneNumber(input.current.value) == false) {
 				error.current.value = 'dit is geen geldige tel nr, voorbeeld van een tel nr: +316XXXXXX'
@@ -243,38 +243,38 @@ export function SignupForm() {
 										</div>
 										<form onSubmit={HandleSubmit} name="registration" id="registration">
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Voornaam</label>
-												<input ref={voornaam} type="text" name="firstname" className="form-control" id="firstname" aria-describedby="emailHelp" placeholder="verplicht" />
+												<label htmlFor="exampleInputEmail1">Voornaam*</label>
+												<input ref={voornaam} type="text" name="firstname" className="form-control" id="firstname" aria-describedby="voornaam" placeholder="Voornaam" />
 												<label ref={naamError} className="text-danger">{state[0][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Achternaam</label>
-												<input ref={achternaam} type="text" name="lastname" className="form-control" id="lastname" aria-describedby="emailHelp" placeholder="verplicht" />
+												<label htmlFor="exampleInputEmail1">Achternaam*</label>
+												<input ref={achternaam} type="text" name="lastname" className="form-control" id="lastname" aria-describedby="achternaam" placeholder="Achternaam" />
 												<label ref={achterError} className="text-danger">{state[1][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Gebruikersnaam</label>
-												<input ref={gebruikersnaam} type="text" name="username" id="username" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
+												<label htmlFor="exampleInputEmail1">Gebruikersnaam*</label>
+												<input ref={gebruikersnaam} type="text" name="username" id="username" className="form-control" aria-describedby="gebruikersnaam" placeholder="Gebruikersnaam" />
 												<label ref={gebruikerError} className="text-danger">{state[2][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Email</label>
-												<input ref={email} type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="verplicht" />
+												<label htmlFor="exampleInputEmail1">Email*</label>
+												<input ref={email} type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
 												<label ref={mailError} className="text-danger">{state[3][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Wachtwoord</label>
-												<input ref={wachtwoord} type="password" name="password" id="password" className="form-control" aria-describedby="emailHelp" placeholder="verplicht" />
+												<label htmlFor="exampleInputEmail1">Wachtwoord*</label>
+												<input ref={wachtwoord} type="password" name="password" id="password" className="form-control" aria-describedby="wachtwoord" placeholder="Wachtwoord" />
 												<label ref={wwError} className="text-danger">{state[4][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Telefoonnummer</label>
-												<input ref={telefoonnummer} type='tel' name="phonenumber" id="phonenumber" className="form-control" aria-describedby="emailHelp" placeholder="niet verplicht" />
+												<input ref={telefoonnummer} type='tel' name="phonenumber" id="phonenumber" className="form-control" aria-describedby="telefoonnummer" placeholder="Telefoonnummer" />
 												<label ref={telError} className="text-danger">{state[5][1].current.value}</label>
 											</div>
 											<div className="form-check-padding-start mt-2">
 												<label className="form-check-label" >Bent u een artiest?</label>
-												<input checked={toggleArtiest} type="checkbox" name="toggleArtiest" id="toggleArtiest" className="form-check-input mx-2" aria-describedby="emailHelp" />
+												<input checked={toggleArtiest} type="checkbox" name="toggleArtiest" id="toggleArtiest" className="form-check-input mx-2" aria-describedby="Artiest" />
 											</div>
 											<div className="col-md-12 text-center mb-3 mt-3">
 												<button type="submit" className=" btn btn-block mybtn btn-primary tx-tfm">Registreren</button>
