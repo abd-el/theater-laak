@@ -88,10 +88,16 @@ export class AccountInstellingen extends Component {
             return;
         }
 
+
+
+       
+        var storage = localStorage.getItem('authState');
+
         let res = await fetch('/api/Account/UpdateInstellingen', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + storage.token
             },
             body: JSON.stringify({
                 voornaam: this.state.voornaam,
