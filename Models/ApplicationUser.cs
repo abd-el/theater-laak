@@ -15,7 +15,7 @@ public class ApplicationUser : IdentityUser
     public string Emailvoorkeur {
         get { return _Emailvoorkeur; }
         set {
-            if (value == "nieuwsbrief" || value == "belangrijke informatie" || value == "geen") {
+            if (value == "nieuws" || value == "belangrijk" || value == "geen") {
                 _Emailvoorkeur = value;
             } else {
                 throw new System.ArgumentException("Emailvoorkeur moet 'nieuwsbrief', 'belangrijke informatie' of 'geen' zijn.");
