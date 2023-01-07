@@ -27,3 +27,13 @@ public class ApplicationUser : IdentityUser
     public IEnumerable<Donatie> Donaties {get; set;}
     public string? IkDoneerToken {get; set;}
 }
+
+    public class AccountInstellingenJsonGegevens {
+        public string voornaam {get; set;}
+        public string achternaam {get; set;}
+        public string email {get; set;}
+        public string telefoonnummer {get; set;}
+        public string geboorteDatum {get; set; }
+        public string emailvoorkeur {get; set; }
+        public string  geslacht {get; set;}
+    }

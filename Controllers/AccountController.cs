@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using theater_laak.Data;
 using theater_laak.Models;
+using System.Security.Claims;
 
 
 namespace theater_laak.Controllers;
@@ -29,7 +30,6 @@ public class MedewerkerDTO : Medewerker
     public string Password { get; set; }
 
 }
-
 
 
 //[Authorize]
@@ -297,31 +297,27 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize]
     [Route("UpdateInstellingen")]
-    public async Task<IActionResult> UpdateInstellingen([FromBody]
-        string voornaam, 
-        string achternaam,
-        string email,
-        string telefoonnummer,
-        string geboorteDatum,
-        string emailvoorkeur,
-        string geslacht
+    public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
     ){
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
+        
         if (user == null)
         {
-            return NotFound();
+            return Unauthorized();
         }
 
-        user.Voornaam = voornaam;
-        user.Achternaam = achternaam;
-        user.Email = email;
-        user.Telefoonnummer = telefoonnummer;
-        user.GeboorteDatum = geboorteDatum;
-        user.Emailvoorkeur = emailvoorkeur;
+        user.Voornaam = accountInstellingenJsonGegevens.voornaam;
+        user.Achternaam = accountInstellingenJsonGegevens.achternaam;
+        user.Email = accountInstellingenJsonGegevens.email;
+        user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
+        user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
+        user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
 
         await _userManager.UpdateAsync(user);
         return Ok();
