@@ -1,4 +1,4 @@
-function myFunction(woord, matches) {
+function vindDubbelePatronen(woord, matches) {
 
     if (typeof woord !== 'string') {
         console.log('je moet een string aangeven');
@@ -20,7 +20,7 @@ function myFunction(woord, matches) {
         //console.log(result.length); 
 
         if (result.length == matches) {
-            console.log('er is een herhalende patroon gevonden');
+            console.log('er is een dubbele patroon gevonden');
         }
 
         beginSubstring++;
@@ -37,5 +37,55 @@ function myFunction(woord, matches) {
     }
 }
 
-const wachtwoord = 'auto123autoafkafk'
-myFunction(wachtwoord, 2);
+// const wachtwoord = 'auto123autoafkafk'
+// myFunction(wachtwoord, 2);
+
+
+
+
+function vindHerhalendePatronen(){
+    var string = 'qwerty8765345'
+    
+    
+    let beginSubstring = 0;
+    let count = 2;
+    let match = false;
+    
+    for (let index = 2; index < 999; index++) {
+       
+            //console.log('substring 1: ' + string.substring(beginSubstring, index));
+            let substring1 = string.substring(beginSubstring, index);
+    
+            let beginSubstring2 = count + beginSubstring;
+            let index2 = count + index;
+                    
+            //console.log('substring 2: '+  string.substring(beginSubstring2, index2));
+            let substring2 = string.substring(beginSubstring2, index2); 
+            beginSubstring++
+            
+            if(substring1 == substring2){
+                match = true;
+              break;
+            }
+            
+            if(index > string.length){
+                index = count++;
+              beginSubstring = 0;
+            }
+            
+            if(count == string.length){
+                break;
+            }
+    }
+    
+    console.log(match);
+    
+    }
+    
+    vindHerhalendePatronen();
+
+
+
+
+
+

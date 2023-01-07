@@ -84,21 +84,25 @@ export function SignupForm() {
 		return /^[a-zA-Z]+$/.test(name);
 	}
 
-	const oneCapitalLetter = (str) => {
-		return /.*[A-Z].*/.test(str);
+	const oneUppercase = (str) => {
+		return /[A-Z]/.test(str);
 	}
 
-	const oneLowerCaseLetter = (str) => {
-		return /.*[a-z].*/.test(str);
+	const oneLowerCase = (str) => {
+		return /[a-z]/.test(str);
 	}
 
-	const onlyLettersAndNumbers = (username) => {
-		return /^[A-Za-z0-9]*$/.test(username);
+	const oneDigit = (str) => {
+		return /\d/.test(str);
 	}
 
-	const containsSpaces = (str) => {
-		return /^(?!.* )$/.test(str);
+	const onlyLettersAndNumbers = (str) => {
+		return /^[A-Za-z0-9]*$/.test(str);
 	}
+
+	// const containsSpaces = (str) => {
+	// 	return /^(?!.* )$/.test(str);
+	// }
 	
 	const isEmail = (email) => {
 		return /\S+@\S+\.\S+/.test(email);
@@ -116,8 +120,9 @@ export function SignupForm() {
 	// 	return response.data == username ? true : false;
 	// }
 
-	const validate = async (item) => {
-		console.log('test');
+	
+
+	const validate = (item) => {
 		const inputname = item[0].current.name;
 		const input = item[0];
 		let error = item[1];
@@ -160,6 +165,7 @@ export function SignupForm() {
 			if (onlyLettersAndNumbers(input.current.value) == false) {
 				error.current.value = 'tekens zoals: !@#$%^& zijn niet toegestaan'
 			}
+			
 			return item;
 			// console.log(await userExists(input.current.value));
 			// if (userExists(input.current.value) == true) {
@@ -182,8 +188,7 @@ export function SignupForm() {
 		}
 
 		if (inputname == 'Password') {
-			await testfunction('auto');
-			console.log('test2');
+			
 
 			if (input.current.value.length < 7) {
 				error.current.value = 'uw wachtwoord mag niet minder dan 7 karakters bevatten'
@@ -191,26 +196,30 @@ export function SignupForm() {
 			if (input.current.value.length > 30) {
 				error.current.value = 'uw wachtwoord mag niet meer dan 30 karakters bevatten'
 			}
-			if (oneCapitalLetter(input.current.value == false)) {
+			if(oneDigit(input.current.value) == false){
+					error.current.value = 'uw wachtwoord moet minstens een cijfer bevatten'
+			}
+			if (oneUppercase(input.current.value) == false) {
 				error.current.value = 'uw wachtwoord moet minstens een hoofdletter bevatten'
 			}
-			if (oneLowerCaseLetter(input.current.value == false)) {
+			if(oneLowerCase(input.current.value) == false){
 				error.current.value = 'uw wachtwoord moet minstens een kleine letter bevatten'
 			}
-			if (containsSpaces(input.current.value)) {
-				error.current.value = 'uw wachtwoord mag geen spaties bevatten';
-			}
+			// if (containsSpaces(input.current.value)) {
+			// 	error.current.value = 'uw wachtwoord mag geen spaties bevatten';
+			// }
 			if (onlyLettersAndNumbers(input.current.value)) {
 				error.current.value = 'uw wachtwoord moet tenminste een van de volgende karakters bevatten: !@#$%^&'
 			}
 			if (state[2][0].current.value == input.current.value) {
 				error.current.value = 'uw wachtwoord mag niet overeenkomen met uw gebruikersnaam'
 			}
+			
 			return item;
 		}
 
-		if (inputname == 'phonenumber' && input.current.value != '') {
-			if (input.current.value.length < 10) {
+		if (inputname == 'PhoneNumber' && input.current.value != '') {
+			if (input.current.value.length < 12) {
 				error.current.value = 'Uw telefoonnummer mag niet minder dan 10 cijfers bevatten'
 			}
 			if (input.current.value.length > 12) {
@@ -225,10 +234,10 @@ export function SignupForm() {
 		return item;
 	}
 
-	const HandleSubmit = async (e) => {
+	const HandleSubmit = (e) => {
 		e.preventDefault();
-		//await testfunction('paard');
-		const arr = await Promise.all(state.map(validate));
+		
+		const arr = (state.map(validate));
 		setState(arr);
 
 
@@ -289,36 +298,36 @@ export function SignupForm() {
 										<form onSubmit={HandleSubmit} name="registration" id="registration">
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Voornaam*</label>
-												<input ref={voornaam} type="text" name="firstname" className="form-control" id="firstname" aria-describedby="voornaam" placeholder="Voornaam" />
+												<input ref={voornaam} type="text" name="Voornaam" className="form-control" id="firstname" aria-describedby="voornaam" placeholder="Voornaam" />
 												<label ref={naamError} className="text-danger">{state[0][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Achternaam*</label>
-												<input ref={achternaam} type="text" name="lastname" className="form-control" id="lastname" aria-describedby="achternaam" placeholder="Achternaam" />
+												<input ref={achternaam} type="text" name="Achternaam" className="form-control" id="lastname" aria-describedby="achternaam" placeholder="Achternaam" />
 												<label ref={achterError} className="text-danger">{state[1][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Gebruikersnaam*</label>
-												<input ref={gebruikersnaam} type="text" name="username" id="username" className="form-control" aria-describedby="gebruikersnaam" placeholder="Gebruikersnaam" />
+												<input ref={gebruikersnaam} type="text" name="userName" id="username" className="form-control" aria-describedby="gebruikersnaam" placeholder="Gebruikersnaam" />
 												<label ref={gebruikerError} className="text-danger">{state[2][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Email*</label>
-												<input ref={email} type="email" name="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
+												<input ref={email} type="email" name="Email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
 												<label ref={mailError} className="text-danger">{state[3][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Wachtwoord*</label>
-												<input ref={wachtwoord} type="password" name="password" id="password" className="form-control" aria-describedby="wachtwoord" placeholder="Wachtwoord" />
+												<input ref={wachtwoord} type="password" name="Password" id="password" className="form-control" aria-describedby="wachtwoord" placeholder="Wachtwoord" />
 												<label ref={wwError} className="text-danger">{state[4][1].current.value}</label>
 											</div>
 											<div className="form-group">
 												<label htmlFor="exampleInputEmail1">Telefoonnummer</label>
-												<input ref={telefoonnummer} type='tel' name="phonenumber" id="phonenumber" className="form-control" aria-describedby="telefoonnummer" placeholder="Telefoonnummer" />
+												<input ref={telefoonnummer} type='tel' name="PhoneNumber" id="phonenumber" className="form-control" aria-describedby="telefoonnummer" placeholder="Telefoonnummer" />
 												<label ref={telError} className="text-danger">{state[5][1].current.value}</label>
 											</div>
 											<div className="form-check-padding-start mt-2">
-												<label className="form-check-label" >Bent u een artiest?</label>
+												<label className="form-check-label" >ik ga akkoord met de privacy voorwaarden</label>
 												<input checked={toggleArtiest} type="checkbox" name="toggleArtiest" id="toggleArtiest" className="form-check-input mx-2" aria-describedby="Artiest" />
 											</div>
 											<div className="col-md-12 text-center mb-3 mt-3">
