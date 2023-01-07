@@ -8,7 +8,6 @@ export class DoneerModal extends Component {
         super(props);
         this.state = {
             saldo: 0, // haal dit op vanuit de server via ikdoneer.nl's API
-            token: '', // haal dit op vanuit de database
 
             huidigBedrag: '',
             bericht: '',
@@ -28,9 +27,10 @@ export class DoneerModal extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                Doel: 1500,
-                Hoeveelheid: this.state.huidigBedrag,
-                Tekst: this.state.bericht
+                doel: 1500,
+                hoeveelheid: this.state.huidigBedrag,
+                bericht: this.state.bericht,
+                token: this.state.token
             })
         })
         .then(response => response.json())

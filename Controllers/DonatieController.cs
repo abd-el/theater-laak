@@ -41,11 +41,12 @@ public class DonatieController : ControllerBase {
 
         // check if user is not null
         if (user == null) {
-            return Unauthorized();
+            // put token in cookie
+            Response.Cookies.Append("IkDoneerToken", token);
+        } else {
+            user.IkDoneerToken = token;
+            _context.SaveChanges();
         }
-
-        user.IkDoneerToken = token;
-        _context.SaveChanges();
 
         var html = "<a href='https://localhost:44461/'>Klik hier om terug te gaan</a>";
         return new ContentResult
@@ -60,9 +61,21 @@ public class DonatieController : ControllerBase {
     public async Task<ActionResult> MaakDonatie([FromBody] float bedrag, string bericht){
         var user = await _userManager.GetUserAsync(User);
 
+        string token = "";
+
+        if (Request == null) {
+            return Unauthorized();
+        }
+
+        if (user == null) {
+            token = Request.Cookies["IkDoneerToken"];
+        } else {
+            token = user.IkDoneerToken;
+        }
+
         var client = new HttpClient();
 
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", user.IkDoneerToken);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
         var content = new FormUrlEncodedContent(new[] {
             new KeyValuePair<string, string>("Doel", "1500"),
