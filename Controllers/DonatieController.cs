@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using theater_laak.Data;
 using theater_laak.Models;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text;
 
 namespace theater_laak.Controllers;
 
@@ -41,7 +43,6 @@ public class DonatieController : ControllerBase {
 
         // check if user is not null
         if (user == null) {
-            // put token in cookie
             Response.Cookies.Append("IkDoneerToken", token);
         } else {
             user.IkDoneerToken = token;
@@ -58,7 +59,7 @@ public class DonatieController : ControllerBase {
 
     [HttpPost]
     [Route("MaakDonatie")]
-    public async Task<ActionResult> MaakDonatie([FromBody] float bedrag, string bericht){
+    public async Task<ActionResult> MaakDonatie([FromBody] DonatieJsonGegevens gegevens){
         var user = await _userManager.GetUserAsync(User);
 
         string token = "";
@@ -75,23 +76,26 @@ public class DonatieController : ControllerBase {
 
         var client = new HttpClient();
 
+        System.Console.WriteLine(token);
+
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
-        var content = new FormUrlEncodedContent(new[] {
-            new KeyValuePair<string, string>("Doel", "1500"),
-            new KeyValuePair<string, string>("Bedrag", bedrag.ToString()),
-            new KeyValuePair<string, string>("Bericht", bericht)
-        });
+        // create json string
+        var content = new StringContent(JsonSerializer.Serialize(new {
+            Doel = 11,
+            Hoeveelheid = gegevens.hoeveelheid,
+            Tekst = gegevens.bericht
+        }), Encoding.UTF8, "application/json");
 
-        var response = await client.PostAsync("https://api.ikdoneer.nl/v1/donaties", content);
+        var response = await client.PostAsync("https://ikdoneer.azurewebsites.net/api/donatie", content);
 
         // if response is 200 OK, add to database
         if (response.StatusCode == System.Net.HttpStatusCode.OK) {
             _context.Donaties.Add(new Donatie {
                 UserId = user?.Id,
-                TotaalBedrag = bedrag,
+                TotaalBedrag = Double.Parse(gegevens.hoeveelheid),
                 Datum = DateTime.Now,
-                Bericht = bericht
+                Bericht = gegevens.bericht
             });
 
             // return success=true resultaat="Je donatie is succesvol verwerkt!"
@@ -103,10 +107,66 @@ public class DonatieController : ControllerBase {
             // log error
             System.Console.WriteLine(response);
 
+            // get error message
+            var error = await response.Content.ReadAsStringAsync();
+
+            // log error message
+            System.Console.WriteLine(error);
+
             // return success=false resultaat="Er is iets misgegaan met het verwerken van je donatie. Probeer het later nog eens."
-            return Ok(new {
+            // return internal server error
+            return StatusCode(500, new {
                 success = false,
                 resultaat = "Er is iets misgegaan met het verwerken van je donatie. Probeer het later nog eens."
+            });
+        }
+    }
+
+    [HttpPost]
+    [Route("GetDonaties")]
+    public async Task<ActionResult> GetDonaties(){
+        var user = await _userManager.GetUserAsync(User);
+
+        string token = "";
+
+        if (Request == null) {
+            return Unauthorized();
+        }
+
+        if (user == null) {
+            token = Request.Cookies["IkDoneerToken"];
+        } else {
+            token = user.IkDoneerToken;
+        }
+
+        var client = new HttpClient();
+
+        System.Console.WriteLine(token);
+
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await client.GetAsync("https://ikdoneer.azurewebsites.net/api/donatie");
+
+        // if response is 200 OK, return donaties
+        if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+            // return the body of the response in json format
+            var body = await response.Content.ReadAsStringAsync();
+
+            System.Console.WriteLine(body);
+
+            return Ok(body);
+        } else {
+            // log error
+            System.Console.WriteLine(response);
+
+            // get error message
+            var error = await response.Content.ReadAsStringAsync();
+
+            // log error message
+            System.Console.WriteLine(error);
+
+            return StatusCode(500, new {
+                success = false,
             });
         }
     }

@@ -7,8 +7,6 @@ export class DoneerModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            saldo: 0, // haal dit op vanuit de server via ikdoneer.nl's API
-
             huidigBedrag: '',
             bericht: '',
             
@@ -27,9 +25,8 @@ export class DoneerModal extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                doel: 1500,
-                hoeveelheid: this.state.huidigBedrag,
-                bericht: this.state.bericht,
+                bericht: String(this.state.bericht),
+                hoeveelheid: String(this.state.huidigBedrag),
                 token: this.state.token
             })
         })
@@ -45,11 +42,9 @@ export class DoneerModal extends Component {
             this.setState({
                 resultaat: res.resultaat,
                 resultaatSuccess: res.success,
-                saldo: this.state.saldo - this.state.huidigBedrag
             });
         }
     }
-
 
     controleerBedrag = () => {
         if (this.state.huidigBedrag === '') {
@@ -67,12 +62,6 @@ export class DoneerModal extends Component {
         if (this.state.huidigBedrag < 0) {
             this.setState({ resultaat: 'Voer een positief bedrag in!', resultaatSuccess: false });
         
-            return false;
-        }
-
-        if (this.state.huidigBedrag > this.state.saldo) {
-            this.setState({ resultaat: 'Je hebt niet genoeg saldo!', resultaatSuccess: false });
-
             return false;
         }
 
@@ -101,10 +90,6 @@ export class DoneerModal extends Component {
                         </div>
                         <div className="modal-body">
                             <div className="form-group">
-                                <div>
-                                    Jouw saldo op ikdoneer.nl is op dit moment: <span className='title h1 text-white'>{getalNaarEuro(this.state.saldo)}</span>
-                                </div>
-
                                 <div className='mt-3'>
                                     <label htmlFor="doneerBedrag">Doneer bedrag:</label>
                                     <div>

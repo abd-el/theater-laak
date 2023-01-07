@@ -13,11 +13,24 @@ export class Doneer extends Component {
         };
     }
 
-    componentDidMount() {
-        // set geauthorizeerd to true if the token is there in cookies
+    // run once
+    componentDidMount = async () => {
         let token = document.cookie.split(';').find(c => c.trim().startsWith('token='));
         if (token) {
             this.setState({ geauthorizeerd: true });
+        }
+
+        let res = await fetch('/api/donatie/GetDonaties', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
+
+        if(res && res.success) {
+
         }
     }
 
