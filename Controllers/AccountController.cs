@@ -410,10 +410,10 @@ public class AccountController : ControllerBase
     [Route("UpdateInstellingen")]
     public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
     ){
-        // var claimsIdentity = User.Identities.First();        
-        // var userName = claimsIdentity.Name;          
-        // var user = await _userManager.FindByNameAsync(userName);         
-        // Console.WriteLine(user);
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
         
         if (user == null)
