@@ -4,25 +4,41 @@ import { backendApi } from "../api";
 import { useRef } from 'react';
 import { useState } from "react";
 import axios from "axios";
+import { findRepeatedPattern } from "./vindPatronen";
 
 
-async function testfunction(word) {
-    const options = {
-        method: 'GET',
-        url: 'https://lexicala1.p.rapidapi.com/search-entries',
-        params: {text: word},
-        headers: {
-            'X-RapidAPI-Key': '83779a1a0emsh0af178fe9b1d8eep1d0ae4jsn2be25937891c',
-            'X-RapidAPI-Host': 'lexicala1.p.rapidapi.com'
-        }
-    };
+async function passwordCheck(wachtwoord) {
+	
+	const resp = await backendApi.post('/api/account/WachtwoordCheck', {
+		wachtwoord
+	});
 
-    try {
-        const response = await axios.request(options);
-        console.log(response);
-    } catch (error) {
-        console.log(error);
-    }
+	const responseMsg = resp.data;
+	const statusCode = resp.status;
+
+	if (statusCode == 400) {
+		if(responseMsg == 'bevatWoord'){
+			return "uw wachtwoord mag geen woorden bevatten"
+		}
+		if(responseMsg == 'PwOnveilig'){
+			return "dit wachtwoord is op het internet gevonden"
+		}
+	}
+	return null;
+}
+
+async function userNameCheck(userName) {
+	const resp = await backendApi.post('/api/account/UserNameCheck', {
+		userName
+	});
+	const responseMsg = resp.data;
+	const statusCode = resp.status;
+
+	if (statusCode == 400) {
+		return responseMsg == 'userNameBestaat' ? "het opgegeven gebruikersnaam bestaat al" : null
+	}
+
+	return null;
 }
 
 export function SignupForm() {
@@ -77,7 +93,9 @@ export function SignupForm() {
 			const resp = await backendApi.postForm('/api/account/RegistreerKlant', formData);
 			console.log(resp);
 		}
+
 		makePostRequest();
+
 	}, [state]);
 
 	const onlyLetters = (name) => {
@@ -103,7 +121,7 @@ export function SignupForm() {
 	// const containsSpaces = (str) => {
 	// 	return /^(?!.* )$/.test(str);
 	// }
-	
+
 	const isEmail = (email) => {
 		return /\S+@\S+\.\S+/.test(email);
 	}
@@ -112,17 +130,8 @@ export function SignupForm() {
 		return /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(phoneNumber);
 	}
 
-	// const userExists = async (username) => {
-	// 	const response = await api.get(
-	// 		`/api/account/GetUsername`,
-	// 		{ params: { username: username } }
-	// 	);
-	// 	return response.data == username ? true : false;
-	// }
 
-	
-
-	const validate = (item) => {
+	const validate = async (item) => {
 		const inputname = item[0].current.name;
 		const input = item[0];
 		let error = item[1];
@@ -165,13 +174,13 @@ export function SignupForm() {
 			if (onlyLettersAndNumbers(input.current.value) == false) {
 				error.current.value = 'tekens zoals: !@#$%^& zijn niet toegestaan'
 			}
-			
+
+			const Msg = await userNameCheck(input.current.value);
+			if (Msg != null) {
+				error.current.value = Msg;
+			}
+
 			return item;
-			// console.log(await userExists(input.current.value));
-			// if (userExists(input.current.value) == true) {
-			// 	notice.current.value = 'de opgegeven gebruikersnaam bestaat al';
-			// 	return test;
-			// }
 		}
 
 		if (inputname == 'Email') {
@@ -188,7 +197,7 @@ export function SignupForm() {
 		}
 
 		if (inputname == 'Password') {
-			
+
 
 			if (input.current.value.length < 7) {
 				error.current.value = 'uw wachtwoord mag niet minder dan 7 karakters bevatten'
@@ -196,14 +205,17 @@ export function SignupForm() {
 			if (input.current.value.length > 30) {
 				error.current.value = 'uw wachtwoord mag niet meer dan 30 karakters bevatten'
 			}
-			if(oneDigit(input.current.value) == false){
-					error.current.value = 'uw wachtwoord moet minstens een cijfer bevatten'
+			if (oneDigit(input.current.value) == false) {
+				error.current.value = 'uw wachtwoord moet minstens een cijfer bevatten'
 			}
 			if (oneUppercase(input.current.value) == false) {
 				error.current.value = 'uw wachtwoord moet minstens een hoofdletter bevatten'
 			}
-			if(oneLowerCase(input.current.value) == false){
+			if (oneLowerCase(input.current.value) == false) {
 				error.current.value = 'uw wachtwoord moet minstens een kleine letter bevatten'
+			}
+			if (findRepeatedPattern(input.current.value)) {
+				error.current.value = 'uw wachtwoord mag geen herhalende patronen bevatten';
 			}
 			// if (containsSpaces(input.current.value)) {
 			// 	error.current.value = 'uw wachtwoord mag geen spaties bevatten';
@@ -213,6 +225,11 @@ export function SignupForm() {
 			}
 			if (state[2][0].current.value == input.current.value) {
 				error.current.value = 'uw wachtwoord mag niet overeenkomen met uw gebruikersnaam'
+			}
+			
+			const Msg = await passwordCheck(input.current.value);
+			if(Msg != null){
+				error.current.value = Msg;
 			}
 			
 			return item;
@@ -234,12 +251,10 @@ export function SignupForm() {
 		return item;
 	}
 
-	const HandleSubmit = (e) => {
+	const HandleSubmit = async (e) => {
 		e.preventDefault();
-		
-		const arr = (state.map(validate));
+		const arr = await Promise.all(state.map(validate));
 		setState(arr);
-
 
 	}
 
