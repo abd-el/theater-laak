@@ -1,7 +1,9 @@
 import React from "react";
 import './LoginForm.css';
+import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
+import { keys } from "./reCaptcha_Keys";
 
 
 
@@ -39,6 +41,7 @@ export function LoginForm() {
                                         <label htmlFor="password" className="text-white">Password:</label><br />
                                         <input ref={password} type="password" name="password" id="password" className="form-control" />
                                     </div>
+                                    <ReCAPTCHA sitekey={keys.REACT_APP_SITE_KEY} theme="dark"/>
                                     <div className="form-group">
                                         <label htmlFor="remember-me" className="text-white"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
                                         <button type="button" name="button" className="btn btn-primary btn-md" value="submit" onClick={HandleClick}>Submit</button>
