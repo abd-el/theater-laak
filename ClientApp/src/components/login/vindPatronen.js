@@ -1,4 +1,4 @@
-function vindDubbelePatronen(woord, matches) {
+export function vindDubbelePatronen(woord, matches) {
 
     if (typeof woord !== 'string') {
         console.log('je moet een string aangeven');
@@ -37,16 +37,9 @@ function vindDubbelePatronen(woord, matches) {
     }
 }
 
-// const wachtwoord = 'auto123autoafkafk'
-// myFunction(wachtwoord, 2);
 
+export function findRepeatedPattern(string){
 
-
-
-function vindHerhalendePatronen(){
-    var string = 'qwerty8765345'
-    
-    
     let beginSubstring = 0;
     let count = 2;
     let match = false;
@@ -78,11 +71,10 @@ function vindHerhalendePatronen(){
             }
     }
     
-    console.log(match);
+    return match;
     
     }
     
-    vindHerhalendePatronen();
 
 
 
