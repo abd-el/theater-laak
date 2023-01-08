@@ -93,7 +93,7 @@ export class AccountInstellingen extends Component {
        
         var storage = JSON.parse(localStorage.getItem('authState'));
 
-        let res = await fetch('/api/Account/UpdateInstellingen', {
+        let res = await fetch('/api/account/UpdateInstellingen', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

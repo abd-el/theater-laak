@@ -362,35 +362,27 @@ public class AccountController : ControllerBase
 
 
     [HttpPut]
+    [Authorize]
     [Route("UpdateInstellingen")]
-    public async Task<IActionResult> UpdateInstellingen([FromBody]
-        string voornaam,
-        string achternaam,
-        string email,
-        string telefoonnummer,
-        string geboorteDatum,
-        string emailvoorkeur,
-        string geslacht
-    )
-    {
-        ClaimsPrincipal currentUser = this.User;
-        var test = _userManager.GetUserId(currentUser);
-        Console.WriteLine(test);
-        // var user = await _userManager
-        // .Users
-        // .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+    public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
+    ){
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
-        // if (user == null)
-        // {
-        //     return NotFound();
-        // }
+        
+        if (user == null)
+        {
+            return Unauthorized();
+        }
 
-        // user.Voornaam = voornaam;
-        // user.Achternaam = achternaam;
-        // user.Email = email;
-        // user.Telefoonnummer = telefoonnummer;
-        // user.GeboorteDatum = geboorteDatum;
-        // user.Emailvoorkeur = emailvoorkeur;
+        user.Voornaam = voornaam;
+        user.Achternaam = achternaam;
+        user.Email = email;
+        user.Telefoonnummer = telefoonnummer;
+        user.GeboorteDatum = geboorteDatum;
+        user.Emailvoorkeur = emailvoorkeur;
 
         // await _userManager.UpdateAsync(user);
         return Ok();

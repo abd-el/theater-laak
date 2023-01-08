@@ -15,7 +15,7 @@ public class ApplicationUser : IdentityUser
     public string Emailvoorkeur {
         get { return _Emailvoorkeur; }
         set {
-            if (value == "nieuwsbrief" || value == "belangrijke informatie" || value == "geen") {
+            if (value == "nieuws" || value == "belangrijk" || value == "geen") {
                 _Emailvoorkeur = value;
             } else {
                 throw new System.ArgumentException("Emailvoorkeur moet 'nieuwsbrief', 'belangrijke informatie' of 'geen' zijn.");
@@ -27,3 +27,13 @@ public class ApplicationUser : IdentityUser
     public IEnumerable<Donatie> Donaties {get; set;}
     public string? IkDoneerToken {get; set;}
 }
+
+    public class AccountInstellingenJsonGegevens {
+        public string voornaam {get; set;}
+        public string achternaam {get; set;}
+        public string email {get; set;}
+        public string telefoonnummer {get; set;}
+        public string geboorteDatum {get; set; }
+        public string emailvoorkeur {get; set; }
+        public string  geslacht {get; set;}
+    }
