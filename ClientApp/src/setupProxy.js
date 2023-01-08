@@ -15,6 +15,8 @@ const context =  [
   "/api/login",
   "/api/account/UpdateInstellingen",
   "/api/account/RegistreerKlant",
+  "/api/account/UserNameCheck",
+  "/api/account/WachtwoordCheck",
   "/api/donatie/MaakDonatie",
   "/api/validateToken",
   "/api/Programmering/Voorstellingen",
