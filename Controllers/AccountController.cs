@@ -111,8 +111,9 @@ public class AccountController : ControllerBase
     public async Task<ActionResult> RegistreerKlant([FromForm] KlantDTO klant)
     {
         await _klantManager.CreateAsync(klant, klant.Password);
+        var responseCode = await assignRole(klant.UserName, "Klant");
 
-        return Ok();
+        return responseCode;
     }
 
     public class test{ public string username {get;set;} }
@@ -366,23 +367,23 @@ public class AccountController : ControllerBase
     [Route("UpdateInstellingen")]
     public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
     ){
-        var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;          
-        var user = await _userManager.FindByNameAsync(userName);         
-        Console.WriteLine(user);
+        // var claimsIdentity = User.Identities.First();        
+        // var userName = claimsIdentity.Name;          
+        // var user = await _userManager.FindByNameAsync(userName);         
+        // Console.WriteLine(user);
 
         
-        if (user == null)
-        {
-            return Unauthorized();
-        }
+        // if (user == null)
+        // {
+        //     return Unauthorized();
+        // }
 
-        user.Voornaam = voornaam;
-        user.Achternaam = achternaam;
-        user.Email = email;
-        user.Telefoonnummer = telefoonnummer;
-        user.GeboorteDatum = geboorteDatum;
-        user.Emailvoorkeur = emailvoorkeur;
+        // user.Voornaam = voornaam;
+        // user.Achternaam = achternaam;
+        // user.Email = email;
+        // user.Telefoonnummer = telefoonnummer;
+        // user.GeboorteDatum = geboorteDatum;
+        // user.Emailvoorkeur = emailvoorkeur;
 
         // await _userManager.UpdateAsync(user);
         return Ok();

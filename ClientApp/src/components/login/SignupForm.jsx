@@ -3,7 +3,6 @@ import './SignupForm.css';
 import { backendApi } from "../api";
 import { useRef } from 'react';
 import { useState } from "react";
-import axios from "axios";
 import { findRepeatedPattern } from "./vindPatronen";
 
 
