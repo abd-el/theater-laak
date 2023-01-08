@@ -34,7 +34,7 @@ const AppRoutes = [
   },
   {
     path: '/accountinstellingen',
-    element: <RequireAuth AllowedRoles={['Klant', 'Admin']}><AccountInstellingen /></RequireAuth>
+    element: <RequireAuth AllowedRoles={['Klant', 'Admin', "Medewerker"]}><AccountInstellingen /></RequireAuth>
   },
   {
     path: '/login',
