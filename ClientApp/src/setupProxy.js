@@ -17,10 +17,12 @@ const context =  [
   "/api/account/RegistreerKlant",
   "/api/account/UserNameCheck",
   "/api/account/WachtwoordCheck",
+  "/api/account/UpdateWachtwoord",
   "/api/donatie/MaakDonatie",
+  "/api/donatie/GetDonaties",
   "/api/validateToken",
   "/api/Programmering/Voorstellingen",
-  "/api/Programmering/Voorstelling"
+  "/api/Programmering/Voorstelling",
 ];
 
 module.exports = function(app) {

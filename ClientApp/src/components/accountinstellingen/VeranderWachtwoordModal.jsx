@@ -64,7 +64,7 @@ export class VeranderWachtwoordModal extends Component {
 
         var storage = JSON.parse(localStorage.getItem('authState'));
 
-        let res = await fetch('api/Account/VeranderWachtwoord', {
+        let res = await fetch('api/account/UpdateWachtwoord', {
             method: 'PUT',
             headers: {
                 'Authorization' : 'Bearer ' + storage.token,
