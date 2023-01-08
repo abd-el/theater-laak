@@ -361,6 +361,49 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [HttpPut]
+    [Authorize]
+    [Route("UpdateWachtwoord")]
+    public async Task<IActionResult> UpdateWachtwoord([FromBody] VeranderWachtwoordJsonGegevens veranderWachtwoordJsonGegevens
+    ){
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
+        
+        if (user == null)
+        {
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
+        }
+
+        // compare current password in database to veranderWachtwoordJsonGegevens.huidigWachtwoord
+        var result = await _userManager.CheckPasswordAsync(user, veranderWachtwoordJsonGegevens.huidigWachtwoord);
+
+        if (!result) {
+            // return 401
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Uw wachtwoord is niet correct"
+                }
+            );
+        }
+
+        await _userManager.RemovePasswordAsync(user);
+        await _userManager.AddPasswordAsync(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+
+        return Ok(
+            new {
+                success = true,
+                resultaat = "Wachtwoord is succesvol gewijzigd"
+            }
+        );
+    }
 
     [HttpPut]
     [Authorize]
@@ -373,19 +416,29 @@ public class AccountController : ControllerBase
         // Console.WriteLine(user);
 
         
-        // if (user == null)
-        // {
-        //     return Unauthorized();
-        // }
+        if (user == null)
+        {
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
+        }
 
-        // user.Voornaam = voornaam;
-        // user.Achternaam = achternaam;
-        // user.Email = email;
-        // user.Telefoonnummer = telefoonnummer;
-        // user.GeboorteDatum = geboorteDatum;
-        // user.Emailvoorkeur = emailvoorkeur;
-
-        // await _userManager.UpdateAsync(user);
-        return Ok();
+        user.Voornaam = accountInstellingenJsonGegevens.voornaam;
+        user.Achternaam = accountInstellingenJsonGegevens.achternaam;
+        user.Email = accountInstellingenJsonGegevens.email;
+        user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
+        user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
+        user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
+        await _userManager.UpdateAsync(user);
+        
+        return Ok(
+            new {
+                success = true,
+                resultaat = "Instellingen zijn succesvol gewijzigd"
+            }
+        );
     }
 }
