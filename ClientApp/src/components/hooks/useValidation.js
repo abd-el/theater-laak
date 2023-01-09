@@ -30,7 +30,7 @@ export function useValidation(){
         }
 
 
-        const resp = await backendApi.get('/api/validateToken', {
+        const resp = await backendApi.get('/api/login/validateToken', {
             headers: { 'Authorization' : 'Bearer ' + storage.token}
         });
         
