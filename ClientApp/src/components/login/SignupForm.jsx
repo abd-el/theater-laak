@@ -271,8 +271,8 @@ export function SignupForm() {
 								</div>
 
 								<div className="col-sm-9 col-md-10 col-lg-10">
-									<h1 className="heading">Lorem Ipsum</h1>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+									<h1 className="heading">Extra mogelijkheden</h1>
+									<p>Door uzelf te registreren voor onze service, krijgt u toegang tot een wereld vol extra mogelijkheden. Zo kunt u bijvoorbeeld gemakkelijk uw persoonlijke gegevens aanpassen en heeft u de mogelijkheid om al uw aankopen terug te kijken. Maak gebruik van deze handige opties en blijf op de hoogte van al uw activiteiten binnen ons platform.</p>
 								</div>
 							</div>
 
@@ -282,8 +282,8 @@ export function SignupForm() {
 								</div>
 
 								<div className="col-sm-9 col-md-10 col-lg-10">
-									<h1 className="heading">Lorem Ipsum</h1>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+									<h1 className="heading">Donateurs</h1>
+									<p>Als donateurslid kunt u deelnemen aan ons unieke programma waarbij u uw donaties kunt opstapelen. Zo kunt u uiteindelijk toegang krijgen tot onze exclusieve mogelijkheden die alleen beschikbaar zijn voor leden van ons platform. Word dus vandaag nog donateur en maak gebruik van deze bijzondere mogelijkheid om uw impact te vergroten.</p>
 								</div>
 							</div>
 
@@ -293,8 +293,8 @@ export function SignupForm() {
 								</div>
 
 								<div className="col-sm-9 col-md-10 col-lg-10">
-									<h1 className="heading">Lorem Ipsum</h1>
-									<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+									<h1 className="heading">Schrijf uzelf in</h1>
+									<p>Word lid van Theater Laak en neem deel aan onze unieke culturele activiteiten. Schrijf u nu in en maak deel uit van onze gemeenschap.</p>
 								</div>
 							</div>
 
