@@ -25,8 +25,8 @@ public class DonatieController : ControllerBase {
     }
 
     [HttpPost]
-    [Route("Authoriseer")]
-    public async Task<ActionResult> Authoriseer([FromForm] string token){
+    [Route("Autoriseer")]
+    public async Task<ActionResult> Autoriseer([FromForm] string token){
         System.Console.WriteLine(token);
 
         if(User == null) {
@@ -44,12 +44,13 @@ public class DonatieController : ControllerBase {
         // check if user is not null
         if (user == null) {
             Response.Cookies.Append("IkDoneerToken", token);
+            System.Console.WriteLine("user is null wat jammer");
         } else {
             user.IkDoneerToken = token;
             _context.SaveChanges();
         }
 
-        var html = "<a href='https://localhost:44461/'>Klik hier om terug te gaan</a>";
+        var html = "<a href='https://localhost:44461/AutoriseerDonatie'>Klik hier om terug te gaan</a>";
         return new ContentResult
         {
             Content = html,
@@ -60,7 +61,16 @@ public class DonatieController : ControllerBase {
     [HttpPost]
     [Route("MaakDonatie")]
     public async Task<ActionResult> MaakDonatie([FromBody] DonatieJsonGegevens gegevens){
-        var user = await _userManager.GetUserAsync(User);
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;
+
+        ApplicationUser? user = null;
+
+        if(userName != null){
+            user = await _userManager.FindByNameAsync(userName);
+        }
+
+        System.Console.WriteLine(user);
 
         string token = "";
 
@@ -113,11 +123,9 @@ public class DonatieController : ControllerBase {
             // log error message
             System.Console.WriteLine(error);
 
-            // return success=false resultaat="Er is iets misgegaan met het verwerken van je donatie. Probeer het later nog eens."
-            // return internal server error
             return StatusCode(500, new {
                 success = false,
-                resultaat = "Er is iets misgegaan met het verwerken van je donatie. Probeer het later nog eens."
+                resultaat = "Er is iets misgegaan met het verwerken van je donatie. Probeer het later nog eens. Het kan zijn dat je toegang moet verlenen aan IkDoneer.nl."
             });
         }
     }
@@ -139,9 +147,18 @@ public class DonatieController : ControllerBase {
             token = user.IkDoneerToken;
         }
 
+        System.Console.WriteLine(token);
+
+        if (token == "") {
+            // return "aub autoriseer ikdoneer.nl account aan theater laak account"
+            return StatusCode(403, new {
+                success = false,
+                resultaat = "Aub autoriseer ikdoneer.nl account aan theater laak account"
+            });
+        }
+
         var client = new HttpClient();
 
-        System.Console.WriteLine(token);
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

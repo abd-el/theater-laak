@@ -394,7 +394,7 @@ public class AccountController : ControllerBase
     ){
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;          
-        var user = await _userManager.FindByNameAsync(userName);         
+        var user = await _userManager.FindByNameAsync(userName);
         Console.WriteLine(user);
         
         if (user == null)

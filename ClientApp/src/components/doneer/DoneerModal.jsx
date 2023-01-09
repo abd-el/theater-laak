@@ -2,8 +2,11 @@ import React, { Component }  from 'react';
 import '../../custom.css'
 import { getalNaarEuro } from './getalNaarEuro';
 import Modal from 'bootstrap' // <-- ⚠️ zonder deze import werkt het niet ⚠️
+import { AuthContext } from '../context/AuthContext'; // <-- ⚠️ zonder deze import werkt het ophalen van token niet ⚠️
 
 export class DoneerModal extends Component {
+    static contextType = AuthContext; // <-- ⚠️ zonder deze import werkt het ophalen van token niet ⚠️
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,10 +22,16 @@ export class DoneerModal extends Component {
     veranderBericht = (e) => { this.setState({ bericht: e.target.value }); }
 
     doneer = async () => {
+        const { authState } = this.context;
+        console.log(authState)
+
+        const token = authState ? authState.token : null;
+
         let res = await fetch('/api/donatie/MaakDonatie', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' +  token
             },
             body: JSON.stringify({
                 bericht: String(this.state.bericht),

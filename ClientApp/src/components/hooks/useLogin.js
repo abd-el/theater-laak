@@ -8,7 +8,6 @@ export function useLogin() {
     const { dispatch } = useAuthContext();
 
     async function login(username, password) {
-
         const resp = await backendApi.post('/api/login', {
             username: username,
             password: password
