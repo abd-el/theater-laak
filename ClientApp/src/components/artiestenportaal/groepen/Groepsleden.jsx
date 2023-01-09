@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { GroepOverzicht } from './Groepsoverzicht';
+import { GroepOverzicht } from './GroepsoverzichtModal';
 
 export class GroepsLeden extends Component {
     render() {
