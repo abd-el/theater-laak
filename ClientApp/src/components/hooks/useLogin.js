@@ -40,5 +40,5 @@ export function useLogin() {
     }
 
 
-    return { login, logout, response };
+    return { login, logout, response, setResponse };
 }

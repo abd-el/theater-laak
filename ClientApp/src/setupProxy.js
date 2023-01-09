@@ -13,6 +13,7 @@ const context =  [
   "/ApplyDatabaseMigrations",
   "/_framework",
   "/api/login",
+  "/api/login/ReCaptcha",
   "/api/account/UpdateInstellingen",
   "/api/account/RegistreerKlant",
   "/api/account/UserNameCheck",
