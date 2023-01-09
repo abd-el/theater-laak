@@ -32,8 +32,12 @@ export function Programmering() {
         },
     ]
 
+    const weekdays = ['Zondag','Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+    const months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
     //const [items, setItems] = useState([]);
     const [Voorstellingen, setV] = useState([]);
+    const [Optredens, setO] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -51,16 +55,63 @@ export function Programmering() {
             const data = await response.json();
 
             setV(data);
-            console.log(data);
+            //console.log(data);
+
         } catch (error) {
             setError(error.message);
         }
         setIsLoading(false);
     }, []);
 
+    const getOptredens = useCallback(async function () {
+        //event.preventDefault();
+        //setIsLoading(true);
+        setError(null);
+        try {
+            const response = await fetch('https://localhost:44461/api/Programmering/Optredens');
+
+            if (!response.ok) {
+                throw new Error('Er is iets fout gegaan!');
+            }
+
+            const data = await response.json();
+
+            setO(data);
+            //console.log(data);
+        } catch (error) {
+            setError(error.message);
+        }
+        //setIsLoading(false);
+    }, []);
+
     useEffect(() => {
+        getOptredens();
         getVoorstellingen();
-    }, [getVoorstellingen]);
+    }, [getVoorstellingen, getOptredens]);
+
+    function update() {
+        getOptredens();
+        getVoorstellingen();
+    }
+    
+    let AangepasteArray = Optredens.map(item => {
+        return {
+            ...item,
+            voorstelling: Voorstellingen
+        }
+    });
+
+    AangepasteArray = AangepasteArray.sort((a,b) => {
+        a = new Date(a.datumTijdstip);
+        b = new Date(b.datumTijdstip);
+        return a - b;
+    });
+
+    let volgordeOptredenId = 0;
+    AangepasteArray.forEach(item => {
+        item.volgordeId = volgordeOptredenId;
+        volgordeOptredenId = volgordeOptredenId + 1;
+    })
 
     return (
         <div>
@@ -77,7 +128,7 @@ export function Programmering() {
             <div className='buttons'>
                 <button id='day'>Dag</button>
                 <button id='week' >Week</button>
-                <button id='refresh' onClick={getVoorstellingen}>Voorstellingen Ophalen</button>
+                <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
             </div>
             <br />
             <br />
@@ -101,28 +152,31 @@ export function Programmering() {
                         </tr>
                     </thead>
                     <tbody>
-                        {!isLoading && Voorstellingen.length > 0 && Voorstellingen.map((Voorstelling) => (
-                            <tr>
-                                <td className="afbeelding"><img src={Voorstelling.afbeelding}
+                        {!isLoading && Voorstellingen.length > 0 && AangepasteArray.map((Optreden) => (
+                            <tr key={Optreden.volgordeId}>
+                                <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId-1].afbeelding}
                                     alt='voorstellingsafbeelding'
                                     width='150'
                                     height='200'
                                 />
                                 </td>
                                 <td className="titel">
-                                    {Voorstelling.titel}
+                                    {Optreden.voorstelling[Optreden.voorstellingId-1].titel}
                                 </td>
                                 <td className="dag-datum">
-                                    {Voorstelling.voorstellingId}
+                                    {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+                                    <br />
+                                    {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+                                    {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
                                 </td>
                                 <td className="tijdstip">
-                                    {Voorstelling.beschrijving}
+                                    {Optreden.datumTijdstip.split('T')[1].substring(0, 5)}
                                 </td>
                             </tr>
                         ))}
-                        {!isLoading && Voorstellingen.length === 0 && !error && <p>Geen Voorstellingen gevonden.</p>}
-                        {!isLoading && error && <p>{error}</p>}
-                        {isLoading && <p>Loading...</p>}
+                        {!isLoading && Voorstellingen.length === 0 && !error && <tr><td>Geen Voorstellingen gevonden.</td></tr>}
+                        {!isLoading && error && <tr><td>{error}</td></tr>}
+                        {isLoading && <tr><td>Loading...</td></tr>}
 
                     </tbody>
                 </table>

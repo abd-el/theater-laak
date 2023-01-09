@@ -228,6 +228,32 @@ public class AccountController : ControllerBase
         return StatusCode(201);
     }
 
+    [HttpGet]
+    [Authorize]
+    [Route("GetUser")]
+    public async Task<ActionResult<ApplicationUser>> GetUser(){
+
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);
+        
+        if (user == null)
+        {
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
+        }
+
+                return Ok(
+            new {
+                success = true,
+                resultaat = "De user is geauthenticeerd"
+            }
+        );
+    }
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
@@ -368,7 +394,7 @@ public class AccountController : ControllerBase
     ){
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;          
-        var user = await _userManager.FindByNameAsync(userName);         
+        var user = await _userManager.FindByNameAsync(userName);
         Console.WriteLine(user);
         
         if (user == null)

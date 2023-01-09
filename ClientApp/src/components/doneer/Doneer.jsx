@@ -28,10 +28,23 @@ export class Doneer extends Component {
         })
         .then(response => response.json())
         .catch(error => console.error('Error:', error));
+        
+        let gedoneeerd = {
+            altijd: 0,
+            ditJaar: 0
+        }
 
         if(res && res.success) {
+            res.forEach(donatie => {
+                gedoneeerd.altijd += donatie.hoeveelheid
+                gedoneeerd.ditJaar += donatie.hoeveelheid
+            });
+        };
 
-        }
+        this.setState({
+            gedoneerdDitJaar: gedoneeerd.ditJaar,
+            gedoneerdAltijd: gedoneeerd.altijd
+        });
     }
 
     render() {
@@ -97,8 +110,8 @@ export class Doneer extends Component {
                         Naar donateursportaal
                     </button>
 
-                    <a href={`https://ikdoneer.azurewebsites.net/Toegang?url=https://localhost:7209/api/Donatie/Authoriseer`}>
-                        <button id="donateursportaal-knop" className={`btn btn-lg btn-dark mt-4 ${this.state.geauthorizeerd && '' || 'disabled'}`}>
+                    <a href={`https://ikdoneer.azurewebsites.net/Toegang?url=https://localhost:7209/api/Donatie/Autoriseer`}>
+                        <button id="donateursportaal-knop" className={`btn btn-lg btn-dark mt-4`}>
                             Verleen toegang tot jouw IkDoneer.nl account aan Theater Laak
                         </button>
                     </a>
