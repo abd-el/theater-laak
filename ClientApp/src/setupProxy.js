@@ -23,6 +23,8 @@ const context =  [
   "/api/validateToken",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
+  "/api/Programmering/Optredens",
+  "/api/Programmering/Optreden"
 ];
 
 module.exports = function(app) {

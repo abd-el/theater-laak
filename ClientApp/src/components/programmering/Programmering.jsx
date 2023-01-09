@@ -89,12 +89,17 @@ export function Programmering() {
         getVoorstellingen();
     }, [getVoorstellingen, getOptredens]);
 
-    const AangepasteArray = Optredens.map(item => {
+    let AangepasteArray = Optredens.map(item => {
         return {
             ...item,
             voorstelling: Voorstellingen
         }
     });
+
+    AangepasteArray = AangepasteArray.sort((a,b) => {
+        console.log(a.prijs);
+        return a.prijs > b.prijs;
+    })
 
     console.log(AangepasteArray);
 
@@ -113,7 +118,7 @@ export function Programmering() {
             <div className='buttons'>
                 <button id='day'>Dag</button>
                 <button id='week' >Week</button>
-                <button id='refresh' onClick={getVoorstellingen}>Voorstellingen Ophalen</button>
+                <button id='refresh' onClick={AangepasteArray}>Voorstellingen Ophalen</button>
             </div>
             <br />
             <br />
@@ -139,7 +144,7 @@ export function Programmering() {
                     <tbody>
                         {!isLoading && Voorstellingen.length > 0 && AangepasteArray.map((Optreden) => (
                             <tr>
-                                <td className="afbeelding"><img src={Optreden.voorstelling[0].afbeelding}
+                                <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId-1].afbeelding}
                                     alt='voorstellingsafbeelding'
                                     width='150'
                                     height='200'
