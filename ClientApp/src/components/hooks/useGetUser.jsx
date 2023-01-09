@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { backendApi } from "./api";
-import { useAuthContext } from './hooks/useAuthContext'
+import { backendApi } from "../api";
+import { useAuthContext } from './useAuthContext'
 import { useState } from "react";
 
 export function useGetUser() {
