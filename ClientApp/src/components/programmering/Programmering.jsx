@@ -89,6 +89,11 @@ export function Programmering() {
         getVoorstellingen();
     }, [getVoorstellingen, getOptredens]);
 
+    function update() {
+        getOptredens();
+        getVoorstellingen();
+    }
+    
     let AangepasteArray = Optredens.map(item => {
         return {
             ...item,
@@ -97,11 +102,16 @@ export function Programmering() {
     });
 
     AangepasteArray = AangepasteArray.sort((a,b) => {
-        console.log(a.prijs);
-        return a.prijs > b.prijs;
-    })
+        a = new Date(a.datumTijdstip);
+        b = new Date(b.datumTijdstip);
+        return a - b;
+    });
 
-    console.log(AangepasteArray);
+    let volgordeOptredenId = 0;
+    AangepasteArray.forEach(item => {
+        item.volgordeId = volgordeOptredenId;
+        volgordeOptredenId = volgordeOptredenId + 1;
+    })
 
     return (
         <div>
@@ -118,7 +128,7 @@ export function Programmering() {
             <div className='buttons'>
                 <button id='day'>Dag</button>
                 <button id='week' >Week</button>
-                <button id='refresh' onClick={AangepasteArray}>Voorstellingen Ophalen</button>
+                <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
             </div>
             <br />
             <br />
@@ -143,7 +153,7 @@ export function Programmering() {
                     </thead>
                     <tbody>
                         {!isLoading && Voorstellingen.length > 0 && AangepasteArray.map((Optreden) => (
-                            <tr>
+                            <tr key={Optreden.volgordeId}>
                                 <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId-1].afbeelding}
                                     alt='voorstellingsafbeelding'
                                     width='150'
@@ -164,9 +174,9 @@ export function Programmering() {
                                 </td>
                             </tr>
                         ))}
-                        {!isLoading && Voorstellingen.length === 0 && !error && <p>Geen Voorstellingen gevonden.</p>}
-                        {!isLoading && error && <p>{error}</p>}
-                        {isLoading && <p>Loading...</p>}
+                        {!isLoading && Voorstellingen.length === 0 && !error && <tr><td>Geen Voorstellingen gevonden.</td></tr>}
+                        {!isLoading && error && <tr><td>{error}</td></tr>}
+                        {isLoading && <tr><td>Loading...</td></tr>}
 
                     </tbody>
                 </table>
