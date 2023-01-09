@@ -35,7 +35,7 @@ export function Programmering() {
     const weekdays = ['Zondag','Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
     const months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-    //const [items, setItems] = useState([]);
+    const [enteredDatum, setDatum] = useState('');
     const [Voorstellingen, setV] = useState([]);
     const [Optredens, setO] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -89,11 +89,22 @@ export function Programmering() {
         getVoorstellingen();
     }, [getVoorstellingen, getOptredens]);
 
-    function update() {
+    function update() //haalt alle optredens en voorstellingen op
+    {
         getOptredens();
         getVoorstellingen();
     }
+
+    function changeDatumHandler(event) {
+        setDatum(event.target.value);
+    }
     
+    function datumFilter() {
+        if(enteredDatum == AangepasteArray.datumTijdstip){
+            
+        }
+    }
+
     let AangepasteArray = Optredens.map(item => {
         return {
             ...item,
@@ -113,6 +124,8 @@ export function Programmering() {
         volgordeOptredenId = volgordeOptredenId + 1;
     })
 
+    console.log(enteredDatum);
+
     return (
         <div>
             <br />
@@ -122,7 +135,7 @@ export function Programmering() {
             <br />
             <div className='inputs'>
                 <input id='searchbar' placeholder='zoek voorstelling' />
-                <input id='date' placeholder='kies een datum' type='date' />
+                <input id='date' placeholder='kies een datum' type='date' min='2023-01-09' value={enteredDatum} onChange={changeDatumHandler}/>
             </div>
             <br />
             <div className='buttons'>
@@ -170,7 +183,7 @@ export function Programmering() {
                                     {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
                                 </td>
                                 <td className="tijdstip">
-                                    {Optreden.datumTijdstip.split('T')[1].substring(0, 5)}
+                                    <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
                                 </td>
                             </tr>
                         ))}
