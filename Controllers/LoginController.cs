@@ -31,7 +31,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     [Route("login")]
     public async Task<ActionResult> login([FromBody] loginDTO credentials)
-    {
+    {   
         var user = await _usermanager.FindByNameAsync(credentials.username);
 
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
@@ -65,6 +65,7 @@ public class LoginController : ControllerBase
     [Route("validateToken")]
     [Authorize]
     public ActionResult validateToken (){
-        return Ok("Token Verified");
+        
+        return Ok();
     }
 }

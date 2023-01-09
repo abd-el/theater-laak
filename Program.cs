@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -28,6 +31,10 @@ builder.Services.AddIdentityCore<Admin>(options => options.SignIn.RequireConfirm
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityCore<Artiest>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentityCore<Klant>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

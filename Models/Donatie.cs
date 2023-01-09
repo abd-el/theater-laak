@@ -10,5 +10,9 @@ public class Donatie {
 
     public string? UserId {get; set;}
     public string? Bericht {get; set;}
+}
 
+public class DonatieJsonGegevens {
+    public string hoeveelheid {get; set;}
+    public string bericht {get; set;}
 }

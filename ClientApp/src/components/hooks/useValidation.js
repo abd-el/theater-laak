@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { api } from "../api";
+import { backendApi } from "../api";
 import { useLogin } from "./useLogin";
 
 
@@ -30,7 +30,7 @@ export function useValidation(){
         }
 
 
-        const resp = await api.get('/api/validateToken', {
+        const resp = await backendApi.get('/api/validateToken', {
             headers: { 'Authorization' : 'Bearer ' + storage.token}
         });
         

@@ -19,7 +19,7 @@ export class VeranderWachtwoordModal extends Component {
     veranderWachtwoord = (e) => { this.setState({ wachtwoord: e.target.value }); }
     veranderWachtwoordHerhaal = (e) => { this.setState({ wachtwoordHerhaal: e.target.value }); }
 
-    controleerWachtwoord = () => {
+    controleerWachtwoord = async () => {
         if (this.state.huidigeWachtwoord === '') {
             this.setState({
                 resultaat: 'Je wachtwoord is verkeerd.',
@@ -62,10 +62,33 @@ export class VeranderWachtwoordModal extends Component {
         // en de response van de server moet hieronder worden verwerkt in state.resultaat en state.resultaatSuccess
         // maar nu hebben we nog geen backend dus doen we het even zo
 
-        this.setState({
-            resultaat: 'Wachtwoord successvol veranderd!',
-            resultaatSuccess: true
-        });
+        var storage = JSON.parse(localStorage.getItem('authState'));
+
+        let res = await fetch('api/account/UpdateWachtwoord', {
+            method: 'PUT',
+            headers: {
+                'Authorization' : 'Bearer ' + storage.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                huidigeWachtwoord: this.state.huidigeWachtwoord,
+                nieuwWachtwoord: this.state.wachtwoord
+            })
+        })
+        .then(response => response.json())
+        .catch(err => console.warn(`caught error: ${err}`));
+
+        if (!res) {
+            this.setState({
+                resultaat: 'Er is iets misgegaan. Probeer het later opnieuw.',
+                resultaatSuccess: false
+            });
+        } else {
+            this.setState({
+                resultaat: res.resultaat || 'Er is iets misgegaan. Probeer het later opnieuw.',
+                resultaatSuccess: res.succes || false
+            });
+        }
 
         return true;
     }

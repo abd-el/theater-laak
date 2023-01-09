@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace theater_laak.Models;
 
@@ -15,7 +14,7 @@ public class ApplicationUser : IdentityUser
     public string Emailvoorkeur {
         get { return _Emailvoorkeur; }
         set {
-            if (value == "nieuwsbrief" || value == "belangrijke informatie" || value == "geen") {
+            if (value == "nieuws" || value == "belangrijk" || value == "geen") {
                 _Emailvoorkeur = value;
             } else {
                 throw new System.ArgumentException("Emailvoorkeur moet 'nieuwsbrief', 'belangrijke informatie' of 'geen' zijn.");
@@ -26,4 +25,34 @@ public class ApplicationUser : IdentityUser
     public override string Id { get; set; }
     public IEnumerable<Donatie> Donaties {get; set;}
     public string? IkDoneerToken {get; set;}
+}
+
+public class AccountInstellingenJsonGegevens {
+    public string voornaam {get; set;}
+    public string achternaam {get; set;}
+    public string email {get; set;}
+    public string telefoonnummer {get; set;}
+    public string geboorteDatum {get; set; }
+    public string emailvoorkeur {get; set; }
+    public string  geslacht {get; set;}
+
+    public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht) {
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.email = email;
+        this.telefoonnummer = telefoonnummer;
+        this.geboorteDatum = geboorteDatum;
+        this.emailvoorkeur = emailvoorkeur;
+        this.geslacht = geslacht;
+    }
+}
+
+public class VeranderWachtwoordJsonGegevens {
+    public string huidigWachtwoord {get; set;}
+    public string nieuwWachtwoord {get; set;}
+
+    public VeranderWachtwoordJsonGegevens(string huidigWachtwoord, string nieuwWachtwoord) {
+        this.huidigWachtwoord = huidigWachtwoord;
+        this.nieuwWachtwoord = nieuwWachtwoord;
+    }
 }

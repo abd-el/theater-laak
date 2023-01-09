@@ -88,10 +88,13 @@ export class AccountInstellingen extends Component {
             return;
         }
 
-        let res = await fetch('/api/Account/UpdateInstellingen', {
+        var storage = JSON.parse(localStorage.getItem('authState'));
+
+        let res = await fetch('/api/account/UpdateInstellingen', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + storage.token
             },
             body: JSON.stringify({
                 voornaam: this.state.voornaam,
@@ -102,12 +105,21 @@ export class AccountInstellingen extends Component {
                 emailvoorkeur: this.state.emailvoorkeur,
                 geslacht: this.state.geslacht
             })
-        });
+        })
+        .then(res => res.json())
+        .catch(err => console.warn(`caught error: ${err}`));
 
-        this.setState({
-            resultaat: 'Account is succesvol aangepast! ',
-            resultaatSuccess: true
-        });
+        if (!res) {
+            this.setState({
+                resultaat: 'Er is iets misgegaan. Probeer het later opnieuw.',
+                resultaatSuccess: false
+            });
+        } else {
+            this.setState({
+                resultaat: res.resultaat || 'Er is iets misgegaan. Probeer het later opnieuw.',
+                resultaatSuccess: res.succes || false
+            });
+        }
     }
 
     render() {

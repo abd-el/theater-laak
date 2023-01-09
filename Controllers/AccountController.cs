@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using theater_laak.Data;
 using theater_laak.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 
 namespace theater_laak.Controllers;
 
-
+//redundant
 public class AdminDTO : Admin
 {
     [Required(ErrorMessage = "Password is required")]
@@ -30,6 +32,15 @@ public class MedewerkerDTO : Medewerker
 
 }
 
+public class KlantDTO : Klant
+{
+
+    [Required(ErrorMessage = "Password is required")]
+    public string Password { get; set; }
+
+}
+
+
 
 
 //[Authorize]
@@ -41,28 +52,40 @@ public class AccountController : ControllerBase
     private readonly UserManager<Admin> _adminManager;
     private readonly UserManager<Medewerker> _medewerkerManager;
     private readonly UserManager<Artiest> _artiestManager;
+    private readonly UserManager<Klant> _klantManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     //private readonly SignInManager<Artiest> _signInManager_artiest;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ApplicationDbContext _context;
     private readonly ILogger<AccountController> _logger;
 
-    public AccountController(UserManager<ApplicationUser> p, UserManager<Medewerker> u, UserManager<Artiest> a, UserManager<Admin> ad,
-    SignInManager<ApplicationUser> s, RoleManager<IdentityRole> r, ApplicationDbContext c, ILogger<AccountController> logger)
+    public AccountController(
+        UserManager<ApplicationUser> appuser,
+        UserManager<Medewerker> medewerker,
+        UserManager<Artiest> artiest,
+        UserManager<Admin> admin,
+        UserManager<Klant> klant,
+        SignInManager<ApplicationUser> signIn,
+        RoleManager<IdentityRole> role,
+        ApplicationDbContext context, 
+        ILogger<AccountController> logger
+        )
     {
-        _userManager = p;
-        _medewerkerManager = u;
-        _artiestManager = a;
-        _adminManager = ad;
-        _signInManager = s;
-        _roleManager = r;
-        _context = c;
+        _userManager = appuser;
+        _medewerkerManager = medewerker;
+        _artiestManager = artiest;
+        _adminManager = admin;
+        _klantManager = klant;
+        _signInManager = signIn;
+        _roleManager = role;
+        _context = context;
         _logger = logger;
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [Route("assignRole")]
-    public async Task<ActionResult> assignRole([FromBody]string username, string role)
+    public async Task<ActionResult> assignRole([FromBody] string username, string role)
     {
 
         bool exists = await _roleManager.RoleExistsAsync(role);
@@ -81,6 +104,48 @@ public class AccountController : ControllerBase
         }
         return StatusCode(201);
     }
+
+
+    [HttpPost]
+    [Route("RegistreerKlant")]
+    public async Task<ActionResult> RegistreerKlant([FromForm] KlantDTO klant)
+    {
+        await _klantManager.CreateAsync(klant, klant.Password);
+        var responseCode = await assignRole(klant.UserName, "Klant");
+
+        return responseCode;
+    }
+
+    public class test{ public string username {get;set;} }
+    [HttpPost]
+    [Route("UserNameCheck")]
+    public async Task<ActionResult> UserNameCheck([FromBody] test username){
+
+        var result = await _userManager.FindByNameAsync(username.username);
+
+        if(result != null) { return BadRequest("userNameBestaat"); }
+
+        return Ok();
+
+    }
+    public class test2{ public string wachtwoord {get;set;} }
+    [HttpPost]
+    [Route("WachtwoordCheck")]
+    public async Task<ActionResult> WachtwoordCheck([FromBody] test2 wachtwoord){
+
+        Woordenboek woordenboek = new Woordenboek();
+        PwnedPasswords pwnedpasswords = new PwnedPasswords();
+
+        bool bevatWoorden = woordenboek.stringBevatWoord(wachtwoord.wachtwoord, 4);
+        bool isBreached = await pwnedpasswords.isPwBreached(wachtwoord.wachtwoord);
+
+        if(bevatWoorden) { return BadRequest("bevatWoord"); }
+        if(isBreached) { return BadRequest("PwOnveilig"); }
+
+        return Ok();
+    }
+
+    
 
 
     [HttpPost]
@@ -133,7 +198,7 @@ public class AccountController : ControllerBase
         {
             return new BadRequestObjectResult(result);
         }
-        
+
         var responseCode = await assignRole(adminDTO.UserName, "Admin");
 
         return responseCode;
@@ -250,7 +315,7 @@ public class AccountController : ControllerBase
     [Authorize(Roles = "Admin")]
     [Authorize(Roles = "Medewerker")]
     [Route("DeleteUser")]
-    public async Task<IActionResult> DeleteUser([FromQuery]string userName)
+    public async Task<IActionResult> DeleteUser([FromQuery] string userName)
     {
 
         if (_userManager.Users == null)
@@ -275,7 +340,7 @@ public class AccountController : ControllerBase
     [Authorize(Roles = "Admin")]
     [Authorize(Roles = "Medewerker")]
     [Route("DeleteGroep")]
-    public async Task<IActionResult> DeleteGroep([FromQuery]string groepsnaam)
+    public async Task<IActionResult> DeleteGroep([FromQuery] string groepsnaam)
     {
         if (_userManager.Users == null)
         {
@@ -297,33 +362,83 @@ public class AccountController : ControllerBase
     }
 
     [HttpPut]
-    [Route("UpdateInstellingen")]
-    public async Task<IActionResult> UpdateInstellingen([FromBody]
-        string voornaam, 
-        string achternaam,
-        string email,
-        string telefoonnummer,
-        string geboorteDatum,
-        string emailvoorkeur,
-        string geslacht
+    [Authorize]
+    [Route("UpdateWachtwoord")]
+    public async Task<IActionResult> UpdateWachtwoord([FromBody] VeranderWachtwoordJsonGegevens veranderWachtwoordJsonGegevens
     ){
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
-
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
+        
         if (user == null)
         {
-            return NotFound();
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
         }
 
-        user.Voornaam = voornaam;
-        user.Achternaam = achternaam;
-        user.Email = email;
-        user.Telefoonnummer = telefoonnummer;
-        user.GeboorteDatum = geboorteDatum;
-        user.Emailvoorkeur = emailvoorkeur;
+        // compare current password in database to veranderWachtwoordJsonGegevens.huidigWachtwoord
+        var result = await _userManager.CheckPasswordAsync(user, veranderWachtwoordJsonGegevens.huidigWachtwoord);
 
+        if (!result) {
+            // return 401
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Uw wachtwoord is niet correct"
+                }
+            );
+        }
+
+        await _userManager.RemovePasswordAsync(user);
+        await _userManager.AddPasswordAsync(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+
+        return Ok(
+            new {
+                success = true,
+                resultaat = "Wachtwoord is succesvol gewijzigd"
+            }
+        );
+    }
+
+    [HttpPut]
+    [Authorize]
+    [Route("UpdateInstellingen")]
+    public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
+    ){
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
+
+        
+        if (user == null)
+        {
+            return Unauthorized(
+                new {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
+        }
+
+        user.Voornaam = accountInstellingenJsonGegevens.voornaam;
+        user.Achternaam = accountInstellingenJsonGegevens.achternaam;
+        user.Email = accountInstellingenJsonGegevens.email;
+        user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
+        user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
+        user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
         await _userManager.UpdateAsync(user);
-        return Ok();
+        
+        return Ok(
+            new {
+                success = true,
+                resultaat = "Instellingen zijn succesvol gewijzigd"
+            }
+        );
     }
 }

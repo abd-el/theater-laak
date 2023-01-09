@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const api = axios.create({
+export const backendApi = axios.create({
     baseURL: window.location.origin,
-    timeout: 1000,
+    timeout: 2000,
     validateStatus: () => true
 });

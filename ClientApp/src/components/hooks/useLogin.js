@@ -1,5 +1,5 @@
 import { useAuthContext } from "./useAuthContext";
-import { api } from "../api";
+import { backendApi } from "../api";
 import { useState } from "react";
 
 
@@ -9,7 +9,7 @@ export function useLogin() {
 
     async function login(username, password) {
 
-        const resp = await api.post('/api/login', {
+        const resp = await backendApi.post('/api/login', {
             username: username,
             password: password
         });
