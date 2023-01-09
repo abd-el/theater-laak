@@ -42,5 +42,4 @@ export function useGetUser() {
 return { getAuthUser };
 
 
-
 }
