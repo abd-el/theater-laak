@@ -1,23 +1,45 @@
 import React, { Component }  from 'react';
 import '../../custom.css'
 import { VeranderWachtwoordModal } from './VeranderWachtwoordModal';
+import { AuthContext } from '../context/AuthContext';
 
 export class AccountInstellingen extends Component {
+    static contextType = AuthContext;
+
     constructor(props) {
+
         super(props);
         this.state = {
             resultaat: undefined,
             resultaatSuccess: undefined,
 
             // deze informatie halen we op uit de database
-            voornaam: 'Jan',
-            achternaam: 'Piet',
-            email: 'Jan@mail.com',
-            telefoonnummer: '06 12345678',
-            geboortedatum: '01-01-2001',
-            emailvoorkeur: 'nieuws', // 'geen' | 'belangrijk' | 'nieuws'
-            geslacht: 'man' // 'man' | 'vrouw' | 'anders'
+            voornaam: '',
+            achternaam: '',
+            email: '',
+            telefoonnummer: '',
+            geboortedatum: '',
+            emailvoorkeur: '', // 'geen' | 'belangrijk' | 'nieuws'
+            geslacht: '' // 'man' | 'vrouw' | 'anders'
         };
+    }
+
+    componentDidMount() {
+        // hier halen we de gegevens op uit de database
+        
+        const { authState } = this.context;
+
+        console.log(authState)
+
+        this.setState({
+            voornaam: authState.user.voornaam,
+            achternaam: authState.user.achternaam,
+            email: authState.user.email,
+            telefoonnummer: authState.user.telefoonnummer,
+            geboortedatum: authState.user.geboortedatum,
+            emailvoorkeur: authState.user.emailvoorkeur,
+            geslacht: authState.user.geslacht
+        })
     }
 
     veranderVoornaam = (e) => { this.setState({ voornaam: e.target.value }); }
