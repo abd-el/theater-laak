@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import { HuidigeGroepen} from './HuidigeGroepen'
 import { Groepsformulier } from './Groepsformulier';
-import { Groepsoverzicht } from './Groepsoverzicht';
+import { Groepsoverzicht } from './GroepsoverzichtModal';
 
 export class Groepen extends Component {
     render() {
