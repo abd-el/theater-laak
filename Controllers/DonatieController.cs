@@ -149,7 +149,7 @@ public class DonatieController : ControllerBase {
         .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
 
         // return everything in database
-        var donaties = _context.Donaties.Where(d => d.UserId!.Equals(user.Id)).ToList();
+        var donaties = _context.Donaties.Where(d => d.UserId!.Equals(user!.Id)).ToList();
         // jsonify donaties
         var json = JsonSerializer.Serialize(donaties);
         return Ok(json); 
