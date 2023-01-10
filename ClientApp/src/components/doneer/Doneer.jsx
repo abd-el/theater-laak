@@ -32,9 +32,12 @@ export class Doneer extends Component {
         }
 
         if(res && res.success) {
-            res.forEach(donatie => {
-                gedoneeerd.altijd += donatie.hoeveelheid
-                gedoneeerd.ditJaar += donatie.hoeveelheid
+            res.donaties.forEach(donatie => {
+                let dagenGeleden = (new Date() - new Date(donatie.datum)) / 1000 / 60 / 60 / 24;
+                if(dagenGeleden < 365) {
+                    gedoneeerd.ditJaar += donatie.bedrag
+                }
+                gedoneeerd.altijd += donatie.bedrag
             });
         };
 

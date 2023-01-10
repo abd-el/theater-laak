@@ -93,6 +93,13 @@ export class DoneerModal extends Component {
             return false;
         }
 
+        // check if this.state.huidigBedrag is not int
+        if (this.state.huidigBedrag % 1 !== 0) {
+            this.setState({ resultaat: 'Voer een geheel getal in!', resultaatSuccess: false });
+
+            return false;
+        }
+
         this.doneer();
     }
 
