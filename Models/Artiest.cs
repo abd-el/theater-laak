@@ -4,5 +4,5 @@ public class Artiest : ApplicationUser
 {
     public int ArtiestId {get; set;}
     public int? ArtiestenGroepId {get; set;} // FK naar ArtiestenGroep.ArtiestenGroepId;
-    public ArtiestenGroep ArtiestenGroep {get; set;}   
+    public ArtiestenGroep? ArtiestenGroep {get; set;}   
 }

@@ -21,5 +21,5 @@ public class Stoel
 
     public IEnumerable<Ticket> Tickets { get; set; }
 
-    public Zaal Zaal { get; set; }
+    public Zaal? Zaal { get; set; }
 }

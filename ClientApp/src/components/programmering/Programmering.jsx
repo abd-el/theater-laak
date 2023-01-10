@@ -6,34 +6,22 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 export function Programmering() {
 
-    const Dummy_voorstellingen = [
-        {
-            VoorstellingId: 1,
-            Afbeelding: 'https://imageio.forbes.com/specials-images/imageserve/61116cea2313e8bae55a536a/-Dune-/0x0.jpg?format=jpg&width=960',
-            Titel: 'Voorbeeld 1',
-            Beschrijving: 'Some text...',
-            TijdsduurInMinuten: 120
-        },
-
-        {
-            VoorstellingId: 2,
-            Afbeelding: 'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1667397461/amc-cdn/production/2/movies/53700/53699/PosterDynamic/145397.jpg',
-            Titel: 'Voorbeeld 2',
-            Beschrijving: 'Some text...',
-            TijdsduurInMinuten: 60
-        },
-
-        {
-            VoorstellingId: 3,
-            Afbeelding: 'https://upload.wikimedia.org/wikipedia/en/a/a9/Black_Adam_%28film%29_poster.jpg',
-            Titel: 'Voorbeeld 3',
-            Beschrijving: 'Some text...',
-            TijdsduurInMinuten: 240
-        },
-    ]
-
-    const weekdays = ['Zondag','Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+    const weekdays = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
     const months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
 
     const [enteredDatum, setDatum] = useState('');
     const [Voorstellingen, setV] = useState([]);
@@ -98,12 +86,6 @@ export function Programmering() {
     function changeDatumHandler(event) {
         setDatum(event.target.value);
     }
-    
-    function datumFilter() {
-        if(enteredDatum == AangepasteArray.datumTijdstip){
-            
-        }
-    }
 
     let AangepasteArray = Optredens.map(item => {
         return {
@@ -112,7 +94,7 @@ export function Programmering() {
         }
     });
 
-    AangepasteArray = AangepasteArray.sort((a,b) => {
+    AangepasteArray = AangepasteArray.sort((a, b) => {
         a = new Date(a.datumTijdstip);
         b = new Date(b.datumTijdstip);
         return a - b;
@@ -124,7 +106,94 @@ export function Programmering() {
         volgordeOptredenId = volgordeOptredenId + 1;
     })
 
-    console.log(enteredDatum);
+    let content = <tr><td>Geen voorstellingen ingepland voor de gekozen dag.</td></tr>;
+
+    // laadt alle voorstellingen als de datum nog niet is gekozen
+    // if (AangepasteArray.length > 0 && enteredDatum == '') {
+    //     content = AangepasteArray.map((Optreden) => (
+    //         <tr key={Optreden.volgordeId}>
+    //             <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+    //                 alt='voorstellingsafbeelding'
+    //                 width='150'
+    //                 height='200'
+    //             />
+    //             </td>
+    //             <td className="titel">
+    //                 {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+    //             </td>
+    //             <td className="dag-datum">
+    //                 {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+    //                 <br />
+    //                 {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+    //                 {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+    //             </td>
+    //             <td className="tijdstip">
+    //                 <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+    //             </td>
+    //         </tr>
+    //     ));
+    // }
+
+
+    // Filtert voorstellingen op gekozen dag in de datum picker
+    for (let i = 0; i < AangepasteArray.length; i++) {
+        if (AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
+            content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == enteredDatum).map((Optreden) => (
+                <tr key={Optreden.volgordeId}>
+                    <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+                        alt='voorstellingsafbeelding'
+                        width='150'
+                        height='200'
+                    />
+                    </td>
+                    <td className="titel">
+                        {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+                    </td>
+                    <td className="dag-datum">
+                        {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+                        <br />
+                        {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+                        {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+                    </td>
+                    <td className="tijdstip">
+                        <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+                    </td>
+                </tr>
+            ));
+        }
+        else if(enteredDatum == '' && AangepasteArray > 0){
+            content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == today).map((Optreden) => (
+                <tr key={Optreden.volgordeId}>
+                    <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+                        alt='voorstellingsafbeelding'
+                        width='150'
+                        height='200'
+                    />
+                    </td>
+                    <td className="titel">
+                        {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+                    </td>
+                    <td className="dag-datum">
+                        {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+                        <br />
+                        {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+                        {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+                    </td>
+                    <td className="tijdstip">
+                        <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+                    </td>
+                </tr>
+            ));
+        }
+    }
+
+    if (error) {
+        content = <tr><td>{error}</td></tr>;
+    }
+
+    if (isLoading) {
+        content = <tr><td>Loading...</td></tr>;
+    }
 
     return (
         <div>
@@ -135,12 +204,13 @@ export function Programmering() {
             <br />
             <div className='inputs'>
                 <input id='searchbar' placeholder='zoek voorstelling' />
-                <input id='date' placeholder='kies een datum' type='date' min='2023-01-09' value={enteredDatum} onChange={changeDatumHandler}/>
+                <input id='date' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
             </div>
             <br />
             <div className='buttons'>
-                <button id='day'>Dag</button>
-                <button id='week' >Week</button>
+                <button id='today'>Vandaag</button>
+                <button id='tomorrow'>Morgen</button>
+                <button id='dag1'>Deze Week</button>
                 <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
             </div>
             <br />
@@ -165,32 +235,7 @@ export function Programmering() {
                         </tr>
                     </thead>
                     <tbody>
-                        {!isLoading && Voorstellingen.length > 0 && AangepasteArray.map((Optreden) => (
-                            <tr key={Optreden.volgordeId}>
-                                <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId-1].afbeelding}
-                                    alt='voorstellingsafbeelding'
-                                    width='150'
-                                    height='200'
-                                />
-                                </td>
-                                <td className="titel">
-                                    {Optreden.voorstelling[Optreden.voorstellingId-1].titel}
-                                </td>
-                                <td className="dag-datum">
-                                    {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
-                                    <br />
-                                    {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
-                                    {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
-                                </td>
-                                <td className="tijdstip">
-                                    <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
-                                </td>
-                            </tr>
-                        ))}
-                        {!isLoading && Voorstellingen.length === 0 && !error && <tr><td>Geen Voorstellingen gevonden.</td></tr>}
-                        {!isLoading && error && <tr><td>{error}</td></tr>}
-                        {isLoading && <tr><td>Loading...</td></tr>}
-
+                        {content}
                     </tbody>
                 </table>
             </div>
