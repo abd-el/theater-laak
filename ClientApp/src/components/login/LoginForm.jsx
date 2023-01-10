@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import './LoginForm.css';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { keys } from "./reCaptcha_Keys";
+import { backendApi } from "../api";
 
 
 
 
 export function LoginForm() {
-    const { login, response } = useLogin();
+    const { login, response, setResponse } = useLogin();
 
     const username = useRef();
     const password = useRef();
@@ -18,15 +19,21 @@ export function LoginForm() {
     async function HandleClick(e) {
         e.preventDefault();
         const token = captcha.current.getValue();
+        const resp = await backendApi.post("api/login/ReCaptcha", {
+            responseToken: token
+        });
+        
+        if (resp.data == true) {
+            await login(
+                username.current.value,
+                password.current.value
+            );
+        }
+        else {
+            setResponse('login mislukt, probeer het opnieuw');
+        }
+
         captcha.current.reset();
-        console.log(token);
-        //console.log(keys.REACT_APP_SITE_KEY);
-
-        await login(
-            username.current.value,
-            password.current.value
-        );
-
     }
 
     return (
