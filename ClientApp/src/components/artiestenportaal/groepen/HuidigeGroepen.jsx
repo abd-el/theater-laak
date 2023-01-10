@@ -38,7 +38,7 @@ export class HuidigeGroepen extends Component {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             {this.state.huidigeGroepen.map((groep, index) => (
                                 <GroepsnaamRij key={index} naam={groep.naam} />
                             ))} 

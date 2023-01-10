@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../layout/stylesheet.css';
-import { Groepsleden } from "./Groepsleden";
+import { GroepsledenRij } from "./GroepsledenRij";
 import { GroepsnaamRij } from "./GroepsnaamRij";
 import Modal from 'bootstrap'
 
@@ -15,23 +15,9 @@ export class GroepsoverzichtModal extends Component {
 
     render() {
         return (
-        //     <div className='col-sm-5 text-white d-inline ms-4'>
-        //         <div className='d-inline kop-text'>
-        //             Groep Overzicht
-        //             <span className="info">
-        //                 ⓘ
-        //             </span>
-        //         </div>
-        //     </div>
-        // )
         <>
-        <div id="test">
+        <div>
             <div data-bs-toggle="modal" data-bs-target="#GroepsoverzichtModal">
-                {/* <tr >
-                    <td className="groepsnaam">
-                        {this.props.naam} 
-                    </td>
-                </tr> */}
                 {this.props.naam} 
             </div>
             
@@ -49,6 +35,7 @@ export class GroepsoverzichtModal extends Component {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
+                        <GroepsledenRij/>
                     </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Sluit</button>

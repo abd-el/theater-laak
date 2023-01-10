@@ -1,19 +1,19 @@
 import React, { Component }  from 'react';
-import { GroepsoverzichtModal } from "./GroepsoverzichtModal";
+import { Groepsleden } from './GroepsledenRij';
 
-export class GroepsnaamRij extends Component {
+export class GroepsnaamLeden extends Component {
     constructor(props) {
         super(props);
         this.state = { // deze informatie halen we op uit de database
-            
+            huidigeLeden: []
         };
     }
 
     render() {
         return (
             <tr>
-                <td className="groepsnaam">
-                    <GroepsoverzichtModal naam={this.props.naam}/>
+                <td>
+                    {this.props.naam} 
                 </td>
             </tr>
         )
