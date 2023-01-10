@@ -15,6 +15,7 @@ public class Donatie {
 public class DonatieJsonGegevens {
     public string hoeveelheid {get; set;}
     public string bericht {get; set;}
+    public Boolean anoniem {get; set;}
 }
 
 public class DonatieAutorisatieJsonGegevens {

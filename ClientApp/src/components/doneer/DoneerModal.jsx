@@ -12,7 +12,7 @@ export class DoneerModal extends Component {
         this.state = {
             huidigBedrag: '',
             bericht: '',
-            anoniem: false,
+            anoniem: true,
             
             resultaat: '',
             resultaatSuccess: undefined,
@@ -54,7 +54,8 @@ export class DoneerModal extends Component {
             body: JSON.stringify({
                 bericht: String(this.state.bericht),
                 hoeveelheid: String(this.state.huidigBedrag),
-                token: this.state.token
+                token: this.state.token,
+                anoniem: this.state.anoniem
             })
         })
         .then(response => response.json())

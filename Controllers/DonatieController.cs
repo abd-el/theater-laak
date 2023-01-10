@@ -27,15 +27,19 @@ public class DonatieController : ControllerBase {
     [HttpPost]
     [Route("RondAutorisatieAf")]
     public async Task<ActionResult> RondAutorisatieAf([FromBody] DonatieAutorisatieJsonGegevens gegevens){
-        if(User == null) {
-            return Unauthorized();
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;
+        ApplicationUser? user = null;
+
+        System.Console.WriteLine("username is " + userName);
+
+        if(userName != null){
+            user = await _userManager.FindByNameAsync(userName);
         }
 
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
-
         if(user == null) {
+            // print user is null
+            System.Console.WriteLine("user is null");
             return Unauthorized();
         }
 
@@ -53,7 +57,7 @@ public class DonatieController : ControllerBase {
     public async Task<ActionResult> Autoriseer([FromForm] string token){
         var user = await _userManager
         .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+        .FirstOrDefaultAsync(x => x.UserName.Equals(User!.Identity!.Name));
         
         Response.Cookies.Append("IkDoneerToken", token);
 
@@ -108,8 +112,14 @@ public class DonatieController : ControllerBase {
 
         // if response is 200 OK, add to database
         if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+            string? userId = user?.Id;
+
+            if (gegevens.anoniem) {
+                userId = null;
+            }
+
             _context.Donaties.Add(new Donatie {
-                UserId = user?.Id,
+                UserId = userId,
                 TotaalBedrag = Double.Parse(gegevens.hoeveelheid),
                 Datum = DateTime.Now,
                 Bericht = gegevens.bericht
