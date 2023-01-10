@@ -12,14 +12,32 @@ export class DoneerModal extends Component {
         this.state = {
             huidigBedrag: '',
             bericht: '',
+            anoniem: false,
             
             resultaat: '',
-            resultaatSuccess: undefined
+            resultaatSuccess: undefined,
+            
+            ingelogd: false
         };
     }
 
     veranderHuidigBedrag = (e) => { this.setState({ huidigBedrag: e.target.value }); }
     veranderBericht = (e) => { this.setState({ bericht: e.target.value }); }
+    veranderAnoniem = (e) => { this.setState({ anoniem: e.target.checked }); }
+
+    geklikt = async () => {
+        const { authState } = this.context;
+
+        console.log(authState)
+
+        if (authState != null) {
+            this.setState({ ingelogd: true });
+        } else {
+            this.setState({ ingelogd : false })
+        }
+
+        console.log("this.state.ingelogd: " + this.state.ingelogd)
+    }
 
     doneer = async () => {
         const { authState } = this.context;
@@ -80,7 +98,7 @@ export class DoneerModal extends Component {
     render() {
         return (
             <>
-                <button type="button" id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3" data-bs-toggle="modal" data-bs-target="#doneerModal">
+                <button onClick={this.geklikt} type="button" id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3" data-bs-toggle="modal" data-bs-target="#doneerModal">
                     Doneer
                 </button>
                 
@@ -113,13 +131,20 @@ export class DoneerModal extends Component {
                                 <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
                                     {this.state.resultaat}
                                 </div>
+
+                                <div>
+                                    <input checked={!this.state.ingelogd || this.state.anoniem} onChange={this.veranderAnoniem} disabled={!this.state.ingelogd} className="form-check-input" type="checkbox" value="" id="doneerAnoniem" />
+                                    <label className="form-check-label ms-2" htmlFor="doneerAnoniem">
+                                        Doneer anoniem
+                                    </label>
+                                </div>
                             </div>
                         </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Sluit</button>
                                 <button type="button" className="btn btn-primary" onClick={this.controleerBedrag}>Bevestig</button>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </>

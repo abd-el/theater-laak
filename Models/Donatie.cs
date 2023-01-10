@@ -16,3 +16,7 @@ public class DonatieJsonGegevens {
     public string hoeveelheid {get; set;}
     public string bericht {get; set;}
 }
+
+public class DonatieAutorisatieJsonGegevens {
+    public string ikDoneerToken {get; set;}
+}

@@ -23,6 +23,8 @@ const context =  [
   "/api/account/GetUser",
   "/api/donatie/MaakDonatie",
   "/api/donatie/GetDonaties",
+  "/api/donatie/Autoriseer",
+  "/api/donatie/RondAutorisatieAf",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",
