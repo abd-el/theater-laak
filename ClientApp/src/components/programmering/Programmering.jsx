@@ -1,8 +1,13 @@
 import './Programmering.css';
+import { SearchBars } from './SearchBars';
+import { VoorstellingLijst } from './VoorstellingList';
 import { Voorstelling } from './Voorstelling';
 import React, { useState, useEffect, useCallback } from 'react';
 
 export function Programmering() {
+
+    const weekdays = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+    const months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
     let today = new Date();
     let dd = today.getDate();
@@ -18,7 +23,6 @@ export function Programmering() {
 
     today = yyyy + '-' + mm + '-' + dd;
 
-    const [enteredName, setName] = useState('');
     const [enteredDatum, setDatum] = useState('');
     const [Voorstellingen, setV] = useState([]);
     const [Optredens, setO] = useState([]);
@@ -83,10 +87,6 @@ export function Programmering() {
         setDatum(event.target.value);
     }
 
-    function changeNameHandler(event) {
-        setName(event.target.value);
-    }
-
     let AangepasteArray = Optredens.map(item => {
         return {
             ...item,
@@ -104,67 +104,86 @@ export function Programmering() {
     AangepasteArray.forEach(item => {
         item.volgordeId = volgordeOptredenId;
         volgordeOptredenId = volgordeOptredenId + 1;
-    }
-    );
+    })
 
-    let content = <tr><td>Geen voorstellingen ingepland voor de door u gekozen dag.</td></tr>;
+    let content = <tr><td>Geen voorstellingen ingepland voor de gekozen dag.</td></tr>;
 
-    function Vandaag() {
-        setDatum(today);
-    }
+    // laadt alle voorstellingen als de datum nog niet is gekozen
+    // if (AangepasteArray.length > 0 && enteredDatum == '') {
+    //     content = AangepasteArray.map((Optreden) => (
+    //         <tr key={Optreden.volgordeId}>
+    //             <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+    //                 alt='voorstellingsafbeelding'
+    //                 width='150'
+    //                 height='200'
+    //             />
+    //             </td>
+    //             <td className="titel">
+    //                 {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+    //             </td>
+    //             <td className="dag-datum">
+    //                 {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+    //                 <br />
+    //                 {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+    //                 {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+    //             </td>
+    //             <td className="tijdstip">
+    //                 <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+    //             </td>
+    //         </tr>
+    //     ));
+    // }
 
-    function Morgen() {
-        let date = new Date();
-        date.setDate(date.getDate() + 1);
-        let dd = date.getDate();
-        let mm = date.getMonth() + 1;
-        let yyyy = date.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-
-        date = yyyy + '-' + mm + '-' + dd;
-        setDatum(date);
-    }
-
-    function Overmorgen() {
-        let date = new Date();
-        date.setDate(date.getDate() + 2);
-        let dd = date.getDate();
-        let mm = date.getMonth() + 1;
-        let yyyy = date.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-
-        date = yyyy + '-' + mm + '-' + dd;
-        setDatum(date);
-    }
 
     // Filtert voorstellingen op gekozen dag in de datum picker
     for (let i = 0; i < AangepasteArray.length; i++) {
         if (AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
             content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == enteredDatum).map((Optreden) => (
-                <Voorstelling array={Optreden} />
+                <tr key={Optreden.volgordeId}>
+                    <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+                        alt='voorstellingsafbeelding'
+                        width='150'
+                        height='200'
+                    />
+                    </td>
+                    <td className="titel">
+                        {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+                    </td>
+                    <td className="dag-datum">
+                        {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+                        <br />
+                        {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+                        {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+                    </td>
+                    <td className="tijdstip">
+                        <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+                    </td>
+                </tr>
             ));
         }
-    }
-
-    for (let i = 0; i < AangepasteArray.length; i++) {
-        for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
-            if (AangepasteArray[i].voorstelling[j].titel == enteredName) {
-                content = AangepasteArray.filter(aa => aa.voorstelling[j].titel == enteredName).map((Optreden) => (
-                    <Voorstelling array={Optreden} /> 
-                ));
-            }
+        else if(enteredDatum == '' && AangepasteArray > 0){
+            content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == today).map((Optreden) => (
+                <tr key={Optreden.volgordeId}>
+                    <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
+                        alt='voorstellingsafbeelding'
+                        width='150'
+                        height='200'
+                    />
+                    </td>
+                    <td className="titel">
+                        {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
+                    </td>
+                    <td className="dag-datum">
+                        {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
+                        <br />
+                        {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
+                        {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
+                    </td>
+                    <td className="tijdstip">
+                        <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
+                    </td>
+                </tr>
+            ));
         }
     }
 
@@ -176,8 +195,6 @@ export function Programmering() {
         content = <tr><td>Loading...</td></tr>;
     }
 
-    
-
     return (
         <div>
             <br />
@@ -186,14 +203,14 @@ export function Programmering() {
             <br />
             <br />
             <div className='inputs'>
-                <input id='searchbar' placeholder='Voorstelling zoeken' value={enteredName} onChange={changeNameHandler} />
+                <input id='searchbar' placeholder='zoek voorstelling' />
                 <input id='date' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
             </div>
             <br />
             <div className='buttons'>
-                <button id='today' onClick={Vandaag}>Vandaag</button>
-                <button id='tomorrow' onClick={Morgen}>Morgen</button>
-                <button id='dag1' onClick={Overmorgen}>Overmorgen</button>
+                <button id='today'>Vandaag</button>
+                <button id='tomorrow'>Morgen</button>
+                <button id='dag1'>Deze Week</button>
                 <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
             </div>
             <br />
