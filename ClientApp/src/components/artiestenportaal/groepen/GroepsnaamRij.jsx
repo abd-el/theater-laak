@@ -4,16 +4,17 @@ import { GroepsoverzichtModal } from "./GroepsoverzichtModal";
 export class GroepsnaamRij extends Component {
     constructor(props) {
         super(props);
-        this.state = { // deze informatie halen we op uit de database
-            
-        };
+    }
+
+    componentDidMount = () => {
+
     }
 
     render() {
         return (
             <tr>
-                <td className="groepsnaam">
-                    <GroepsoverzichtModal naam={this.props.naam}/>
+                <td>
+                    <GroepsoverzichtModal naam={this.props.naam} groepsId={this.props.groepsId} leden={this.props.leden} isClientLid={this.props.isClientLid}/>
                 </td>
             </tr>
         )

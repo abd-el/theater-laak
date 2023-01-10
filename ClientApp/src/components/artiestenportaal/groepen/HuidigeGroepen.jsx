@@ -10,13 +10,13 @@ export class HuidigeGroepen extends Component {
         };
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         let huidigeGroepen = [
-            {naam: 'ThargSquad'},
-            {naam: 'SquadTharg'},
-            {naam: 'AbdallahsFanClub'},
-            {naam: 'DylansCSGOteam'},
-            {naam: 'YuriysGymGang'}
+            {naam: 'ThargSquad', groepsId: 0, leden: ['henk', 'jan'], isClientLid: false},
+            {naam: 'SquadTharg', gorepsId: 1, leden: ['piet', 'bob'], isClientLid: false},
+            {naam: 'AbdallahsFanClub', groepsId: 2, leden: ['joop', 'klaas', 'abdallah'], isClientLid: true},
+            {naam: 'DylansCSGOteam', groepsId: 3, leden: ['joost', 'alex'], isClientLid: false},
+            {naam: 'YuriysGymGang', groepsId: 4, leden: ['willem', 'jonas'], isClientLid: false},
         ]
 
         this.setState({ huidigeGroepen: huidigeGroepen });
@@ -40,8 +40,8 @@ export class HuidigeGroepen extends Component {
                         </thead>
                         <tbody >
                             {this.state.huidigeGroepen.map((groep, index) => (
-                                <GroepsnaamRij key={index} naam={groep.naam} />
-                            ))} 
+                                <GroepsnaamRij key={index} naam={groep.naam} groepsId={groep.groepsId} leden={groep.leden} isClientLid={groep.isClientLid}/>
+                            ))}
                         </tbody>
                     </table>
                 </div>

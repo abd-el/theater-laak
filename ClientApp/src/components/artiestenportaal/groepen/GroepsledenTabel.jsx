@@ -1,23 +1,14 @@
 import React, { Component }  from 'react';
-import { GroepsnaamLeden } from './GroepsnaamLeden';
+import { Groepslidrij } from './Groepslidrij';
 
 
-export class GroepsledenRij extends Component {
+export class GroepsledenTabel extends Component {
     constructor(props) {
         super(props);
-        this.state = { // deze informatie halen we op uit de database
-            huidigeLeden: []
-        };
     }
 
-    componentDidMount() {
-        let huidigeLeden = [
-            {naam: 'henk'},
-            {naam: 'Bob'},
-            {naam: 'joop'},
-        ]
-
-        this.setState({ huidigeLeden: huidigeLeden });
+    componentDidMount = () => {
+        
     }
 
     render() {
@@ -32,8 +23,8 @@ export class GroepsledenRij extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.huidigeLeden.map((groep, index) => (
-                        <GroepsnaamLeden key={index} naam={groep.naam} />
+                    {this.props.leden.map((lid, index) => (
+                        <Groepslidrij key={index} naam={lid} />
                     ))}
                 </tbody>
             </table>

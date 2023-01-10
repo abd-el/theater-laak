@@ -136,7 +136,7 @@ export class DoneerModal extends Component {
                                     <input className="d-inline form-control text-white" id="plaatsBericht" placeholder="Plaats een bericht.." value={this.state.bericht} onChange={this.veranderBericht} />
                                 </div>
 
-                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
+                                <div id="doneer-resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''}  ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                     {this.state.resultaat}
                                 </div>
 
