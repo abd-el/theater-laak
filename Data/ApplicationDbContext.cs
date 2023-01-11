@@ -67,9 +67,16 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<ArtiestenGroep>()
+        .HasIndex(artiestenGroep => artiestenGroep.GroepsNaam)
+        .IsUnique();
+
+        builder.Entity<ArtiestenGroep>()
         .Property(artiestenGroep => artiestenGroep.GroepsEmail)
         .IsRequired();
 
+        builder.Entity<ArtiestenGroep>()
+        .HasIndex(artiestenGroep => artiestenGroep.GroepsEmail)
+        .IsUnique();
 
     // Class Optreden
         builder.Entity<Optreden>() //Table Name en Primary Key instellen
