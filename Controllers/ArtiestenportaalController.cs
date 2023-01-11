@@ -20,13 +20,15 @@ public class AutoriseerArtiestenOfHoger : AuthorizeAttribute {
 [Route("api/[controller]")]
 [ApiController]
 public class ArtiestenportaalController : ControllerBase {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<Artiest> _artiestenManager;
 
-    public ArtiestenportaalController(UserManager<ApplicationUser> p, ApplicationDbContext c)
+    public ArtiestenportaalController(ApplicationDbContext c, UserManager<ApplicationUser> p, UserManager<Artiest> a)
     {
-        _userManager = p;
         _context = c;
+        _userManager = p;
+        _artiestenManager = a;
     }
 
     [HttpGet]
@@ -51,9 +53,23 @@ public class ArtiestenportaalController : ControllerBase {
             IdOfGroupOfUser = groupOfUser.ArtiestenGroepId;
         }
 
+        IEnumerable<object> groepData = new List<Object>();
+
+        for(var i = 0; i < groepen.Count(); i++){
+            var groep = groepen[i];
+            groepData = groepData.Append(new {
+                id = groep.ArtiestenGroepId,
+                naam = groep.GroepsNaam,
+                artiesten = groep.Artiesten.Select(a => new {
+                    id = a.Id,
+                    naam = a.UserName
+                })
+            });
+        }
+
         return Ok(new {
             success = true,
-            groepen = groepen,
+            groepData = groepData,
             IdOfGroupOfUser = IdOfGroupOfUser
         });
     }
@@ -75,9 +91,11 @@ public class ArtiestenportaalController : ControllerBase {
 
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;          
-        var user = await _userManager.FindByNameAsync(userName);
+        var artiest = await _artiestenManager.FindByNameAsync(userName);
 
-        groep.Artiesten.Append(user);
+        if(artiest != null){
+            groep.Artiesten.Add(artiest);
+        }
 
         _context.ArtiestGroepen.Add(groep);
         await _context.SaveChangesAsync();
@@ -86,6 +104,50 @@ public class ArtiestenportaalController : ControllerBase {
             success = true,
             bericht = "Groep successvol aangemaakt",
             groep = groep
+        });
+    }
+
+    [HttpPost]
+    [Route(template: "SluitAan")]
+    [AutoriseerArtiestenOfHoger]
+    public async Task<ActionResult> SluitAan([FromBody] SluitAanGroepJson gegevens){
+        var groep = _context.ArtiestGroepen.Where(g => g.ArtiestenGroepId == gegevens.groepsId).First();
+        if(groep == null){
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Deze groep bestaat niet."
+            });
+        }
+
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
+        var artiest = await _artiestenManager.FindByNameAsync(userName);
+
+        if(artiest == null){
+            return StatusCode(403, new {
+                success = false,
+                bericht = "Je bent geen artiest."
+            });
+        }
+
+        var groepVanGebruiker = _context.ArtiestGroepen
+            .Include(g => g.Artiesten)
+            .Where(g => g.Artiesten.Contains(artiest))
+            .FirstOrDefault();
+
+        if (groepVanGebruiker != null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Je zit al in een groep."
+            });
+        }
+
+        groep.Artiesten.Add(artiest);
+        await _context.SaveChangesAsync();
+
+        return Ok(new {
+            success = true,
+            bericht = "Je zit nu in de groep."
         });
     }
 }

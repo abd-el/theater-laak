@@ -27,6 +27,7 @@ const context =  [
   "/api/donatie/RondAutorisatieAf",
   "/api/artiestenportaal/MaakGroep",
   "/api/artiestenportaal/GetGroepen",
+  "/api/artiestenportaal/SluitAan",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",

@@ -21,16 +21,16 @@ export class HuidigeGroepen extends Component {
             .then(res => res.json())
             .catch(err => console.warn(`caught error: ${err}`))
 
-            if (res && res.groepen) {
+            if (res && res.groepData) {
             let groepen = [];
 
-            for (let i = 0; i < res.groepen.length; i++) {
-                let groep = res.groepen[i]
+            for (let i = 0; i < res.groepData.length; i++) {
+                let groep = res.groepData[i]
                 groepen.push({
-                    naam: groep.groepsNaam,
-                    groepsId: groep.artiestenGroepId,
+                    naam: groep.naam,
+                    groepsId: groep.groepsId,
                     leden: groep.artiesten,
-                    isClientLid: groep.artiestenGroepId == res.IdOfGroupOfUser
+                    isClientLid: groep.groepsId === res.IdOfGroupOfUser
                 });
             }
 
