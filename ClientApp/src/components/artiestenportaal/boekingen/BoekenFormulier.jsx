@@ -74,7 +74,7 @@ export class BoekenFormulier extends Component {
         return true;
     }
 
-    controleer = () => {
+    controleer = async () => {
         if (!this.state.titel) {
             this.setState({
                 resultaat: 'Titel is verplicht',
@@ -126,9 +126,22 @@ export class BoekenFormulier extends Component {
         }
 
         // maak hier een POST request naar de server
-        // als het gelukt is, dan zet je de state van resultaat en resultaatSuccess
+        let res = await fetch('/api/artiestenportaal/MaakBoeking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorizaton': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify({
+                titel: this.state.titel,
+                zaal: this.state.zaal,
+                datum: this.state.datum,
+                tijdstip: this.state.tijdstip,
+                eindTijdstip: this.state.eindTijdstip,
+                groep: this.state.groep
+            })
+        });
 
-        // voor nu zetten we de state maar even op success
         this.setState({
             resultaat: 'Er is een verzoek ingediend. Uw kunt een nieuwe reserving maken of terug naar de homepagina gaan.',
             resultaatSuccess: true
@@ -138,6 +151,8 @@ export class BoekenFormulier extends Component {
     }
 
     render() {
+        console.log(this.props)
+
         return (
             // er is al container en row dus je hoeft alleen col-X nog te doen
             <div className='col-sm-5 text-white d-inline ms-4'>
@@ -154,6 +169,9 @@ export class BoekenFormulier extends Component {
                     <div>Groep</div>
                     <select onChange={this.veranderGroep} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een groep'>
                         <option id="groep-invoer" value="geen">Geen</option>
+                        {this.props.groepen.map(groep => {
+                            return <option id="groep-invoer" value={groep.naam}>{groep.naam}</option>
+                        })}
                     </select>
                 </div>
 

@@ -7,7 +7,7 @@ export class Groepen extends Component {
         return (
             <div className='col-sm-10'>
                 <div className='row'>
-                    <HuidigeGroepen />
+                    <HuidigeGroepen groepen={this.props.groepen}/>
                     <Groepsformulier />
                 </div>
             </div>

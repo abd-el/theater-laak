@@ -110,7 +110,7 @@ public class ArtiestenportaalController : ControllerBase {
     [HttpPost]
     [Route(template: "SluitAan")]
     [AutoriseerArtiestenOfHoger]
-    public async Task<ActionResult> SluitAan([FromBody] SluitAanGroepJson gegevens){
+    public async Task<ActionResult> SluitAan([FromBody] GroepIdJson gegevens){
         var groep = _context.ArtiestGroepen.Where(g => g.ArtiestenGroepId == gegevens.groepsId).First();
         if(groep == null){
             return StatusCode(400, new {
@@ -149,5 +149,56 @@ public class ArtiestenportaalController : ControllerBase {
             success = true,
             bericht = "Je zit nu in de groep."
         });
+    }
+
+    [HttpPost]
+    [Route(template: "Vertrek")]
+    [AutoriseerArtiestenOfHoger]
+    public async Task<ActionResult> Vertrek([FromBody] GroepIdJson gegevens){
+        var groep = _context.ArtiestGroepen.Where(g => g.ArtiestenGroepId == gegevens.groepsId).First();
+        if(groep == null){
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Deze groep bestaat niet."
+            });
+        }
+
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
+        var artiest = await _artiestenManager.FindByNameAsync(userName);
+
+        if(artiest == null){
+            return StatusCode(403, new {
+                success = false,
+                bericht = "Je bent geen artiest."
+            });
+        }
+
+        var groepVanGebruiker = _context.ArtiestGroepen
+            .Include(g => g.Artiesten)
+            .Where(g => g.Artiesten.Contains(artiest))
+            .FirstOrDefault();
+
+        if (groepVanGebruiker == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Je zit niet in een groep."
+            });
+        }
+
+        var removed = groep.Artiesten.Remove(artiest);
+        await _context.SaveChangesAsync();
+
+        if (removed) {
+            return Ok(new {
+                success = true,
+                bericht = "Je zit nu niet meer in de groep."
+            });
+        } else {
+            return StatusCode(500, new {
+                success = false,
+                bericht = "Er is iets misgegaan met de verandering."
+            });
+        }
     }
 }
