@@ -38,9 +38,45 @@ public class LoginController : ControllerBase
 
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
 
+        if (user.lockout == true)
+        {
+            if (DateTime.Compare((DateTime)user.unlockDate, DateTime.Now) < 0)
+            {
+                user.lockout = false;
+                user.FailedAttempts = 0;
+                await _usermanager.UpdateAsync(user);
+                user = await _usermanager.FindByIdAsync(user.Id);
+            }
+            else return Unauthorized("locked");
+        }
+
         if (result == false)
         {
+            if (user.FailedAttempts >= 2)
+            {
+                user.lockout = true;
+                user.FailedAttempts = 0;
+                var currentDate = DateTime.Now;
+                user.unlockDate = currentDate.AddMinutes(10);
+                await _usermanager.UpdateAsync(user);
+                return Unauthorized("locked");
+            }
+
+            if(user.FailedAttempts == null){
+                user.FailedAttempts = 1;
+                await _usermanager.UpdateAsync(user);
+            }
+            else{
+                user.FailedAttempts++;
+            }
+            
+            await _usermanager.UpdateAsync(user);
             return Unauthorized("wrong username or password");
+        }
+        else
+        {
+            user.FailedAttempts = null;
+            await _usermanager.UpdateAsync(user);
         }
 
         var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh89awe98f89uawef9j8aw89hefawef"));
@@ -64,10 +100,11 @@ public class LoginController : ControllerBase
     }
 
     public class captchaResponse { public string responseToken { get; set; } }
-    public class ApiResponse {
-        public bool success {get;set;}
-        public string challenge_ts {get;set;}
-        public string hostname {get;set;}
+    public class ApiResponse
+    {
+        public bool success { get; set; }
+        public string challenge_ts { get; set; }
+        public string hostname { get; set; }
     }
 
     [HttpPost]

@@ -12,7 +12,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 
 export function LoginForm() {
-    const { login, response, setResponse } = useLogin();
+    const { login, message, setMessage } = useLogin();
     const { authState } = useAuthContext();
     const  navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export function LoginForm() {
             );
         }
         else {
-            setResponse('login mislukt, probeer het opnieuw');
+            setMessage('login mislukt, probeer het opnieuw');
         }
 
         captcha.current.reset();
@@ -75,7 +75,7 @@ export function LoginForm() {
                                         <a href="/registreer" className="text-info">Heb je nog geen account?</a>
                                     </div>
                                     <div className="errorMsg text-center text-white pt-5">
-                                        <h5>{response}</h5>
+                                        <h5>{message}</h5>
                                     </div>
                                 </form>
                             </div>
