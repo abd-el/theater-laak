@@ -25,23 +25,13 @@ public class DonatieController : ControllerBase {
     }
 
     [HttpPost]
+    [Authorize]
     [Route("RondAutorisatieAf")]
     public async Task<ActionResult> RondAutorisatieAf([FromBody] DonatieAutorisatieJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;
-        ApplicationUser? user = null;
-
-        System.Console.WriteLine("username is " + userName);
-
-        if(userName != null){
-            user = await _userManager.FindByNameAsync(userName);
-        }
-
-        if(user == null) {
-            // print user is null
-            System.Console.WriteLine("user is null");
-            return Unauthorized();
-        }
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
         user.IkDoneerToken = gegevens.ikDoneerToken;
         _context.SaveChanges();
@@ -54,11 +44,8 @@ public class DonatieController : ControllerBase {
 
     [HttpPost]
     [Route("Autoriseer")]
-    public async Task<ActionResult> Autoriseer([FromForm] string token){
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User!.Identity!.Name));
-        
+    public ActionResult Autoriseer([FromForm] string token)
+    {
         Response.Cookies.Append("IkDoneerToken", token);
 
         var html = "<a href='https://localhost:44461/ikdoneergeautoriseerd'>Klik hier de IkDoneer autorisatie af te ronden.</a>";
@@ -71,7 +58,7 @@ public class DonatieController : ControllerBase {
 
     [HttpPost]
     [Route("MaakDonatie")]
-    public async Task<ActionResult> MaakDonatie([FromBody] DonatieJsonGegevens gegevens){
+    public async Task<ActionResult> MaakDonatie([FromBody] DonatieCreatieJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;
 
@@ -105,7 +92,7 @@ public class DonatieController : ControllerBase {
         var content = new StringContent(JsonSerializer.Serialize(new {
             Doel = 11,
             Hoeveelheid = gegevens.hoeveelheid,
-            Tekst = gegevens.bericht
+            Tekst = gegevens.bericht,
         }), Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync("https://ikdoneer.azurewebsites.net/api/donatie", content);
@@ -124,6 +111,8 @@ public class DonatieController : ControllerBase {
                 Datum = DateTime.Now,
                 Bericht = gegevens.bericht
             });
+
+            _context.SaveChanges();
 
             // return success=true resultaat="Je donatie is succesvol verwerkt!"
             return Ok(new {
@@ -148,68 +137,35 @@ public class DonatieController : ControllerBase {
     }
 
     [HttpPost]
+    [Authorize]
     [Route("GetDonaties")]
     public async Task<ActionResult> GetDonaties(){
-        if(User == null) {
-            return Unauthorized();
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
+
+        var donaties = _context.Donaties.Where(d => d.UserId!.Equals(user!.Id)).ToList();
+        
+        var donatieList = new List<DonatieJsonGegevens>();
+
+        foreach (var donatie in donaties) {
+            // add to list
+            donatieList.Add(new DonatieJsonGegevens(
+                donatie.DonatieId,
+                donatie.Datum,
+                donatie.TotaalBedrag,
+                donatie.UserId,
+                donatie.Bericht
+            ));
         }
 
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
+        // return:
+        // {success: true, donaties: [donatieList]}
 
-        // return everything in database
-        var donaties = _context.Donaties.Where(d => d.UserId!.Equals(user!.Id)).ToList();
-        // jsonify donaties
-        var json = JsonSerializer.Serialize(donaties);
-        return Ok(json); 
-
-        // string token = "";
-
-        // if (user == null) {
-        //     token = Request.Cookies["IkDoneerToken"];
-        // } else {
-        //     token = user.IkDoneerToken;
-        // }
-
-        // System.Console.WriteLine(token);
-
-        // if (token == "") {
-        //     // return "aub autoriseer ikdoneer.nl account aan theater laak account"
-        //     return StatusCode(403, new {
-        //         success = false,
-        //         resultaat = "Aub autoriseer ikdoneer.nl account aan theater laak account"
-        //     });
-        // }
-
-        // var client = new HttpClient();
-
-
-        // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        // var response = await client.GetAsync("https://ikdoneer.azurewebsites.net/api/donatie");
-
-        // // if response is 200 OK, return donaties
-        // if (response.StatusCode == System.Net.HttpStatusCode.OK) {
-        //     // return the body of the response in json format
-        //     var body = await response.Content.ReadAsStringAsync();
-
-        //     System.Console.WriteLine(body);
-
-        //     return Ok(body);
-        // } else {
-        //     // log error
-        //     System.Console.WriteLine(response);
-
-        //     // get error message
-        //     var error = await response.Content.ReadAsStringAsync();
-
-        //     // log error message
-        //     System.Console.WriteLine(error);
-
-        //     return StatusCode(500, new {
-        //         success = false,
-        //     });
-        // }
+        return Ok(new {
+            success = true,
+            donaties = donatieList
+        });
     }
 }

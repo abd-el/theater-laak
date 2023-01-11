@@ -10,4 +10,5 @@ public class Optreden {
     public Voorstelling? Voorstelling {get; set;}
     public Boolean BegunstigersExclusief {get; set;}
     public IEnumerable<Ticket> Tickets {get; set;}
+    public Boolean Bevestigd {get; set;}
 }

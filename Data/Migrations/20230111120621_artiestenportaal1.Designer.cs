@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111120621_artiestenportaal1")]
+    partial class artiestenportaal1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -403,12 +405,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ArtiestenGroepId");
-
-                    b.HasIndex("GroepsEmail")
-                        .IsUnique();
-
-                    b.HasIndex("GroepsNaam")
-                        .IsUnique();
 
                     b.ToTable("ArtiestGroepen");
                 });

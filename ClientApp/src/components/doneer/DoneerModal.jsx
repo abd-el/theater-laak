@@ -93,6 +93,13 @@ export class DoneerModal extends Component {
             return false;
         }
 
+        // check if this.state.huidigBedrag is not int
+        if (this.state.huidigBedrag % 1 !== 0) {
+            this.setState({ resultaat: 'Voer een geheel getal in!', resultaatSuccess: false });
+
+            return false;
+        }
+
         this.doneer();
     }
 
@@ -129,7 +136,7 @@ export class DoneerModal extends Component {
                                     <input className="d-inline form-control text-white" id="plaatsBericht" placeholder="Plaats een bericht.." value={this.state.bericht} onChange={this.veranderBericht} />
                                 </div>
 
-                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
+                                <div id="doneer-resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''}  ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                     {this.state.resultaat}
                                 </div>
 

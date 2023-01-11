@@ -10,16 +10,36 @@ export class HuidigeGroepen extends Component {
         };
     }
 
-    componentDidMount() {
-        let huidigeGroepen = [
-            {naam: 'ThargSquad'},
-            {naam: 'SquadTharg'},
-            {naam: 'AbdallahsFanClub'},
-            {naam: 'DylansCSGOteam'},
-            {naam: 'YuriysGymGang'}
-        ]
+    componentDidMount = async () => {
+            let res = await fetch('/api/artiestenportaal/GetGroepen', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                }
+            })
+            .then(res => res.json())
+            .catch(err => console.warn(`caught error: ${err}`))
 
-        this.setState({ huidigeGroepen: huidigeGroepen });
+            if (res && res.groepData) {
+            let groepen = [];
+
+            for (let i = 0; i < res.groepData.length; i++) {
+                let groep = res.groepData[i]
+                groepen.push({
+                    naam: groep.naam,
+                    groepsId: groep.groepsId,
+                    leden: groep.artiesten,
+                    isClientLid: groep.groepsId === res.IdOfGroupOfUser
+                });
+            }
+
+            console.log(groepen)
+
+            this.setState({
+                huidigeGroepen: groepen
+            });
+        }
     }
 
     render() {
@@ -40,8 +60,8 @@ export class HuidigeGroepen extends Component {
                         </thead>
                         <tbody >
                             {this.state.huidigeGroepen.map((groep, index) => (
-                                <GroepsnaamRij key={index} naam={groep.naam} />
-                            ))} 
+                                <GroepsnaamRij key={index} naam={groep.naam} groepsId={groep.groepsId} leden={groep.leden} isClientLid={groep.isClientLid}/>
+                            ))}
                         </tbody>
                     </table>
                 </div>

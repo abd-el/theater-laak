@@ -11,6 +11,7 @@ import { Programmering } from "./components/programmering/Programmering";
 import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
 import { AccountInstellingen } from './components/accountinstellingen/AccountInstellingen';
 import { Geautoriseerd } from './components/doneer/Geautoriseerd';
+import {AdminPanel} from './components/admin/AdminPanel';
 
 const AppRoutes = [
   {
@@ -48,6 +49,10 @@ const AppRoutes = [
   {
     path: '/ikdoneergeautoriseerd',
     element: <Geautoriseerd />
+  },
+  {
+    path: '/Dashboard',
+    element: <RequireAuth AllowedRoles={['Admin', 'Medewerker']}><AdminPanel /></RequireAuth>
   },
   ...ApiAuthorzationRoutes
 ];

@@ -1,7 +1,6 @@
 import React, { Component }  from 'react';
-import { Groepsleden } from './GroepsledenRij';
 
-export class GroepsnaamLeden extends Component {
+export class Groepslidrij extends Component {
     constructor(props) {
         super(props);
         this.state = { // deze informatie halen we op uit de database

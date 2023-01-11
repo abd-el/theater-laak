@@ -25,10 +25,14 @@ const context =  [
   "/api/donatie/GetDonaties",
   "/api/donatie/Autoriseer",
   "/api/donatie/RondAutorisatieAf",
+  "/api/artiestenportaal/MaakGroep",
+  "/api/artiestenportaal/GetGroepen",
+  "/api/artiestenportaal/SluitAan",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",
-  "/api/Programmering/Optreden"
+  "/api/Programmering/Optreden",
+  "/api/Account/GetMedewerkers"
 ];
 
 module.exports = function(app) {
