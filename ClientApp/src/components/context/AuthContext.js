@@ -7,10 +7,10 @@ export function userReducer(authState, action) {
     switch (action.type) {
         case 'SET_STATE':
             return action.payload
-            
+
         case 'DELETE_STATE':
             return null;
-            
+
         default:
             return authState;
     }
@@ -21,10 +21,11 @@ export function AuthContextProvider({ children }) {
     const [authState, dispatch] = useReducer(userReducer, null);
 
 
+
     useEffect(() => {
 
         const storage = JSON.parse(localStorage.getItem('authState'));
-        
+
         if (storage != null) {
             dispatch({ type: 'SET_STATE', payload: storage });
         }
@@ -34,7 +35,7 @@ export function AuthContextProvider({ children }) {
 
 
     return (
-        <AuthContext.Provider value={{ authState, dispatch }}>
+        <AuthContext.Provider value={{ authState, dispatch, }}>
             {children}
         </AuthContext.Provider>
     );

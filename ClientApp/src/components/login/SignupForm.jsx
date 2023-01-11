@@ -20,7 +20,7 @@ async function passwordCheck(wachtwoord) {
 			return "uw wachtwoord mag geen woorden bevatten"
 		}
 		if(responseMsg == 'PwOnveilig'){
-			return "dit wachtwoord is op het internet gevonden"
+			return "dit wachtwoord is in een data leak gevonden"
 		}
 	}
 	return null;

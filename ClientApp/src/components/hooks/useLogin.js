@@ -1,11 +1,14 @@
 import { useAuthContext } from "./useAuthContext";
 import { backendApi } from "../api";
 import { useState } from "react";
+import { useEffect } from "react";
+
 
 
 export function useLogin() {
     const [response, setResponse] = useState();
-    const { dispatch } = useAuthContext();
+    const { authState, dispatch } = useAuthContext();
+    
 
     async function login(username, password) {
         const resp = await backendApi.post('/api/login', {
@@ -23,7 +26,7 @@ export function useLogin() {
 
             dispatch({
                 type: 'SET_STATE',
-                payload: resp.data
+                payload: resp.data,
             });
             localStorage.setItem('authState', JSON.stringify(resp.data));
             
@@ -34,8 +37,9 @@ export function useLogin() {
 
     }
 
-    function logout(){
-        dispatch({type: 'DELETE_STATE'});
+    function logout() {
+        dispatch({ type: 'DELETE_STATE' });
+        
         localStorage.clear();
     }
 

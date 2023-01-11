@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './LoginForm.css';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { keys } from "./reCaptcha_Keys";
 import { backendApi } from "../api";
+import { Route, Navigate, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 
 
 
 export function LoginForm() {
     const { login, response, setResponse } = useLogin();
+    const { authState } = useAuthContext();
+    const  navigate = useNavigate();
 
     const username = useRef();
     const password = useRef();
     const captcha = useRef();
+
+    useEffect(()=>{
+        if(authState != null){
+            navigate('/');
+        }
+    }, [authState]);
 
     async function HandleClick(e) {
         e.preventDefault();
