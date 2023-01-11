@@ -82,30 +82,6 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
-    // public class AutoriseerAdmin : AuthorizeAttribute
-    // {
-    //     public AutoriseerAdmin()
-    //     {
-    //         Roles = "Admin";
-    //     }
-    // }
-
-    // public class AutoriseerMedewerker : AuthorizeAttribute
-    // {
-    //     public AutoriseerMedewerker()
-    //     {
-    //         Roles = "Medewerker";
-    //     }
-    // }
-
-    // public class AutoriseerArtiest : AuthorizeAttribute
-    // {
-    //     public AutoriseerArtiest()
-    //     {
-    //         Roles = "Artiest";
-    //     }
-    // }
-
     [HttpPost]
     //[Authorize(Roles = "Admin")]
     [Route("assignRole")]
