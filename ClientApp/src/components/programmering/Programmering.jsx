@@ -161,29 +161,30 @@ export function Programmering() {
                 </tr>
             ));
         }
-        else if(enteredDatum == '' && AangepasteArray > 0){
-            content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == today).map((Optreden) => (
-                <tr key={Optreden.volgordeId}>
-                    <td className="afbeelding"><img src={Optreden.voorstelling[Optreden.voorstellingId - 1].afbeelding}
-                        alt='voorstellingsafbeelding'
-                        width='150'
-                        height='200'
-                    />
-                    </td>
-                    <td className="titel">
-                        {Optreden.voorstelling[Optreden.voorstellingId - 1].titel}
-                    </td>
-                    <td className="dag-datum">
-                        {weekdays[new Date(Optreden.datumTijdstip.split('T')[0]).getDay()]}
-                        <br />
-                        {new Date(Optreden.datumTijdstip.split('T')[0]).getDate()}&nbsp;
-                        {months[new Date(Optreden.datumTijdstip.split('T')[0]).getMonth()]}
-                    </td>
-                    <td className="tijdstip">
-                        <button id='tijdstipKnop'>{Optreden.datumTijdstip.split('T')[1].substring(0, 5)}</button>
-                    </td>
-                </tr>
-            ));
+
+    }
+    // Filtert voorstellingen op getypte naam in de zoekbalk
+    for (let i = 0; i < AangepasteArray.length; i++) {
+        for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
+            if (AangepasteArray[i].voorstelling[j].titel == enteredName) {
+                content = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId -1].titel == enteredName).map((Optreden) => (
+                    <Voorstelling array={Optreden} />
+                ));
+            }
+
+
+
+        }
+    }
+
+    for (let i = 0; i < AangepasteArray.length; i++) {
+        for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
+            if (AangepasteArray[i].voorstelling[j].titel == enteredName && AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
+                let filteredArray = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId -1].titel == enteredName);
+                content = filteredArray.filter(fa => fa.datumTijdstip.split('T')[0] == enteredDatum).map((Optreden) => (
+                    <Voorstelling array={Optreden} />
+                ));    
+            }
         }
     }
 
@@ -194,7 +195,6 @@ export function Programmering() {
     if (isLoading) {
         content = <tr><td>Loading...</td></tr>;
     }
-
     return (
         <div>
             <br />
