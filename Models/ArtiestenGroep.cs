@@ -23,9 +23,9 @@ public class ArtiestenGroepJsonGegevens {
     }
 }
 
-public class SluitAanGroepJson {
+public class GroepIdJson {
     public int groepsId {get; set;}
-    public SluitAanGroepJson(int groepsId) {
+    public GroepIdJson(int groepsId) {
         this.groepsId = groepsId;
     }
 }

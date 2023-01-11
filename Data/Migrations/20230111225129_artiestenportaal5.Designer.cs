@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111225129_artiestenportaal5")]
+    partial class artiestenportaal5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -325,9 +327,6 @@ namespace theater_laak.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("FailedAttempts")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("GeboorteDatum")
                         .HasColumnType("TEXT");
 
@@ -375,12 +374,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Voornaam")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("lockout")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("unlockDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
