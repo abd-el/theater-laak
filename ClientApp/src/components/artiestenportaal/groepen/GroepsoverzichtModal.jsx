@@ -17,7 +17,8 @@ export class GroepsoverzichtModal extends Component {
     }
 
     render() {
-        return (
+
+        return (            
             <div>
                 <div className="groepsnaam" data-bs-toggle="modal" data-bs-target={`#GroepsoverzichtModal${this.props.groepsId}`}>
                     {this.props.naam} 
@@ -27,13 +28,13 @@ export class GroepsoverzichtModal extends Component {
                     data-bs-backdrop="static" 
                     data-bs-keyboard="false" 
                     tabIndex="-1" 
-                    aria-labelledby="GroepsoverzichtModalLabel"
+                    aria-labelledby={`GroepsoverzichtModal${this.props.groepsId}Label`}
                     aria-hidden="true">
 
                     <div className="modal-dialog">
                         <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="GroepsoverzichtModalLabel">Groepoverzicht</h5>
+                            <h5 className="modal-title" id={`GroepsoverzichtModal${this.props.groepsId}Label`}>Groepoverzicht</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">

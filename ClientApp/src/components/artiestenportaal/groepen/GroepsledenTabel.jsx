@@ -8,10 +8,11 @@ export class GroepsledenTabel extends Component {
     }
 
     componentDidMount = () => {
-        
+
     }
 
     render() {
+
         return (
             <div>
             <table className="table table-bordered table-dark">

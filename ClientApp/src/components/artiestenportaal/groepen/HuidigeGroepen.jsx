@@ -10,16 +10,36 @@ export class HuidigeGroepen extends Component {
         };
     }
 
-    componentDidMount = () => {
-        let huidigeGroepen = [
-            {naam: 'ThargSquad', groepsId: 0, leden: ['henk', 'jan'], isClientLid: false},
-            {naam: 'SquadTharg', gorepsId: 1, leden: ['piet', 'bob'], isClientLid: false},
-            {naam: 'AbdallahsFanClub', groepsId: 2, leden: ['joop', 'klaas', 'abdallah'], isClientLid: true},
-            {naam: 'DylansCSGOteam', groepsId: 3, leden: ['joost', 'alex'], isClientLid: false},
-            {naam: 'YuriysGymGang', groepsId: 4, leden: ['willem', 'jonas'], isClientLid: false},
-        ]
+    componentDidMount = async () => {
+            let res = await fetch('/api/artiestenportaal/GetGroepen', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                }
+            })
+            .then(res => res.json())
+            .catch(err => console.warn(`caught error: ${err}`))
 
-        this.setState({ huidigeGroepen: huidigeGroepen });
+            if (res && res.groepen) {
+            let groepen = [];
+
+            for (let i = 0; i < res.groepen.length; i++) {
+                let groep = res.groepen[i]
+                groepen.push({
+                    naam: groep.groepsNaam,
+                    groepsId: groep.artiestenGroepId,
+                    leden: groep.artiesten,
+                    isClientLid: groep.artiestenGroepId == res.IdOfGroupOfUser
+                });
+            }
+
+            console.log(groepen)
+
+            this.setState({
+                huidigeGroepen: groepen
+            });
+        }
     }
 
     render() {

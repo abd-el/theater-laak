@@ -16,7 +16,7 @@ export class Groepsformulier extends Component {
     veranderGroepsnaam = (e) => { this.setState({ groepsNaam: e.target.value }) }
     veranderGroepsemail = (e) => { this.setState({ groepsEmail: e.target.value }) }
 
-    controleer = () => {
+    controleer = async () => {
         if (!this.state.groepsNaam || this.state.groepsNaam == '') {
             this.setState({
                 resultaat: 'Vul een groepsnaam in',
@@ -47,10 +47,31 @@ export class Groepsformulier extends Component {
             }
         }
 
-        this.setState({
-            resultaat: 'Groep toegevoegd',
-            resultaatSuccess: true
+        let res = await fetch('/api/artiestenportaal/MaakGroep', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify({
+                groepsNaam: this.state.groepsNaam,
+                groepsEmail: this.state.groepsEmail
+            })
         })
+        .then(res => res.json())
+        .catch(err => console.warn(`${err}`));
+
+        if (res) {
+            this.setState({
+                resultaat: res.bericht,
+                resultaatSuccess: res.success
+            })
+        } else {
+            this.setState({
+                resultaat: "Er is iets misgegaan, probeer het later opnieuw",
+                resultaatSuccess: false
+            })
+        }
 
         return;
     }

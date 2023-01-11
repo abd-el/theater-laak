@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace theater_laak.Models;
 
 public class ArtiestenGroep {
@@ -9,5 +11,14 @@ public class ArtiestenGroep {
     public ArtiestenGroep(string groepsNaam) {
         this.GroepsNaam = groepsNaam;
         this.Artiesten = new List<Artiest>();
+    }
+}
+
+public class ArtiestenGroepJsonGegevens {
+    public string groepsNaam {get; set;}
+    public string? groepsEmail {get; set;}
+    public ArtiestenGroepJsonGegevens(string groepsNaam, string? groepsEmail) {
+        this.groepsNaam = groepsNaam;
+        this.groepsEmail = groepsEmail;
     }
 }
