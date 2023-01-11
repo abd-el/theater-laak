@@ -67,7 +67,7 @@ public class AccountController : ControllerBase
         UserManager<Klant> klant,
         SignInManager<ApplicationUser> signIn,
         RoleManager<IdentityRole> role,
-        ApplicationDbContext context, 
+        ApplicationDbContext context,
         ILogger<AccountController> logger
         )
     {
@@ -82,8 +82,32 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
+    // public class AutoriseerAdmin : AuthorizeAttribute
+    // {
+    //     public AutoriseerAdmin()
+    //     {
+    //         Roles = "Admin";
+    //     }
+    // }
+
+    // public class AutoriseerMedewerker : AuthorizeAttribute
+    // {
+    //     public AutoriseerMedewerker()
+    //     {
+    //         Roles = "Medewerker";
+    //     }
+    // }
+
+    // public class AutoriseerArtiest : AuthorizeAttribute
+    // {
+    //     public AutoriseerArtiest()
+    //     {
+    //         Roles = "Artiest";
+    //     }
+    // }
+
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("assignRole")]
     public async Task<ActionResult> assignRole([FromBody] string username, string role)
     {
@@ -116,22 +140,24 @@ public class AccountController : ControllerBase
         return responseCode;
     }
 
-    public class test{ public string username {get;set;} }
+    public class test { public string username { get; set; } }
     [HttpPost]
     [Route("UserNameCheck")]
-    public async Task<ActionResult> UserNameCheck([FromBody] test username){
+    public async Task<ActionResult> UserNameCheck([FromBody] test username)
+    {
 
         var result = await _userManager.FindByNameAsync(username.username);
 
-        if(result != null) { return BadRequest("userNameBestaat"); }
+        if (result != null) { return BadRequest("userNameBestaat"); }
 
         return Ok();
 
     }
-    public class test2{ public string wachtwoord {get;set;} }
+    public class test2 { public string wachtwoord { get; set; } }
     [HttpPost]
     [Route("WachtwoordCheck")]
-    public async Task<ActionResult> WachtwoordCheck([FromBody] test2 wachtwoord){
+    public async Task<ActionResult> WachtwoordCheck([FromBody] test2 wachtwoord)
+    {
 
         Woordenboek woordenboek = new Woordenboek();
         PwnedPasswords pwnedpasswords = new PwnedPasswords();
@@ -139,18 +165,17 @@ public class AccountController : ControllerBase
         bool bevatWoorden = woordenboek.stringBevatWoord(wachtwoord.wachtwoord, 4);
         bool isBreached = await pwnedpasswords.isPwBreached(wachtwoord.wachtwoord);
 
-        if(bevatWoorden) { return BadRequest("bevatWoord"); }
-        if(isBreached) { return BadRequest("PwOnveilig"); }
+        if (bevatWoorden) { return BadRequest("bevatWoord"); }
+        if (isBreached) { return BadRequest("PwOnveilig"); }
 
         return Ok();
     }
 
-    
+
 
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
-    [Route("RegistreerMedewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     public async Task<ActionResult> RegistreerMedewerker([FromBody] MedewerkerDTO medewerkerDTO)
     {
         var result = await _medewerkerManager
@@ -167,8 +192,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("RegistreerArtiest")]
     public async Task<ActionResult> RegistreerArtiest(ArtiestDTO artiestDTO)
     {
@@ -206,8 +230,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("RegistreerGroep")]
     public async Task<ActionResult> RegistreerGroep(ArtiestenGroep artiestengroep)
     {
@@ -231,33 +254,35 @@ public class AccountController : ControllerBase
     [HttpGet]
     [Authorize]
     [Route("GetUser")]
-    public async Task<ActionResult<ApplicationUser>> GetUser(){
+    public async Task<ActionResult<ApplicationUser>> GetUser()
+    {
 
-        var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;          
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
         var user = await _userManager.FindByNameAsync(userName);
-        
+
         if (user == null)
         {
             return Unauthorized(
-                new {
+                new
+                {
                     success = false,
                     resultaat = "Gebruiker niet gevonden"
                 }
             );
         }
 
-                return Ok(
-            new {
-                success = true,
-                resultaat = "De user is geauthenticeerd"
-            }
-        );
+        return Ok(
+    new
+    {
+        success = true,
+        resultaat = "De user is geauthenticeerd"
+    }
+);
     }
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
     [Route("GetMedewerkers")]
     public async Task<ActionResult<IEnumerable<Medewerker>>> GetMedewerkers()
     {
@@ -270,8 +295,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("GetArtiesten")]
     public async Task<ActionResult<IEnumerable<Artiest>>> GetArtiest()
     {
@@ -295,8 +319,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("GetGroepen")]
     public async Task<ActionResult<IEnumerable<ArtiestenGroep>>> GetGroepen()
     {
@@ -313,8 +336,7 @@ public class AccountController : ControllerBase
 
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("GetDonateurs")]
     public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetDonateurs()
     {
@@ -338,8 +360,7 @@ public class AccountController : ControllerBase
 
 
     [HttpDelete]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("DeleteUser")]
     public async Task<IActionResult> DeleteUser([FromQuery] string userName)
     {
@@ -363,8 +384,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpDelete]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Medewerker")]
+    [Authorize(Roles = "Admin, Medewerker")]
     [Route("DeleteGroep")]
     public async Task<IActionResult> DeleteGroep([FromQuery] string groepsnaam)
     {
@@ -391,16 +411,18 @@ public class AccountController : ControllerBase
     [Authorize]
     [Route("UpdateWachtwoord")]
     public async Task<IActionResult> UpdateWachtwoord([FromBody] VeranderWachtwoordJsonGegevens veranderWachtwoordJsonGegevens
-    ){
-        var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;          
+    )
+    {
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
         var user = await _userManager.FindByNameAsync(userName);
         Console.WriteLine(user);
-        
+
         if (user == null)
         {
             return Unauthorized(
-                new {
+                new
+                {
                     success = false,
                     resultaat = "Gebruiker niet gevonden"
                 }
@@ -410,12 +432,14 @@ public class AccountController : ControllerBase
         // compare current password in database to veranderWachtwoordJsonGegevens.huidigWachtwoord
         var result = await _userManager.CheckPasswordAsync(user, veranderWachtwoordJsonGegevens.huidigWachtwoord);
 
-        if (!result) {
+        if (!result)
+        {
             // return 400 bad request
-            return StatusCode(400, new {
-                    success = false,
-                    resultaat = "Uw wachtwoord is niet correct"
-                }
+            return StatusCode(400, new
+            {
+                success = false,
+                resultaat = "Uw wachtwoord is niet correct"
+            }
             );
         }
 
@@ -423,7 +447,8 @@ public class AccountController : ControllerBase
         await _userManager.AddPasswordAsync(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
 
         return Ok(
-            new {
+            new
+            {
                 success = true,
                 resultaat = "Wachtwoord is succesvol gewijzigd"
             }
@@ -434,16 +459,18 @@ public class AccountController : ControllerBase
     [Authorize]
     [Route("UpdateInstellingen")]
     public async Task<IActionResult> UpdateInstellingen([FromBody] AccountInstellingenJsonGegevens accountInstellingenJsonGegevens
-    ){
-        var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;          
-        var user = await _userManager.FindByNameAsync(userName);         
+    )
+    {
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
+        var user = await _userManager.FindByNameAsync(userName);
         Console.WriteLine(user);
 
         if (user == null)
         {
             return Unauthorized(
-                new {
+                new
+                {
                     success = false,
                     resultaat = "Gebruiker niet gevonden"
                 }
@@ -457,9 +484,10 @@ public class AccountController : ControllerBase
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
         await _userManager.UpdateAsync(user);
-        
+
         return Ok(
-            new {
+            new
+            {
                 success = true,
                 resultaat = "Instellingen zijn succesvol gewijzigd"
             }

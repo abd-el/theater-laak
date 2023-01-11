@@ -28,7 +28,8 @@ const context =  [
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",
-  "/api/Programmering/Optreden"
+  "/api/Programmering/Optreden",
+  "/api/Account/GetMedewerkers"
 ];
 
 module.exports = function(app) {
