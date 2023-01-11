@@ -11,6 +11,7 @@ export class GroepsnaamRij extends Component {
     }
 
     render() {
+
         return (
             <tr>
                 <td>
