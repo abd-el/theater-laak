@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import '../layout/stylesheet.css';
-import { GroepsledenRij } from "./GroepsledenRij";
-import { GroepsnaamRij } from "./GroepsnaamRij";
 
 export class Groepsformulier extends Component {
     constructor(props) {

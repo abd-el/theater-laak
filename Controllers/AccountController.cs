@@ -411,9 +411,8 @@ public class AccountController : ControllerBase
         var result = await _userManager.CheckPasswordAsync(user, veranderWachtwoordJsonGegevens.huidigWachtwoord);
 
         if (!result) {
-            // return 401
-            return Unauthorized(
-                new {
+            // return 400 bad request
+            return StatusCode(400, new {
                     success = false,
                     resultaat = "Uw wachtwoord is niet correct"
                 }
@@ -441,7 +440,6 @@ public class AccountController : ControllerBase
         var user = await _userManager.FindByNameAsync(userName);         
         Console.WriteLine(user);
 
-        
         if (user == null)
         {
             return Unauthorized(

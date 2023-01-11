@@ -25,32 +25,30 @@ public class DonatieController : ControllerBase {
     }
 
     [HttpPost]
-    [Route("Autoriseer")]
-    public async Task<ActionResult> Autoriseer([FromForm] string token){
-        System.Console.WriteLine(token);
+    [Authorize]
+    [Route("RondAutorisatieAf")]
+    public async Task<ActionResult> RondAutorisatieAf([FromBody] DonatieAutorisatieJsonGegevens gegevens){
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
-        if(User == null) {
-            return Unauthorized();
-        }
+        user.IkDoneerToken = gegevens.ikDoneerToken;
+        _context.SaveChanges();
 
-        var user = await _userManager
-        .Users
-        .FirstOrDefaultAsync(x => x.UserName.Equals(User.Identity.Name));
-
-        await _context.Donaties.AddAsync(new Donatie {
-            UserId = user?.Id,
+        return Ok(new {
+            success = true,
+            resultaat = "Je autorisatie is succesvol verwerkt!"
         });
+    }
 
-        // check if user is not null
-        if (user == null) {
-            Response.Cookies.Append("IkDoneerToken", token);
-            System.Console.WriteLine("user is null wat jammer");
-        } else {
-            user.IkDoneerToken = token;
-            _context.SaveChanges();
-        }
+    [HttpPost]
+    [Route("Autoriseer")]
+    public ActionResult Autoriseer([FromForm] string token)
+    {
+        Response.Cookies.Append("IkDoneerToken", token);
 
-        var html = "<a href='https://localhost:44461/AutoriseerDonatie'>Klik hier om terug te gaan</a>";
+        var html = "<a href='https://localhost:44461/ikdoneergeautoriseerd'>Klik hier de IkDoneer autorisatie af te ronden.</a>";
         return new ContentResult
         {
             Content = html,
@@ -60,7 +58,7 @@ public class DonatieController : ControllerBase {
 
     [HttpPost]
     [Route("MaakDonatie")]
-    public async Task<ActionResult> MaakDonatie([FromBody] DonatieJsonGegevens gegevens){
+    public async Task<ActionResult> MaakDonatie([FromBody] DonatieCreatieJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;
 
@@ -94,19 +92,27 @@ public class DonatieController : ControllerBase {
         var content = new StringContent(JsonSerializer.Serialize(new {
             Doel = 11,
             Hoeveelheid = gegevens.hoeveelheid,
-            Tekst = gegevens.bericht
+            Tekst = gegevens.bericht,
         }), Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync("https://ikdoneer.azurewebsites.net/api/donatie", content);
 
         // if response is 200 OK, add to database
         if (response.StatusCode == System.Net.HttpStatusCode.OK) {
+            string? userId = user?.Id;
+
+            if (gegevens.anoniem) {
+                userId = null;
+            }
+
             _context.Donaties.Add(new Donatie {
-                UserId = user?.Id,
+                UserId = userId,
                 TotaalBedrag = Double.Parse(gegevens.hoeveelheid),
                 Datum = DateTime.Now,
                 Bericht = gegevens.bericht
             });
+
+            _context.SaveChanges();
 
             // return success=true resultaat="Je donatie is succesvol verwerkt!"
             return Ok(new {
@@ -115,13 +121,13 @@ public class DonatieController : ControllerBase {
             });
         } else {
             // log error
-            System.Console.WriteLine(response);
+            System.Console.WriteLine("error bij donatiecontroller: " + response);
 
             // get error message
             var error = await response.Content.ReadAsStringAsync();
 
             // log error message
-            System.Console.WriteLine(error);
+            System.Console.WriteLine("error bij donatiecontroller (2): " + error);
 
             return StatusCode(500, new {
                 success = false,
@@ -131,60 +137,35 @@ public class DonatieController : ControllerBase {
     }
 
     [HttpPost]
+    [Authorize]
     [Route("GetDonaties")]
     public async Task<ActionResult> GetDonaties(){
-        var user = await _userManager.GetUserAsync(User);
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;          
+        var user = await _userManager.FindByNameAsync(userName);         
+        Console.WriteLine(user);
 
-        string token = "";
+        var donaties = _context.Donaties.Where(d => d.UserId!.Equals(user!.Id)).ToList();
+        
+        var donatieList = new List<DonatieJsonGegevens>();
 
-        if (Request == null) {
-            return Unauthorized();
+        foreach (var donatie in donaties) {
+            // add to list
+            donatieList.Add(new DonatieJsonGegevens(
+                donatie.DonatieId,
+                donatie.Datum,
+                donatie.TotaalBedrag,
+                donatie.UserId,
+                donatie.Bericht
+            ));
         }
 
-        if (user == null) {
-            token = Request.Cookies["IkDoneerToken"];
-        } else {
-            token = user.IkDoneerToken;
-        }
+        // return:
+        // {success: true, donaties: [donatieList]}
 
-        System.Console.WriteLine(token);
-
-        if (token == "") {
-            // return "aub autoriseer ikdoneer.nl account aan theater laak account"
-            return StatusCode(403, new {
-                success = false,
-                resultaat = "Aub autoriseer ikdoneer.nl account aan theater laak account"
-            });
-        }
-
-        var client = new HttpClient();
-
-
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        var response = await client.GetAsync("https://ikdoneer.azurewebsites.net/api/donatie");
-
-        // if response is 200 OK, return donaties
-        if (response.StatusCode == System.Net.HttpStatusCode.OK) {
-            // return the body of the response in json format
-            var body = await response.Content.ReadAsStringAsync();
-
-            System.Console.WriteLine(body);
-
-            return Ok(body);
-        } else {
-            // log error
-            System.Console.WriteLine(response);
-
-            // get error message
-            var error = await response.Content.ReadAsStringAsync();
-
-            // log error message
-            System.Console.WriteLine(error);
-
-            return StatusCode(500, new {
-                success = false,
-            });
-        }
+        return Ok(new {
+            success = true,
+            donaties = donatieList
+        });
     }
 }

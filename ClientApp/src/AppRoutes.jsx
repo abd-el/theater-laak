@@ -10,6 +10,7 @@ import { SignupForm } from './components/login/SignupForm';
 import { Programmering } from "./components/programmering/Programmering";
 import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
 import { AccountInstellingen } from './components/accountinstellingen/AccountInstellingen';
+import { Geautoriseerd } from './components/doneer/Geautoriseerd';
 
 const AppRoutes = [
   {
@@ -43,6 +44,10 @@ const AppRoutes = [
   {
     path: '/registreer',
     element: <SignupForm />
+  },
+  {
+    path: '/ikdoneergeautoriseerd',
+    element: <Geautoriseerd />
   },
   ...ApiAuthorzationRoutes
 ];

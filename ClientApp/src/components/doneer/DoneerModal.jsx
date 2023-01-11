@@ -12,14 +12,32 @@ export class DoneerModal extends Component {
         this.state = {
             huidigBedrag: '',
             bericht: '',
+            anoniem: true,
             
             resultaat: '',
-            resultaatSuccess: undefined
+            resultaatSuccess: undefined,
+            
+            ingelogd: false
         };
     }
 
     veranderHuidigBedrag = (e) => { this.setState({ huidigBedrag: e.target.value }); }
     veranderBericht = (e) => { this.setState({ bericht: e.target.value }); }
+    veranderAnoniem = (e) => { this.setState({ anoniem: e.target.checked }); }
+
+    geklikt = async () => {
+        const { authState } = this.context;
+
+        console.log(authState)
+
+        if (authState != null) {
+            this.setState({ ingelogd: true });
+        } else {
+            this.setState({ ingelogd : false })
+        }
+
+        console.log("this.state.ingelogd: " + this.state.ingelogd)
+    }
 
     doneer = async () => {
         const { authState } = this.context;
@@ -36,7 +54,8 @@ export class DoneerModal extends Component {
             body: JSON.stringify({
                 bericht: String(this.state.bericht),
                 hoeveelheid: String(this.state.huidigBedrag),
-                token: this.state.token
+                token: this.state.token,
+                anoniem: this.state.anoniem
             })
         })
         .then(response => response.json())
@@ -74,13 +93,20 @@ export class DoneerModal extends Component {
             return false;
         }
 
+        // check if this.state.huidigBedrag is not int
+        if (this.state.huidigBedrag % 1 !== 0) {
+            this.setState({ resultaat: 'Voer een geheel getal in!', resultaatSuccess: false });
+
+            return false;
+        }
+
         this.doneer();
     }
 
     render() {
         return (
             <>
-                <button type="button" id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3" data-bs-toggle="modal" data-bs-target="#doneerModal">
+                <button onClick={this.geklikt} type="button" id="doneer-knop" className="btn btn-light btn-lg mt-4 display-inline me-3" data-bs-toggle="modal" data-bs-target="#doneerModal">
                     Doneer
                 </button>
                 
@@ -110,8 +136,15 @@ export class DoneerModal extends Component {
                                     <input className="d-inline form-control text-white" id="plaatsBericht" placeholder="Plaats een bericht.." value={this.state.bericht} onChange={this.veranderBericht} />
                                 </div>
 
-                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
+                                <div id="doneer-resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''}  ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                     {this.state.resultaat}
+                                </div>
+
+                                <div>
+                                    <input checked={!this.state.ingelogd || this.state.anoniem} onChange={this.veranderAnoniem} disabled={!this.state.ingelogd} className="form-check-input" type="checkbox" value="" id="doneerAnoniem" />
+                                    <label className="form-check-label ms-2" htmlFor="doneerAnoniem">
+                                        Doneer anoniem
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +152,7 @@ export class DoneerModal extends Component {
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Sluit</button>
                                 <button type="button" className="btn btn-primary" onClick={this.controleerBedrag}>Bevestig</button>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </>
