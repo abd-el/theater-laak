@@ -41,7 +41,7 @@ export function ExpirationModal() {
     }, [authState]);
 
     useEffect(() => {
-        console.log(counter);
+        //console.log(counter);
         if(counter != null){
             localStorage.setItem('counter', counter);
         }
@@ -52,7 +52,7 @@ export function ExpirationModal() {
 
            const decodedJwt = jwtDecode(authState.token);
            const expDate = decodedJwt.exp;
-           console.log('expiration date: ' + expDate);
+           //console.log('expiration date: ' + expDate);
 
             if (counter > expDate) {
                 setCounter(0);
