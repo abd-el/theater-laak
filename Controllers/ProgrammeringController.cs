@@ -137,25 +137,25 @@ public class ProgrammeringController : ControllerBase
         return Ok($"Optreden met id: {optreden.OptredenId} is toegevoegd voor {voorstelling.Titel}!");
     }
 
-    // [HttpDelete]
-    // [Route("Voorstelling")]
-    // public async Task<ActionResult> VerwijdesrVoorstelling(int VoorstellingId)
-    // {
-    //     if (_context.Voorstellingen.Count() == 0)
-    //     {
-    //         return NotFound("Er zijn geen voorstellingen beschikbaar.");
-    //     }
+    [HttpDelete]
+    [Route("Optreden")]
+    public async Task<ActionResult> VerwijdesrVoorstelling(int OptredenId)
+    {
+        if (_context.Optredens.Count() == 0)
+        {
+            return NotFound("Er zijn geen optredens beschikbaar.");
+        }
 
-    //     var voorstelling = await _context.Voorstellingen.FindAsync(VoorstellingId);
+        var optreden = await _context.Optredens.FindAsync(OptredenId);
 
-    //     if (voorstelling == null)
-    //     {
-    //         return NotFound($"Voorstelling met de Id: {VoorstellingId} niet gevonden.");
-    //     }
+        if (optreden == null)
+        {
+            return NotFound($"Voorstelling met de Id: {OptredenId} niet gevonden.");
+        }
 
-    //     _context.Voorstellingen.Remove(voorstelling);
-    //     await _context.SaveChangesAsync();
+        _context.Optredens.Remove(optreden);
+        await _context.SaveChangesAsync();
 
-    //     return Ok($"Voorstelling met de Id: {VoorstellingId} is verwijderd!");
-    // }
+        return Ok($"Optreden met de Id: {OptredenId} is verwijderd!");
+    }
 }
