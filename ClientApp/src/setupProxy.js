@@ -31,7 +31,14 @@ const context =  [
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",
   "/api/Programmering/Optreden",
-  "/api/Account/GetMedewerkers"
+  "/api/Account/GetMedewerkers",
+  "/api/Account/GetAdmins",
+  "/api/Account/GetArtiesten",
+  "/api/Account/GetGroepen",
+  "/api/Account/GetDonateurs",
+  "/api/Account/RegistreerArtiest",
+  "/api/Account/RegistreerAdmin",
+  "/api/Account/RegistreerGroep"
 ];
 
 module.exports = function(app) {
