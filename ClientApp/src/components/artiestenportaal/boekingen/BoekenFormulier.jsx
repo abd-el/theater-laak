@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import '../layout/stylesheet.css';
 import '../../../custom.css';
+import { MaakVoorstellingModal } from './MaakVoorstellingModal';
 
 export class BoekenFormulier extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ export class BoekenFormulier extends Component {
             resultaat: '',
             resultaatSuccess: null,
 
-            titel: null,
+            voorstelling: null,
             groep: 0,
             zaal: null,
             datum: null,
@@ -18,18 +19,19 @@ export class BoekenFormulier extends Component {
         };
     }
 
-    veranderTitel = (e) => { this.setState({ titel: e.target.value }); }
     veranderGroep = (e) => { this.setState({ groep: e.target.value }); }
     veranderZaal = (e) => { this.setState({ zaal: e.target.value }); }
     veranderDatum = (e) => { this.setState({ datum: e.target.value }); }
     veranderTijdstip = (e) => { this.setState({ tijdstip: e.target.value }); }
     veranderEindTijdstip = (e) => { this.setState({ eindTijdstip: e.target.value }); }
+    veranderVoorstelling = (e) => { this.setState({ voorstelling: e.target.value }); }
+
+    valideerVoorstelling = (voorstelling) => {
+        return !(voorstelling === 0 || !voorstelling)
+    }
 
     valideerZaal = (zaal) => {
-        if(zaal === 0 || !zaal) {
-            return false;
-        }
-        return true;
+        return !(zaal === 0 || !zaal);
     }
 
     tijdstippenVerschilInMinuten = (tijdstip1, tijdstip2) => {
@@ -75,9 +77,9 @@ export class BoekenFormulier extends Component {
     }
 
     controleer = async () => {
-        if (!this.state.titel) {
+        if (!this.valideerVoorstelling(this.state.voorstelling)) {
             this.setState({
-                resultaat: 'Titel is verplicht',
+                resultaat: 'Zaal is verplicht',
                 resultaatSuccess: false
             });
 
@@ -133,7 +135,7 @@ export class BoekenFormulier extends Component {
                 'Authorizaton': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
             },
             body: JSON.stringify({
-                titel: this.state.titel,
+                voorstelling: this.state.voorstelling,
                 zaal: this.state.zaal,
                 datum: this.state.datum,
                 tijdstip: this.state.tijdstip,
@@ -170,8 +172,13 @@ export class BoekenFormulier extends Component {
                 </div>
 
                 <div className='mb-2'>
-                    <div>Titel*</div>
-                    <input onChange={this.veranderTitel} id="titel-invoer" className='form-control text-white' placeholder='Geef een titel op'></input>
+                    <div>Voorstelling*</div>
+                    <select onChange={this.veranderVoorstelling} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
+                        <option id="voorstelling-invoer" value="0">Geen</option>
+                        {this.props.voorstellingen.map((voorstelling, index) => {
+                            return <option id="voorstelling-invoer" key={index} value={voorstelling.id}>{voorstelling.naam}</option>
+                        })}
+                    </select>
                 </div>
 
                 <div className='mb-2'>
@@ -197,17 +204,17 @@ export class BoekenFormulier extends Component {
                 </div>
 
                 <div>
-                    <div className='mb-2 d-inline-block datum'>
+                    <div className='mb-2 d-inline-block w-45'>
                         <div>Datum*</div>
                         <input onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='dd-mm-jjjj'></input>
                     </div>
 
-                    <div className='mb-2 d-inline-block ms-2 tijdstip'>
+                    <div className='mb-2 d-inline-block ms-2 w-25'>
                         <div>Tijdstip*</div>
                         <input onChange={this.veranderTijdstip} id="tijdstip-invoer" className='form-control text-white' placeholder='XX:XX'></input>
                     </div>
 
-                    <div className='mb-2 d-inline-block ms-2 tot'>
+                    <div className='mb-2 d-inline-block ms-2 w-25'>
                         <div>Tot*</div>
                         <input onChange={this.veranderEindTijdstip} id="tot-invoer" className='form-control text-white' placeholder='XX:XX'></input>
                     </div>
@@ -216,6 +223,8 @@ export class BoekenFormulier extends Component {
                 <button onClick={this.controleer} className="btn btn-light mt-3">
                     Maak een verzoek voor een reservering
                 </button>
+
+                <MaakVoorstellingModal />
 
                 <div id="resultaat" className={`mt-2 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
                     {this.state.resultaat}

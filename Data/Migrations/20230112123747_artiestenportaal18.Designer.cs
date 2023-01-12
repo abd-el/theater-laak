@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230112123747_artiestenportaal18")]
+    partial class artiestenportaal18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -456,9 +458,6 @@ namespace theater_laak.Data.Migrations
                     b.Property<int?>("ArtiestId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ArtiestId1")
-                        .HasColumnType("TEXT");
-
                     b.Property<int?>("ArtiestenGroepId")
                         .HasColumnType("INTEGER");
 
@@ -481,10 +480,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("OptredenId");
-
-                    b.HasIndex("ArtiestId1");
-
-                    b.HasIndex("ArtiestenGroepId");
 
                     b.HasIndex("VoorstellingId");
 
@@ -564,9 +559,6 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("VoorstellingId");
-
-                    b.HasIndex("Titel")
-                        .IsUnique();
 
                     b.ToTable("Voorstellingen", (string)null);
                 });
@@ -694,7 +686,6 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Donaties")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Donatie_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -702,14 +693,6 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Optreden", b =>
                 {
-                    b.HasOne("theater_laak.Models.Artiest", "Artiest")
-                        .WithMany()
-                        .HasForeignKey("ArtiestId1");
-
-                    b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
-                        .WithMany()
-                        .HasForeignKey("ArtiestenGroepId");
-
                     b.HasOne("theater_laak.Models.Voorstelling", "Voorstelling")
                         .WithMany("Optredens")
                         .HasForeignKey("VoorstellingId")
@@ -723,10 +706,6 @@ namespace theater_laak.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Optreden_Zaal_2");
-
-                    b.Navigation("Artiest");
-
-                    b.Navigation("ArtiestenGroep");
 
                     b.Navigation("Voorstelling");
 
@@ -764,7 +743,6 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Tickets")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -779,7 +757,6 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
                         .HasForeignKey("ArtiestenGroepId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Artiest_ArtiestenGroep_2");
 
                     b.Navigation("ArtiestenGroep");

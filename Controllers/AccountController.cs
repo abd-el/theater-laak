@@ -83,7 +83,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("assignRole")]
     public async Task<ActionResult> assignRole([FromBody] string username, string role)
     {

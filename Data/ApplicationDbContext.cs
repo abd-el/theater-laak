@@ -116,6 +116,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Voorstelling>()
+        .HasIndex(voorstelling => voorstelling.Titel)
+        .IsUnique();
+
+        builder.Entity<Voorstelling>()
         .Property(voorstelling => voorstelling.Beschrijving)
         .IsRequired();
 
@@ -173,104 +177,120 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasOne<ArtiestenGroep>(a => a.ArtiestenGroep)
         .WithMany(ag => ag.Artiesten)
         .HasForeignKey(a => a.ArtiestenGroepId)
-        .HasConstraintName("FK_Artiest_ArtiestenGroep_1");
+        .HasConstraintName("FK_Artiest_ArtiestenGroep_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<ArtiestenGroep>()
         .HasMany<Artiest>(ag => ag.Artiesten)
         .WithOne(a => a.ArtiestenGroep)
         .HasForeignKey(a => a.ArtiestenGroepId)
-        .HasConstraintName("FK_Artiest_ArtiestenGroep_2");
+        .HasConstraintName("FK_Artiest_ArtiestenGroep_2")
+        .OnDelete(DeleteBehavior.Cascade);
     
     // Donatie FK naar ApplicationUser
         builder.Entity<Donatie>()
         .HasOne<ApplicationUser>(d => d.ApplicationUser)
         .WithMany(au => au.Donaties)
         .HasForeignKey(d => d.UserId)
-        .HasConstraintName("FK_Donatie_ApplicationUser_1");
+        .HasConstraintName("FK_Donatie_ApplicationUser_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<ApplicationUser>()
         .HasMany<Donatie>(au => au.Donaties)
         .WithOne(d => d.ApplicationUser)
         .HasForeignKey(d => d.UserId)
-        .HasConstraintName("FK_Donatie_ApplicationUser_2");
+        .HasConstraintName("FK_Donatie_ApplicationUser_2")
+        .OnDelete(DeleteBehavior.Cascade);
 
     // Ticket FK naar ApplicationUser
         builder.Entity<Ticket>()
         .HasOne<ApplicationUser>(t => t.ApplicationUser)
         .WithMany(au => au.Tickets)
         .HasForeignKey(t => t.UserID)
-        .HasConstraintName("FK_Ticket_ApplicationUser_1");
+        .HasConstraintName("FK_Ticket_ApplicationUser_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<ApplicationUser>()
         .HasMany<Ticket>(au => au.Tickets)
         .WithOne(t => t.ApplicationUser)
         .HasForeignKey(t => t.UserID)
-        .HasConstraintName("FK_Ticket_ApplicationUser_2");
+        .HasConstraintName("FK_Ticket_ApplicationUser_2")
+        .OnDelete(DeleteBehavior.Cascade);
         
     // Ticket FK naar Optreden
         builder.Entity<Ticket>()
         .HasOne<Optreden>(t => t.Optreden)
         .WithMany(o => o.Tickets)
         .HasForeignKey(t => t.OptredenId)
-        .HasConstraintName("FK_Ticket_Optreden_1");
+        .HasConstraintName("FK_Ticket_Optreden_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Optreden>()
         .HasMany<Ticket>(o => o.Tickets)
         .WithOne(t => t.Optreden)
         .HasForeignKey(t => t.OptredenId)
-        .HasConstraintName("FK_Ticket_Optreden_2");
+        .HasConstraintName("FK_Ticket_Optreden_2")
+        .OnDelete(DeleteBehavior.Cascade);
 
     // Ticket FK naar Stoel
         builder.Entity<Ticket>()
         .HasOne<Stoel>(t => t.Stoel)
         .WithMany(s => s.Tickets)
         .HasForeignKey(t => t.StoelId)
-        .HasConstraintName("FK_Ticket_Stoel_1");
+        .HasConstraintName("FK_Ticket_Stoel_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Stoel>()
         .HasMany<Ticket>(s => s.Tickets)
         .WithOne(t => t.Stoel)
         .HasForeignKey(t => t.StoelId)
-        .HasConstraintName("FK_Ticket_Stoel_2");
+        .HasConstraintName("FK_Ticket_Stoel_2")
+        .OnDelete(DeleteBehavior.Cascade);
 
     // Optreden FK naar Voorstelling
         builder.Entity<Optreden>()
         .HasOne<Voorstelling>(o => o.Voorstelling)
         .WithMany(v => v.Optredens)
         .HasForeignKey(o => o.VoorstellingId)
-        .HasConstraintName("FK_Optreden_Voorstelling_1");
+        .HasConstraintName("FK_Optreden_Voorstelling_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Voorstelling>()
         .HasMany<Optreden>(v => v.Optredens)
         .WithOne(o => o.Voorstelling)
         .HasForeignKey(o => o.VoorstellingId)
-        .HasConstraintName("FK_Optreden_Voorstelling_2");
+        .HasConstraintName("FK_Optreden_Voorstelling_2")
+        .OnDelete(DeleteBehavior.Cascade);
 
     // Stoel FK naar Zaal    
         builder.Entity<Stoel>()
         .HasOne<Zaal>(s => s.Zaal)
         .WithMany(z => z.Stoelen)
         .HasForeignKey(s => s.ZaalId)
-        .HasConstraintName("FK_Stoel_Zaal_1");
+        .HasConstraintName("FK_Stoel_Zaal_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Zaal>()
         .HasMany<Stoel>(z => z.Stoelen)
         .WithOne(s => s.Zaal)
         .HasForeignKey(s => s.ZaalId)
-        .HasConstraintName("FK_Stoel_Zaal_2");
+        .HasConstraintName("FK_Stoel_Zaal_2")
+        .OnDelete(DeleteBehavior.Cascade);
 
-    // Optrede FK naar Zaal    
+    // Optreden FK naar Zaal    
         builder.Entity<Optreden>()
         .HasOne<Zaal>(v => v.Zaal)
         .WithMany(z => z.Optredens)
         .HasForeignKey(v => v.ZaalId)
-        .HasConstraintName("FK_Optreden_Zaal_1");
+        .HasConstraintName("FK_Optreden_Zaal_1")
+        .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Zaal>()
         .HasMany<Optreden>(z => z.Optredens)
         .WithOne(o => o.Zaal)
         .HasForeignKey(o => o.ZaalId)
-        .HasConstraintName("FK_Optreden_Zaal_2");
+        .HasConstraintName("FK_Optreden_Zaal_2")
+        .OnDelete(DeleteBehavior.Cascade);
     }
 
     //Gebruiker-Systeem
