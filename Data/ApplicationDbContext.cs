@@ -259,18 +259,18 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasForeignKey(s => s.ZaalId)
         .HasConstraintName("FK_Stoel_Zaal_2");
 
-    // Optrede FK naar Zaal    
-        builder.Entity<Optreden>()
+    // Voorstelling FK naar Zaal    
+        builder.Entity<Voorstelling>()
         .HasOne<Zaal>(v => v.Zaal)
-        .WithMany(z => z.Optredens)
+        .WithMany(z => z.Voorstellingen)
         .HasForeignKey(v => v.ZaalId)
-        .HasConstraintName("FK_Optreden_Zaal_1");
+        .HasConstraintName("FK_Voorstelling_Zaal_1");
 
         builder.Entity<Zaal>()
-        .HasMany<Optreden>(z => z.Optredens)
-        .WithOne(o => o.Zaal)
-        .HasForeignKey(o => o.ZaalId)
-        .HasConstraintName("FK_Optreden_Zaal_2");
+        .HasMany<Voorstelling>(z => z.Voorstellingen)
+        .WithOne(v => v.Zaal)
+        .HasForeignKey(v => v.ZaalId)
+        .HasConstraintName("FK_Voorstelling_Zaal_2");
     }
 
     //Gebruiker-Systeem
