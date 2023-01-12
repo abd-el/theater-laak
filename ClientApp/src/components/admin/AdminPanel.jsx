@@ -3,7 +3,8 @@ import { MenuKnop } from '../artiestenportaal/layout/MenuKnop';
 
 export function AdminPanel() {
 
-    const [enteredName, setName] = useState('');
+    const [enteredName1, setName1] = useState('');
+    const [enteredName2, setName2] = useState('');
     const [artiesten, setArt] = useState([]);
     const [medewerkers, setM] = useState([]);
     const [admins, setA] = useState([]);
@@ -14,6 +15,69 @@ export function AdminPanel() {
     const [optredens, SetO] = useState([]);
     //const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+
+//admin states
+    const [voornaam,setVoornaam] = useState('');
+    const [achternaam,setAchternaam] = useState('');
+    const [username,setUsername] = useState('');
+    const [password,setpassword] = useState('');
+    const [geslacht,setGeslacht] = useState('');
+    const [email,setEmail] = useState('');
+    const [geboorteDatum,setGeboorteDatum] = useState('');
+    const [adres,setAdres] = useState('');
+    const [telefoonnummer,setTelefoonnummer] = useState('');
+    const [emailVoorkeur,setemailVoorkeur] = useState('');
+    const [ip,setIp] = useState('');
+    const [bankGegevens,setbankGegevens] = useState('');
+
+    function voornaamHandler(e) {
+        setVoornaam(e.target.value);
+    }
+
+    function achternaamHandler(e) {
+        setAchternaam(e.target.value);
+    }
+
+    function usernameHandler(e) {
+        setUsername(e.target.value);
+    }
+    
+    function passwordHandler(e) {
+        setpassword(e.target.value);
+    }
+
+    function geslachtHandler(e) {
+        setGeslacht(e.target.value);
+    }
+
+    function emailHandler(e) {
+        setEmail(e.target.value);
+    }
+
+    function geboorteDHandler(e) {
+        setGeboorteDatum(e.target.value);
+    }
+    
+    function adresHandler(e) {
+        setAdres(e.target.value);
+    }
+
+    function telefoonnummerHandler(e) {
+        setTelefoonnummer(e.target.value);
+    }
+
+    function emailvoorkeurHandler(e) {
+        setemailVoorkeur(e.target.value);
+    }
+
+    function ipHandler(e) {
+        setIp(e.target.value);
+    }
+
+    function bankgegevensHandler(e) {
+        setbankGegevens(e.target.value);
+    }
+
 
     const getMedewerkers = useCallback(async function () {
         //event.preventDefault();
@@ -251,9 +315,67 @@ export function AdminPanel() {
         getOptredens();
     }
 
+    async function voegAdmin() {
+        let admin = {
+            userName: username,
+            password: password,
+            voornaam: voornaam,
+            achternaam: achternaam,
+            geslacht: geslacht,
+            email: email,
+            geboorteDatum: geboorteDatum,
+            adres: adres,
+            telefoonnummer: telefoonnummer,
+            emailVoorkeur: emailVoorkeur,
+            ip: ip,
+            bankGegevens: bankGegevens,
+            tickets: [],
+            donaties: []
+        };
+
+        fetch('https://localhost:44461/api/Account/RegistreerAdmin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(admin)
+        });
+        console.log(admin)
+    }
+
+    async function voegMedewerker() {
+        let medewerker = {
+            userName: username,
+            password: password,
+            voornaam: voornaam,
+            achternaam: achternaam,
+            geslacht: geslacht,
+            email: email,
+            geboorteDatum: geboorteDatum,
+            adres: adres,
+            telefoonnummer: telefoonnummer,
+            emailVoorkeur: emailVoorkeur,
+            ip: ip,
+            bankGegevens: bankGegevens,
+            tickets: [],
+            donaties: []
+        };
+
+        fetch('https://localhost:44461/api/Account/RegistreerAdmin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(medewerker)
+        });
+        console.log(medewerker)
+    }
+
     let content = <p>nothing</p>;
 
-    if (enteredName == 'Medewerkers' && medewerkers.length > 0) {
+    if (enteredName1 == 'Medewerkers' && medewerkers.length > 0) {
         content = medewerkers.map((list) => (
             <tr>
                 <td className="Id">
@@ -272,7 +394,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Admins' && admins.length > 0) {
+    if (enteredName1 == 'Admins' && admins.length > 0) {
         content = admins.map((list) => (
             <tr>
                 <td className="Id">
@@ -291,7 +413,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Artiesten' && artiesten.length > 0) {
+    if (enteredName1 == 'Artiesten' && artiesten.length > 0) {
         content = artiesten.map((list) => (
             <tr>
                 <td className="Id">
@@ -313,7 +435,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Groepen' && groepen.length > 0) {
+    if (enteredName1 == 'Groepen' && groepen.length > 0) {
         content = groepen.map((list) => (
             <tr>
                 <td className="Id">
@@ -332,7 +454,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Donateurs' && donateurs.length > 0) {
+    if (enteredName1 == 'Donateurs' && donateurs.length > 0) {
         content = donateurs.map((list) => (
             <tr>
                 <td className="Id">
@@ -351,7 +473,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Zalen' && zalen.length > 0) {
+    if (enteredName1 == 'Zalen' && zalen.length > 0) {
         content = zalen.map((list) => (
             <tr>
                 <td className="Id">
@@ -370,7 +492,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Voorstellingen' && voorstellingen.length > 0) {
+    if (enteredName1 == 'Voorstellingen' && voorstellingen.length > 0) {
         content = voorstellingen.map((list) => (
             <tr>
                 <td className="Id">
@@ -392,7 +514,7 @@ export function AdminPanel() {
         ));
     }
 
-    if (enteredName == 'Optredens' && optredens.length > 0) {
+    if (enteredName1 == 'Optredens' && optredens.length > 0) {
         content = optredens.map((list) => (
             <tr>
                 <td className="Id">
@@ -425,8 +547,8 @@ export function AdminPanel() {
     if (error) {
         content = <tr><td>{error}</td></tr>;
     }
-
-    console.log(optredens);
+        
+    //console.log(optredens);
     return (
         <div>
             <br />
@@ -439,17 +561,17 @@ export function AdminPanel() {
             </div>
             <br />
             <div>
-                <label className='text-white display-6 mb-1 d-block'>Getters</label>
+                <label className='text-white display-6 mb-1 d-block'>Getters(Ophalen)</label>
                 <br />
                 <button onClick={update}>Update</button>
-                <button onClick={() => setName('Admins')}>Admins</button>
-                <button onClick={() => setName('Medewerkers')}>Medewerkers</button>
-                <button onClick={() => setName('Artiesten')}>Artiesten</button>
-                <button onClick={() => setName('Groepen')}>Groepen</button>
-                <button onClick={() => setName('Donateurs')}>Donateurs</button>
-                <button onClick={() => setName('Zalen')}>Zalen</button>
-                <button onClick={() => setName('Voorstellingen')}>Voorstellingen</button>
-                <button onClick={() => setName('Optredens')}>Optredens</button>
+                <button onClick={() => setName1('Admins')}>Admins</button>
+                <button onClick={() => setName1('Medewerkers')}>Medewerkers</button>
+                <button onClick={() => setName1('Artiesten')}>Artiesten</button>
+                <button onClick={() => setName1('Groepen')}>Groepen</button>
+                <button onClick={() => setName1('Donateurs')}>Donateurs</button>
+                <button onClick={() => setName1('Zalen')}>Zalen</button>
+                <button onClick={() => setName1('Voorstellingen')}>Voorstellingen</button>
+                <button onClick={() => setName1('Optredens')}>Optredens</button>
             </div>
             <br />
             <div>
@@ -459,97 +581,97 @@ export function AdminPanel() {
                             <th scope='col'>
                                 ID
                             </th>
-                            {enteredName != 'Groepen' && enteredName != 'Zalen' && enteredName != 'Voorstellingen' && enteredName != 'Optredens' &&
+                            {enteredName1 != 'Groepen' && enteredName1 != 'Zalen' && enteredName1 != 'Voorstellingen' && enteredName1 != 'Optredens' &&
                                 <th scope='col'>
                                     Username
                                 </th>
                             }
-                            {enteredName == 'Groepen' &&
+                            {enteredName1 == 'Groepen' &&
                                 <th scope='col'>
                                     Groepsnaam
                                 </th>
                             }
-                            {enteredName == 'Zalen' &&
+                            {enteredName1 == 'Zalen' &&
                                 <th scope='col'>
                                     Type
                                 </th>
                             }
-                            {enteredName == 'Voorstellingen' &&
+                            {enteredName1 == 'Voorstellingen' &&
                                 <th scope='col'>
                                     Poster
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     VoorstellingID
                                 </th>
                             }
-                            {enteredName != 'Zalen' && enteredName != 'Voorstellingen' && enteredName != 'Optredens' &&
+                            {enteredName1 != 'Zalen' && enteredName1 != 'Voorstellingen' && enteredName1 != 'Optredens' &&
                                 <th scope='col'>
                                     Email
                                 </th>
                             }
-                            {enteredName == 'Zalen' &&
+                            {enteredName1 == 'Zalen' &&
                                 <th scope='col'>
                                     Geboekte Optredens
                                 </th>
                             }
-                            {enteredName == 'Voorstellingen' &&
+                            {enteredName1 == 'Voorstellingen' &&
                                 <th scope='col'>
                                     Titel
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     ZaalID
                                 </th>
                             }
-                            {enteredName != 'Groepen' && enteredName != 'Zalen' && enteredName != 'Voorstellingen' && enteredName != 'Optredens' &&
+                            {enteredName1 != 'Groepen' && enteredName1 != 'Zalen' && enteredName1 != 'Voorstellingen' && enteredName1 != 'Optredens' &&
                                 <th scope='col'>
                                     Naam
                                 </th>
                             }
-                            {enteredName == 'Groepen' &&
+                            {enteredName1 == 'Groepen' &&
                                 <th scope='col'>
                                     Aantal Leden
                                 </th>
                             }
-                            {enteredName == 'Zalen' &&
+                            {enteredName1 == 'Zalen' &&
                                 <th scope='col'>
                                     Aantal Stoelen
                                 </th>
                             }
-                            {enteredName == 'Artiesten' &&
+                            {enteredName1 == 'Artiesten' &&
                                 <th scope='col'>
                                     Groep
                                 </th>
                             }
-                            {enteredName == 'Voorstellingen' &&
+                            {enteredName1 == 'Voorstellingen' &&
                                 <th scope='col'>
                                     Beschrijving
                                 </th>
                             }
-                            {enteredName == 'Voorstellingen' &&
+                            {enteredName1 == 'Voorstellingen' &&
                                 <th scope='col'>
                                     Tijdsduur
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     ArtiestID/GroepID
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     Prijs
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     Datum
                                 </th>
                             }
-                            {enteredName == 'Optredens' &&
+                            {enteredName1 == 'Optredens' &&
                                 <th scope='col'>
                                     Tijdstip
                                 </th>
@@ -561,17 +683,33 @@ export function AdminPanel() {
                     </tbody>
                 </table>
                 <div>
-                    <label className='text-white display-6 mb-1 d-block'>Setters</label>
+                    <label className='text-white display-6 mb-1 d-block'>Setters(Aanmaken)</label>
                     <br />
                     <button onClick={update}>Update</button>
-                    <button onClick={() => setName('Admins')}>Admins</button>
-                    <button onClick={() => setName('Medewerkers')}>Medewerkers</button>
-                    <button onClick={() => setName('Artiesten')}>Artiesten</button>
-                    <button onClick={() => setName('Groepen')}>Groepen</button>
-                    <button onClick={() => setName('Donateurs')}>Donateurs</button>
-                    <button onClick={() => setName('Zalen')}>Zalen</button>
-                    <button onClick={() => setName('Voorstellingen')}>Voorstellingen</button>
-                    <button onClick={() => setName('Optredens')}>Optredens</button>
+                    <button onClick={() => setName2('Admin')}>Admin</button>
+                    <button onClick={() => setName2('Medewerker')}>Medewerker</button>
+                    <button onClick={() => setName2('Artiest')}>Artiest</button>
+                    <button onClick={() => setName2('Groep')}>Groep</button>
+                    <button onClick={() => setName2('Zaal')}>Zaal</button>
+                    <button onClick={() => setName2('Voorstelling')}>Voorstelling</button>
+                    <button onClick={() => setName2('Optreden')}>Optreden</button>
+                </div>
+                <br />
+                <div>
+                    <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler}/>
+                    <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler}/>
+                    <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler}/>
+                    <input placeholder='Wachtwoord' value={password} onChange={passwordHandler}/>
+                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler}/>
+                    <input placeholder='Email' value={email} onChange={emailHandler}/>
+                    <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler}/>
+                    <input placeholder='Adres' value={adres} onChange={adresHandler}/>
+                    <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler}/>
+                    <input placeholder='Email voorkeur' value={emailVoorkeur} onChange={emailvoorkeurHandler}/>
+                    <input placeholder='ip' value={ip} onChange={ipHandler}/>
+                    <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler}/>
+                    <button onClick={voegAdmin}>Maak {enteredName2}</button>
+                    {}
                 </div>
             </div>
         </div>
