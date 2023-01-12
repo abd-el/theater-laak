@@ -8,7 +8,7 @@ export class Boekingen extends Component {
             <div className='col-sm-10'>
                 <div className='row'>
                     <HuidigeBoekingen />
-                    <BoekenFormulier zalen={this.props.zalen} groepen={this.props.groepen}/>
+                    <BoekenFormulier groepen={this.props.groepen}/>
                 </div>
             </div>
         )

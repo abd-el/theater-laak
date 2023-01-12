@@ -45,6 +45,6 @@ public class Zaal
         }
     }
     public IEnumerable<Stoel> Stoelen { get; set; }
-    public IEnumerable<Optreden> Optredens { get; set; }
+    public IEnumerable<Voorstelling> Voorstellingen { get; set; }
 }
 

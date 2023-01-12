@@ -68,8 +68,8 @@ public class ProgrammeringController : ControllerBase
         voorstelling.Beschrijving = v.Beschrijving;
         voorstelling.TijdsduurInMinuten = v.TijdsduurInMinuten;
         voorstelling.Optredens = v.Optredens;
-        // voorstelling.ZaalId = v.ZaalId;
-        // voorstelling.Zaal = v.Zaal;
+        voorstelling.ZaalId = v.ZaalId;
+        voorstelling.Zaal = v.Zaal;
 
         _context.Voorstellingen.Update(voorstelling);
         await _context.SaveChangesAsync();
