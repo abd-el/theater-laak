@@ -33,17 +33,29 @@ public class ProgrammeringController : ControllerBase
 
     [HttpPost]
     [Route("Voorstelling")]
-    public async Task<ActionResult> VoegVoorstelling([FromBody] Voorstelling voorstelling)
+    public async Task<ActionResult> VoegVoorstelling([FromBody] VoorstellingJsonGegevens voorstelling)
     {
-        if (!_context.Voorstellingen.Select(x => x.Titel).Contains(voorstelling.Titel) || _context.Voorstellingen.Count() == 0)
+        if (!_context.Voorstellingen.Select(x => x.Titel).Contains(voorstelling.titel) || _context.Voorstellingen.Count() == 0)
         {
-            await _context.Voorstellingen.AddAsync(voorstelling);
+            await _context.Voorstellingen.AddAsync(new Voorstelling (
+                voorstelling.titel,
+                voorstelling.beschrijving,
+                voorstelling.imgUrl,
+                voorstelling.tijdsduurInMinuten
+            ));
+
             await _context.SaveChangesAsync();
 
-            return Ok($"Voorstelling {voorstelling.Titel} is toegevoegd!");
+            return Ok(new {
+                bericht = $"{voorstelling.titel} is toegevoegd.",
+                success = true
+            });
         }
 
-        return StatusCode(403, $"{voorstelling.Titel} is al eerder toegevoegd.");
+        return StatusCode(403, new {
+            bericht = $"{voorstelling.titel} was al eerder toegevoegd.", 
+            success = false
+        });
     }
 
     [HttpPut]

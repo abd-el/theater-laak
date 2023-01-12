@@ -9,7 +9,8 @@ export class Layout extends Component {
         this.state = {
             geselecteerd: 'Boekingen',
             huidigeGroepen: [],
-            zalen: []
+            zalen: [],
+            voorstellingen: []
         };
     }
 
@@ -59,11 +60,21 @@ export class Layout extends Component {
                 zalen: zalenRes
             })
         }
+
+        let voorstellingenRes = await fetch('/api/Programmering/Voorstellingen')
+        .then(res => res.json())
+        .catch(err => console.warn(`caught error: ${err}`))
+
+        if(voorstellingenRes && voorstellingenRes.length > -1){
+            this.setState({
+                voorstellingen: voorstellingenRes
+            })
+        }
     }
 
     laatComponentZien = () => {
         if (this.state.geselecteerd === 'Boekingen') {
-            return <Boekingen zalen={this.state.zalen} groepen={this.state.huidigeGroepen}/>
+            return <Boekingen zalen={this.state.zalen} voorstellingen={this.state.voorstellingen} groepen={this.state.huidigeGroepen}/>
         } else if (this.state.geselecteerd === 'Groepen') {
             return <Groepen groepen={this.state.huidigeGroepen}/>;
         }

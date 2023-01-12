@@ -14,11 +14,11 @@ table td.datum-tijdstip, table th.datum-tijdstip {
     width: 200px;
 }
 
-.tot, .tijdstip {
+.w-25 {
     width: 25%;
 }
 
-.datum {
+.w-45 {
     width: 45%;
 }
 
