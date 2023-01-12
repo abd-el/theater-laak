@@ -147,8 +147,20 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    public class Email { public string email {get;set;} }
+    [HttpPost]
+    [Route("EmailCheck")]
+    public async Task<ActionResult> EmailCheck([FromBody] Email emailObj)
+    {   
+        DisposableEmails disposableEmails = new DisposableEmails();
+        var isDisposable = await disposableEmails.CheckEmail(emailObj.email);
 
+        if(isDisposable == true){
+            return BadRequest("disposable");
+        }
 
+        return Ok();
+    }
 
     [HttpPost]
     [Authorize(Roles = "Admin, Medewerker")]

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using theater_laak;
 using theater_laak.Data;
 using theater_laak.Models;
 
@@ -12,29 +13,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-
+builder.Services.AddTransient<IIpBlockingService, IpBlockingService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityCore<Medewerker>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<Medewerker>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityCore<Admin>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<Admin>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityCore<Artiest>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<Artiest>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddIdentityCore<Klant>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentityCore<Klant>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -70,6 +71,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<IpBlockMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();

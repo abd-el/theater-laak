@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111204955_UserLockout_nullable")]
+    partial class UserLockout_nullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -474,14 +476,9 @@ namespace theater_laak.Data.Migrations
                     b.Property<int>("VoorstellingId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ZaalId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("OptredenId");
 
                     b.HasIndex("VoorstellingId");
-
-                    b.HasIndex("ZaalId");
 
                     b.ToTable("Optredens", (string)null);
                 });
@@ -556,7 +553,12 @@ namespace theater_laak.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ZaalId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("VoorstellingId");
+
+                    b.HasIndex("ZaalId");
 
                     b.ToTable("Voorstellingen", (string)null);
                 });
@@ -698,16 +700,7 @@ namespace theater_laak.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Optreden_Voorstelling_2");
 
-                    b.HasOne("theater_laak.Models.Zaal", "Zaal")
-                        .WithMany("Optredens")
-                        .HasForeignKey("ZaalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Optreden_Zaal_2");
-
                     b.Navigation("Voorstelling");
-
-                    b.Navigation("Zaal");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Stoel", b =>
@@ -750,6 +743,18 @@ namespace theater_laak.Data.Migrations
                     b.Navigation("Stoel");
                 });
 
+            modelBuilder.Entity("theater_laak.Models.Voorstelling", b =>
+                {
+                    b.HasOne("theater_laak.Models.Zaal", "Zaal")
+                        .WithMany("Voorstellingen")
+                        .HasForeignKey("ZaalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Voorstelling_Zaal_2");
+
+                    b.Navigation("Zaal");
+                });
+
             modelBuilder.Entity("theater_laak.Models.Artiest", b =>
                 {
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
@@ -789,9 +794,9 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Zaal", b =>
                 {
-                    b.Navigation("Optredens");
-
                     b.Navigation("Stoelen");
+
+                    b.Navigation("Voorstellingen");
                 });
 #pragma warning restore 612, 618
         }

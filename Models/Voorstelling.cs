@@ -8,7 +8,5 @@ public class Voorstelling
     public string Beschrijving {get; set;}
     public int TijdsduurInMinuten {get; set;}
     public IEnumerable<Optreden> Optredens {get; set;}
-    public int ZaalId {get; set;}
-    public Zaal? Zaal {get; set;}
 }
 

@@ -10,7 +10,7 @@ export class BoekenFormulier extends Component {
             resultaatSuccess: null,
 
             titel: null,
-            groep: null,
+            groep: 0,
             zaal: null,
             datum: null,
             tijdstip: null,
@@ -26,7 +26,7 @@ export class BoekenFormulier extends Component {
     veranderEindTijdstip = (e) => { this.setState({ eindTijdstip: e.target.value }); }
 
     valideerZaal = (zaal) => {
-        if(zaal === 'geen' || !zaal) {
+        if(zaal === 0 || !zaal) {
             return false;
         }
         return true;
@@ -74,7 +74,7 @@ export class BoekenFormulier extends Component {
         return true;
     }
 
-    controleer = () => {
+    controleer = async () => {
         if (!this.state.titel) {
             this.setState({
                 resultaat: 'Titel is verplicht',
@@ -126,18 +126,42 @@ export class BoekenFormulier extends Component {
         }
 
         // maak hier een POST request naar de server
-        // als het gelukt is, dan zet je de state van resultaat en resultaatSuccess
+        let res = await fetch('/api/artiestenportaal/MaakBoeking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorizaton': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify({
+                titel: this.state.titel,
+                zaal: this.state.zaal,
+                datum: this.state.datum,
+                tijdstip: this.state.tijdstip,
+                eindTijdstip: this.state.eindTijdstip,
+                groep: this.state.groep
+            })
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err));
 
-        // voor nu zetten we de state maar even op success
-        this.setState({
-            resultaat: 'Er is een verzoek ingediend. Uw kunt een nieuwe reserving maken of terug naar de homepagina gaan.',
-            resultaatSuccess: true
-        });
+        if (res) {
+            this.setState({
+                resultaat: res.bericht,
+                resultaatSuccess: res.success
+            });
+        } else {
+            this.setState({
+                resultaat: 'Er is iets misgegaan',
+                resultaatSuccess: false
+            })
+        }
 
         return true;
     }
 
     render() {
+        console.log(this.props)
+
         return (
             // er is al container en row dus je hoeft alleen col-X nog te doen
             <div className='col-sm-5 text-white d-inline ms-4'>
@@ -153,7 +177,12 @@ export class BoekenFormulier extends Component {
                 <div className='mb-2'>
                     <div>Groep</div>
                     <select onChange={this.veranderGroep} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een groep'>
-                        <option id="groep-invoer" value="geen">Geen</option>
+                        <option id="groep-invoer" value="0">Geen</option>
+                        {this.props.groepen.map((groep, index) => {
+                            if(groep.isClientLid === true){
+                                return <option id="groep-invoer" key={index} value={groep.id}>{groep.naam}</option>
+                            }
+                        })}
                     </select>
                 </div>
 
@@ -161,7 +190,9 @@ export class BoekenFormulier extends Component {
                     <div>Zaal*</div>
                     <select onChange={this.veranderZaal} className='form-select dropdown-icon bg-dark border-grey text-white'>
                         <option id="zaal-invoer" value="geen">Kies een zaal</option>
-                        <option id="zaal-invoer" value="1">1</option>
+                        {this.props.zalen.map((zaal, index) => {
+                            return <option id="zaal-invoer" key={index} value={zaal.zaalId}>{zaal.zaalId}</option>
+                        })}
                     </select>
                 </div>
 

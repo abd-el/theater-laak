@@ -5,41 +5,6 @@ import { GroepsnaamRij } from "./GroepsnaamRij";
 export class HuidigeGroepen extends Component {
     constructor(props) {
         super(props);
-        this.state = { // deze informatie halen we op uit de database
-            huidigeGroepen: []
-        };
-    }
-
-    componentDidMount = async () => {
-            let res = await fetch('/api/artiestenportaal/GetGroepen', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
-                }
-            })
-            .then(res => res.json())
-            .catch(err => console.warn(`caught error: ${err}`))
-
-            if (res && res.groepen) {
-            let groepen = [];
-
-            for (let i = 0; i < res.groepen.length; i++) {
-                let groep = res.groepen[i]
-                groepen.push({
-                    naam: groep.groepsNaam,
-                    groepsId: groep.artiestenGroepId,
-                    leden: groep.artiesten,
-                    isClientLid: groep.artiestenGroepId == res.IdOfGroupOfUser
-                });
-            }
-
-            console.log(groepen)
-
-            this.setState({
-                huidigeGroepen: groepen
-            });
-        }
     }
 
     render() {
@@ -59,7 +24,7 @@ export class HuidigeGroepen extends Component {
                             </tr>
                         </thead>
                         <tbody >
-                            {this.state.huidigeGroepen.map((groep, index) => (
+                            {this.props.groepen.map((groep, index) => (
                                 <GroepsnaamRij key={index} naam={groep.naam} groepsId={groep.groepsId} leden={groep.leden} isClientLid={groep.isClientLid}/>
                             ))}
                         </tbody>

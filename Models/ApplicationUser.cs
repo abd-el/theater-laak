@@ -25,6 +25,10 @@ public class ApplicationUser : IdentityUser
     public override string Id { get; set; }
     public IEnumerable<Donatie> Donaties {get; set;}
     public string? IkDoneerToken {get; set;}
+    
+    public int? FailedAttempts {get;set;}
+    public bool? lockout {get;set;}
+    public DateTime? unlockDate {get;set;}
 }
 
 public class AccountInstellingenJsonGegevens {

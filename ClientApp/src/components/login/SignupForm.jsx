@@ -7,7 +7,7 @@ import { findRepeatedPattern } from "./vindPatronen";
 
 
 async function passwordCheck(wachtwoord) {
-	
+
 	const resp = await backendApi.post('/api/account/WachtwoordCheck', {
 		wachtwoord
 	});
@@ -16,11 +16,11 @@ async function passwordCheck(wachtwoord) {
 	const statusCode = resp.status;
 
 	if (statusCode == 400) {
-		if(responseMsg == 'bevatWoord'){
+		if (responseMsg == 'bevatWoord') {
 			return "uw wachtwoord mag geen woorden bevatten"
 		}
-		if(responseMsg == 'PwOnveilig'){
-			return "dit wachtwoord is op het internet gevonden"
+		if (responseMsg == 'PwOnveilig') {
+			return "dit wachtwoord is in een data leak gevonden"
 		}
 	}
 	return null;
@@ -35,6 +35,21 @@ async function userNameCheck(userName) {
 
 	if (statusCode == 400) {
 		return responseMsg == 'userNameBestaat' ? "het opgegeven gebruikersnaam bestaat al" : null
+	}
+
+	return null;
+}
+
+async function emailCheck(email) {
+	const resp = await backendApi.post('/api/account/EmailCheck', {
+		email
+	});
+
+	const responseMsg = resp.data;
+	const statusCode = resp.status;
+
+	if(statusCode == 400){
+		return responseMsg == 'disposable' ? "de opgegeven emailadres maakt deel uit van een temporary domain" : null;
 	}
 
 	return null;
@@ -55,6 +70,8 @@ export function SignupForm() {
 	const mailError = useRef('');
 	const wwError = useRef('');
 	const telError = useRef('');
+
+	const [ confirmation, setConfirm] = useState("Registreren");
 
 	const [state, setState] = useState([
 		[voornaam, naamError],
@@ -90,7 +107,10 @@ export function SignupForm() {
 
 		const makePostRequest = async () => {
 			const resp = await backendApi.postForm('/api/account/RegistreerKlant', formData);
-			console.log(resp);
+			console.log(resp.status);
+			if(resp.status == 201){
+				setConfirm("U heeft zich ingeschreven ✔️");
+			}
 		}
 
 		makePostRequest();
@@ -192,6 +212,10 @@ export function SignupForm() {
 			if (isEmail(input.current.value) == false) {
 				error.current.value = 'dit is geen geldige email adres, voorbeeld van een geldige email adres: <naam>@<domain>.<nl/com>'
 			}
+			const errorMsg = await emailCheck(input.current.value);
+			if(errorMsg != null){
+				error.current.value = errorMsg;
+			}
 			return item;
 		}
 
@@ -225,12 +249,12 @@ export function SignupForm() {
 			if (state[2][0].current.value == input.current.value) {
 				error.current.value = 'uw wachtwoord mag niet overeenkomen met uw gebruikersnaam'
 			}
-			
+
 			const Msg = await passwordCheck(input.current.value);
-			if(Msg != null){
+			if (Msg != null) {
 				error.current.value = Msg;
 			}
-			
+
 			return item;
 		}
 
@@ -345,7 +369,7 @@ export function SignupForm() {
 												<input checked={toggleArtiest} type="checkbox" name="toggleArtiest" id="toggleArtiest" className="form-check-input mx-2" aria-describedby="Artiest" />
 											</div>
 											<div className="col-md-12 text-center mb-3 mt-3">
-												<button type="submit" className=" btn btn-block mybtn btn-primary tx-tfm">Registreren</button>
+												<button type="submit" className=" btn btn-block mybtn btn-primary tx-tfm">{confirmation}</button>
 											</div>
 										</form>
 										<div className="col-md-12 ">

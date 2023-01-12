@@ -25,7 +25,7 @@ export class GroepsledenTabel extends Component {
                 </thead>
                 <tbody>
                     {this.props.leden.map((lid, index) => (
-                        <Groepslidrij key={index} naam={lid} />
+                        <Groepslidrij key={index} naam={lid.naam} />
                     ))}
                 </tbody>
             </table>

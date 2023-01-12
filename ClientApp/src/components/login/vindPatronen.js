@@ -45,13 +45,12 @@ export function findRepeatedPattern(string){
     let match = false;
     
     for (let index = 2; index < 999; index++) {
-        //console.log('substring 1: ' + string.substring(beginSubstring, index));
+    
         let substring1 = string.substring(beginSubstring, index);
 
         let beginSubstring2 = count + beginSubstring;
         let index2 = count + index;
                 
-        //console.log('substring 2: '+  string.substring(beginSubstring2, index2));
         let substring2 = string.substring(beginSubstring2, index2); 
         beginSubstring++
         

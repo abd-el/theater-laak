@@ -6,6 +6,7 @@ import { LogoutMenu } from '../login/LogoutMenu';
 import { AuthContext } from '../context/AuthContext';
 import './NavMenu.css';
 import { NavigatieItem } from './NavigatieItem'
+import { ExpirationModal } from '../ExpirationModal';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -87,7 +88,7 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"Dashboard" == this.state.geselecteerd} text="Dashboard" to="/Dashboard" hidden={!this.state.ingelogd} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
-
+              <ExpirationModal />
               {this.loginMenu()}
 
             </ul>

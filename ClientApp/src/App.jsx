@@ -11,7 +11,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <AuthContextProvider>
+      
         <Layout>
           <Routes>
             {AppRoutes.map((route, index) => {
@@ -20,7 +20,7 @@ export default class App extends Component {
             })}
           </Routes>
         </Layout>
-      </AuthContextProvider>
+      
     );
   }
 }

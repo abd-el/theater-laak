@@ -16,6 +16,62 @@ export class GroepsoverzichtModal extends Component {
 
     }
 
+    sluitAan = async () => {
+        let res = await fetch('/api/artiestenportaal/SluitAan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify({
+                groepsId: this.props.groepsId
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.warn(`caught error: ${error}`));
+
+        if (res){
+            this.setState({
+                resultaat: res.bericht,
+                resultaatSuccess: res.success
+            })
+        } else {
+            this.setState({
+                resultaat: 'Er is iets misgegaan, probeer het later opnieuw.',
+                resultaatSuccess: false
+            })
+        }
+    }
+
+    vertrek = async () => {
+        console.log(this.props.groepsId)
+        
+        let res = await fetch('/api/artiestenportaal/Vertrek', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify({
+                groepsId: this.props.groepsId
+            })
+        })
+        .then(res => res.json())
+        .catch(error => console.warn(`caught error: ${error}`));
+
+        if (res){
+            this.setState({
+                resultaat: res.bericht,
+                resultaatSuccess: res.success
+            })
+        } else {
+            this.setState({
+                resultaat: 'Er is iets misgegaan, probeer het later opnieuw.',
+                resultaatSuccess: false
+            })
+        }
+    }
+
     render() {
 
         return (            
@@ -40,8 +96,8 @@ export class GroepsoverzichtModal extends Component {
                         <div className="modal-body">
                             <GroepsledenTabel leden={this.props.leden}/>
                             <div className="text-center d-flex justify-content-center">
-                                <button disabled={this.props.isClientLid} type="button" className="btn btn-light me-2">Sluit aan</button>
-                                <button disabled={!this.props.isClientLid} type="button" className="btn btn-dark">Vertrek</button>
+                                <button onClick={this.sluitAan} disabled={this.props.isClientLid} type="button" className="btn btn-light me-2">Sluit aan</button>
+                                <button onClick={this.vertrek} disabled={!this.props.isClientLid} type="button" className="btn btn-dark">Vertrek</button>
                             </div>
                             <div id="groeps-verandering-resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                 {this.state.resultaat}
