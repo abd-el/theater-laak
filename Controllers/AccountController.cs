@@ -12,19 +12,19 @@ using System.Security.Claims;
 namespace theater_laak.Controllers;
 
 //redundant
-public class AdminDTO : Admin
+public class AdminPW : Admin
 {
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }
 }
 
-public class ArtiestDTO : Artiest
+public class ArtiestPW : Artiest
 {
     [Required(ErrorMessage = "Password is required")]
     public string Password { get; set; }
 }
 
-public class MedewerkerDTO : Medewerker
+public class MedewerkerPW : Medewerker
 {
 
     [Required(ErrorMessage = "Password is required")]
