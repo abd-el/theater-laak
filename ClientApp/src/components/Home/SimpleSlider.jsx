@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import '../../stylesheets/Slider.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { backendApi } from "../api";
+import { useState } from "react";
 import { Card } from './Card';
 
 const img_url = 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg';
@@ -39,20 +41,30 @@ export function SimpleSlider() {
     ]
   };
 
+
+
   const placeholder = {
-    img_path: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
-    title: 'Card title',
-    text: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
-    btn_text: 'Go somewhere'
+    Afbeelding: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
+    Titel: 'Card title',
+    Beschrijving: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
   };
 
   const Movies = null;
+  const [voorstellingen, setVoorstellingen] = useState();
 
-  async function fetchMovies(){
-    const response = await fetch('/api');
-    const data = await response.json();
-    Movies = data;
+  async function fetchMovies() {
+    const resp = await backendApi.get('/api/programmering/voorstellingen');
+    if (resp.status == 200) {
+      setVoorstellingen(JSON.parse(resp.data));
+    }
+    else {
+      console.log(resp.statusText);
+    }
   };
+
+  useEffect(() => {
+
+  }, []);
 
   //const Movies = [{obj : 0},{obj : 1},{obj : 2}];
   //Movies[];
@@ -65,7 +77,7 @@ export function SimpleSlider() {
     <div className="slider-container">
       <Slider {...settings}>
         <div className="slider-item 1">
-          <Card {...placeholder} />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[0] : placeholder } />
         </div>
         <div className="slider-item 2">
           <Card {...placeholder} />

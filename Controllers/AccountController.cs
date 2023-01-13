@@ -132,16 +132,16 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin, Medewerker")]
-    public async Task<ActionResult> RegistreerMedewerker([FromBody] Medewerker medewerkerDTO)
+    public async Task<ActionResult> RegistreerMedewerker([FromBody] Medewerker medewerker)
     {
         var result = await _medewerkerManager
-        .CreateAsync(medewerkerDTO, medewerkerDTO.Password);
+        .CreateAsync(medewerker, medewerker.Password);
         if (!result.Succeeded)
         {
             return new BadRequestObjectResult(result);
         }
 
-        var responseCode = await assignRole(medewerkerDTO.UserName, "Medewerker");
+        var responseCode = await assignRole(medewerker.UserName, "Medewerker");
 
         return responseCode;
 
@@ -150,17 +150,17 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Authorize(Roles = "Admin, Medewerker")]
     [Route("RegistreerArtiest")]
-    public async Task<ActionResult> RegistreerArtiest(Artiest artiestDTO)
+    public async Task<ActionResult> RegistreerArtiest(Artiest artiest)
     {
         var result = await _artiestManager
-        .CreateAsync(artiestDTO, artiestDTO.Password);
+        .CreateAsync(artiest, artiest.Password);
 
         if (!result.Succeeded)
         {
             return new BadRequestObjectResult(result);
         }
 
-        var responseCode = await assignRole(artiestDTO.UserName, "Artiest");
+        var responseCode = await assignRole(artiest.UserName, "Artiest");
 
         return responseCode;
     }
