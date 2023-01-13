@@ -16,19 +16,22 @@ export function AdminPanel() {
     //const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-//admin states
-    const [voornaam,setVoornaam] = useState('');
-    const [achternaam,setAchternaam] = useState('');
-    const [username,setUsername] = useState('');
-    const [password,setpassword] = useState('');
-    const [geslacht,setGeslacht] = useState('');
-    const [email,setEmail] = useState('');
-    const [geboorteDatum,setGeboorteDatum] = useState('');
-    const [adres,setAdres] = useState('');
-    const [telefoonnummer,setTelefoonnummer] = useState('');
-    const [emailVoorkeur,setemailVoorkeur] = useState('');
-    const [ip,setIp] = useState('');
-    const [bankGegevens,setbankGegevens] = useState('');
+    //admin states
+    const [voornaam, setVoornaam] = useState('');
+    const [achternaam, setAchternaam] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setpassword] = useState('');
+    const [geslacht, setGeslacht] = useState('');
+    const [email, setEmail] = useState('');
+    const [geboorteDatum, setGeboorteDatum] = useState('');
+    const [adres, setAdres] = useState('');
+    const [telefoonnummer, setTelefoonnummer] = useState('');
+    const [emailVoorkeur, setemailVoorkeur] = useState('');
+    const [ip, setIp] = useState('');
+    const [bankGegevens, setbankGegevens] = useState('');
+    const [artiestenGroepId, setAG] = useState('');
+    const [tijdsduurInMinuten, setTijdsDuur] = useState('');
+    const [afbeelding, setAfbeelding] = useState('');
 
     function voornaamHandler(e) {
         setVoornaam(e.target.value);
@@ -41,7 +44,7 @@ export function AdminPanel() {
     function usernameHandler(e) {
         setUsername(e.target.value);
     }
-    
+
     function passwordHandler(e) {
         setpassword(e.target.value);
     }
@@ -57,7 +60,7 @@ export function AdminPanel() {
     function geboorteDHandler(e) {
         setGeboorteDatum(e.target.value);
     }
-    
+
     function adresHandler(e) {
         setAdres(e.target.value);
     }
@@ -76,6 +79,18 @@ export function AdminPanel() {
 
     function bankgegevensHandler(e) {
         setbankGegevens(e.target.value);
+    }
+
+    function artiestenGroepHandler(e) {
+        setAG(e.target.value);
+    }
+
+    function tijdsduurHandler(e) {
+        setTijdsDuur(e.target.value);
+    }
+
+    function afbeeldingHandler(e) {
+        setAfbeelding(e.target.value);
     }
 
 
@@ -362,7 +377,7 @@ export function AdminPanel() {
             donaties: []
         };
 
-        fetch('https://localhost:44461/api/Account/RegistreerAdmin', {
+        fetch('https://localhost:44461/api/Account/RegistreerMedewerker', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -371,6 +386,109 @@ export function AdminPanel() {
             body: JSON.stringify(medewerker)
         });
         console.log(medewerker)
+    }
+
+    async function voegArtiest() {
+        let artiest = {
+            userName: username,
+            password: password,
+            voornaam: voornaam,
+            achternaam: achternaam,
+            geslacht: geslacht,
+            email: email,
+            geboorteDatum: geboorteDatum,
+            adres: adres,
+            telefoonnummer: telefoonnummer,
+            emailVoorkeur: emailVoorkeur,
+            artiestenGroepId: artiestenGroepId,
+            tickets: [],
+            donaties: []
+        };
+
+        fetch('https://localhost:44461/api/Account/RegistreerArtiest', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(artiest)
+        });
+        console.log(artiest)
+    }
+
+    async function voegGroep() {
+        let groep = {
+            groepsNaam: username,
+            groepsEmail: email,
+            artiesten: []
+        };
+
+        fetch('https://localhost:44461/api/Account/RegistreerGroep', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(groep)
+        });
+        console.log(groep)
+    }
+
+    async function voegZaal() {
+        let zaal = {
+            groepsNaam: username,
+            groepsEmail: email,
+            artiesten: []
+        };
+
+        fetch('https://localhost:44461/api/zaal/MaakZaal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(zaal)
+        });
+        console.log(zaal)
+    }
+
+    async function voegVoorstelling() {
+        let voorstelling = {
+            titel: username,
+            beschrijving: voornaam,
+            tijdsduurInMinuten: tijdsduurInMinuten,
+            afbeelding: afbeelding,
+            optredens: []
+        };
+
+        fetch('https://localhost:44461/api/Programmering/Voorstelling', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(voorstelling)
+        });
+        console.log(voorstelling)
+    }
+
+    function submitHandler(event) {
+        event.preventDefault();
+        setUsername('');
+        setpassword('');
+        setVoornaam('');
+        setAchternaam('');
+        setGeslacht('');
+        setEmail('');
+        setGeboorteDatum('');
+        setAdres('');
+        setTelefoonnummer('');
+        setemailVoorkeur('');
+        setIp('');
+        setbankGegevens('');
+        setAG('');
+        setTijdsDuur('');
+        setAfbeelding('');
     }
 
     let content = <p>nothing</p>;
@@ -429,7 +547,7 @@ export function AdminPanel() {
                     {list.voornaam + ' ' + list.achternaam}
                 </td>
                 <td className="Groep">
-                    {list.artiestenGroep == null && 'geen'}
+                    {list.artiestenGroepId}
                 </td>
             </tr>
         ));
@@ -445,7 +563,8 @@ export function AdminPanel() {
                     {list.groepsNaam}
                 </td>
                 <td className="Email">
-                    {list.groepsemail == null && 'onbekend'}
+                    {list.groepsEmail == '' && 'onbekend'}
+                    {list.groepsEmail}
                 </td>
                 <td className="artiesten">
                     {list.artiesten.length}
@@ -547,8 +666,8 @@ export function AdminPanel() {
     if (error) {
         content = <tr><td>{error}</td></tr>;
     }
-        
-    //console.log(optredens);
+
+    console.log(optredens);
     return (
         <div>
             <br />
@@ -685,7 +804,7 @@ export function AdminPanel() {
                 <div>
                     <label className='text-white display-6 mb-1 d-block'>Setters(Aanmaken)</label>
                     <br />
-                    <button onClick={update}>Update</button>
+                    <button onClick={submitHandler}>Reset</button>
                     <button onClick={() => setName2('Admin')}>Admin</button>
                     <button onClick={() => setName2('Medewerker')}>Medewerker</button>
                     <button onClick={() => setName2('Artiest')}>Artiest</button>
@@ -695,22 +814,214 @@ export function AdminPanel() {
                     <button onClick={() => setName2('Optreden')}>Optreden</button>
                 </div>
                 <br />
-                <div>
-                    <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler}/>
-                    <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler}/>
-                    <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler}/>
-                    <input placeholder='Wachtwoord' value={password} onChange={passwordHandler}/>
-                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler}/>
-                    <input placeholder='Email' value={email} onChange={emailHandler}/>
-                    <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler}/>
-                    <input placeholder='Adres' value={adres} onChange={adresHandler}/>
-                    <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler}/>
-                    <input placeholder='Email voorkeur' value={emailVoorkeur} onChange={emailvoorkeurHandler}/>
-                    <input placeholder='ip' value={ip} onChange={ipHandler}/>
-                    <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler}/>
-                    <button onClick={voegAdmin}>Maak {enteredName2}</button>
-                    {}
-                </div>
+                {enteredName2 == 'Admin' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Admin account aanmaken</label>
+                        <br />
+                        <br />
+                        <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
+                        <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
+                        <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Email' value={email} onChange={emailHandler} required />
+                        <br />
+                        <br />
+                        <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Adres' value={adres} onChange={adresHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='ip' value={ip} onChange={ipHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler} required />
+                        <br />
+                        <br />
+                        <button onClick={voegAdmin}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Medewerker' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Medewerker account aanmaken</label>
+                        <br />
+                        <br />
+                        <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
+                        <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
+                        <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Email' value={email} onChange={emailHandler} required />
+                        <br />
+                        <br />
+                        <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Adres' value={adres} onChange={adresHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='ip' value={ip} onChange={ipHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler} required />
+                        <br />
+                        <br />
+                        <button onClick={voegMedewerker}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Artiest' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Artiest account aanmaken</label>
+                        <br />
+                        <br />
+                        <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
+                        <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
+                        <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Email' value={email} onChange={emailHandler} required />
+                        <br />
+                        <br />
+                        <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Adres' value={adres} onChange={adresHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Groep' value={artiestenGroepId} onChange={artiestenGroepHandler} />
+                        <br />
+                        <br />
+                        <button onClick={voegArtiest}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Groep' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Groep aanmaken</label>
+                        <br />
+                        <br />
+                        <input placeholder='Groepsnaam' value={username} onChange={usernameHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Email' value={email} onChange={emailHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Voeg artiest(en) toe' />
+                        <br />
+                        <br />
+                        <button onClick={voegGroep}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Zaal' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Zaal aanmaken</label>
+                        <br />
+                        <br />
+                        <input placeholder='Stoelen' type='number' min={30} max={400} required />
+                        <br />
+                        <br />
+                        <button onClick={voegZaal}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Voorstelling' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Voorstelling toevoegen</label>
+                        <br />
+                        <br />
+                        <input placeholder='Titel' value={username} onChange={usernameHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Beschrijving' value={voornaam} onChange={voornaamHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Tijdsduur (minuten)' type='number' min={1} value={tijdsduurInMinuten} onChange={tijdsduurHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='afbeelding' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <img src={afbeelding} alt='afbeelding voorbeeld' height={150} width={100} />
+                        <br />
+                        <br />
+                        <button onClick={voegVoorstelling}>Aanmaken</button>
+                    </form>
+                }
+                {enteredName2 == 'Optreden' &&
+                    <form onSubmit={submitHandler}>
+                        <br />
+                        <label>Optreden toevoegen</label>
+                        <br />
+                        <br />
+                        <input placeholder='VoorstellingId' value={username} onChange={usernameHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='ZaalId' value={voornaam} onChange={voornaamHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='ArtiestId' type='number' min={1} value={tijdsduurInMinuten} onChange={tijdsduurHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='GroepId' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Prijs' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Datum' type='date' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <input placeholder='Tijd' type='time' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <label>Begunstigers Exclusief</label>&nbsp;
+                        <input placeholder='Begunstigers Exclusief' type='checkbox' value={afbeelding} onChange={afbeeldingHandler} required />
+                        <br />
+                        <br />
+                        <button>Aanmaken</button>
+                    </form>
+                }
             </div>
         </div>
     );
