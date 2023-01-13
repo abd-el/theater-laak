@@ -275,6 +275,34 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .WithOne(o => o.Zaal)
         .HasForeignKey(o => o.ZaalId)
         .HasConstraintName("FK_Optreden_Zaal_2");
+
+    // Optreden FK naar Artiest
+        builder.Entity<Optreden>()
+        .HasOne<Artiest>(o => o.Artiest)
+        .WithMany(a => a.Optredens)
+        .HasForeignKey(o => o.ArtiestId)
+        .HasConstraintName("FK_Optreden_Artiest_1")
+        .IsRequired(false);
+
+        builder.Entity<Artiest>()
+        .HasMany<Optreden>(a => a.Optredens)
+        .WithOne(o => o.Artiest)
+        .HasForeignKey(o => o.ArtiestId)
+        .HasConstraintName("FK_Optreden_Artiest_2");
+
+    // Optreden FK naar Artiestengroep
+        builder.Entity<Optreden>()
+        .HasOne<ArtiestenGroep>(o => o.ArtiestenGroep)
+        .WithMany(ag => ag.Optredens)
+        .HasForeignKey(o => o.ArtiestenGroepId)
+        .HasConstraintName("FK_Optreden_Artiestengroep_1")
+        .IsRequired(false);
+
+        builder.Entity<ArtiestenGroep>()
+        .HasMany<Optreden>(ag => ag.Optredens)
+        .WithOne(o => o.ArtiestenGroep)
+        .HasForeignKey(o => o.ArtiestenGroepId)
+        .HasConstraintName("FK_Optreden_Artiestengroep_2");
     }
 
     //Gebruiker-Systeem
