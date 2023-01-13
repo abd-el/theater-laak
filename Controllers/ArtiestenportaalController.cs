@@ -203,8 +203,8 @@ public class ArtiestenportaalController : ControllerBase {
     }
 
     [HttpPost]
-    [Route("MaakBoeking")]
-    [AutoriseerArtiestenOfHoger]
+    [Route(template: "MaakBoeking")]
+    // [Authorize(Roles = "Artiest,Admin,Medewerker")]
     public async Task<ActionResult> MaakBoeking([FromBody] BoekingJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();
         var userName = claimsIdentity.Name;

@@ -57,18 +57,12 @@ export class BoekenFormulier extends Component {
     };
 
     valideerDatum = (datum) => {
-        // controleer of het begint met ([1-9]|0[1-9]|[12][0-9]|3[01]) d.w.z 1-9 of 01-09 of 10-29 of 30 of 31
-        // gevolgd door een - en dan ([1-9]|0[1-9]|1[012]) d.w.z 1-9 of 01-09 of 10-12
-        // nog een keer gevolgd door een - en dan (202[2-9]) d.w.z 2022-2029
-        let datumRegex = new RegExp('^([1-9]|0[1-9]|[12][0-9]|3[01])-([1-9]|0[1-9]|1[012])-(202[2-9])$');
-        if(!datumRegex.test(datum)){
-            return false;
-        }
-
         // controleer of de datum niet vandaag is of in het verleden ligt
         let datumArray = datum.split('-');
-        let datumObject = new Date(datumArray[2], datumArray[1] - 1, datumArray[0]);
+        console.log(datumArray)
+        let datumObject = new Date(datumArray[0], datumArray[1] - 1, datumArray[2]);
         let vandaag = new Date();
+        console.log(datumObject, vandaag)
         if(datumObject <= vandaag){
             return false;
         }
@@ -79,7 +73,7 @@ export class BoekenFormulier extends Component {
     controleer = async () => {
         if (!this.valideerVoorstelling(this.state.voorstelling)) {
             this.setState({
-                resultaat: 'Zaal is verplicht',
+                resultaat: 'Voorstelling is verplicht',
                 resultaatSuccess: false
             });
 
@@ -176,7 +170,7 @@ export class BoekenFormulier extends Component {
                     <select onChange={this.veranderVoorstelling} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
                         <option id="voorstelling-invoer" value="0">Geen</option>
                         {this.props.voorstellingen.map((voorstelling, index) => {
-                            return <option id="voorstelling-invoer" key={index} value={voorstelling.id}>{voorstelling.naam}</option>
+                            return <option id="voorstelling-invoer" key={index} value={voorstelling.id}>{voorstelling.titel}</option>
                         })}
                     </select>
                 </div>
@@ -187,7 +181,7 @@ export class BoekenFormulier extends Component {
                         <option id="groep-invoer" value="0">Geen</option>
                         {this.props.groepen.map((groep, index) => {
                             if(groep.isClientLid === true){
-                                return <option id="groep-invoer" key={index} value={groep.id}>{groep.naam}</option>
+                                return <option id="groep-invoer" key={index} value={groep.groepsId}>{groep.naam}</option>
                             }
                         })}
                     </select>
@@ -206,17 +200,17 @@ export class BoekenFormulier extends Component {
                 <div>
                     <div className='mb-2 d-inline-block w-45'>
                         <div>Datum*</div>
-                        <input onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='dd-mm-jjjj'></input>
+                        <input type="date" onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='dd-mm-jjjj'></input>
                     </div>
 
                     <div className='mb-2 d-inline-block ms-2 w-25'>
                         <div>Tijdstip*</div>
-                        <input onChange={this.veranderTijdstip} id="tijdstip-invoer" className='form-control text-white' placeholder='XX:XX'></input>
+                        <input type="time" onChange={this.veranderTijdstip} id="tijdstip-invoer" className='form-control text-white' placeholder='XX:XX'></input>
                     </div>
 
                     <div className='mb-2 d-inline-block ms-2 w-25'>
                         <div>Tot*</div>
-                        <input onChange={this.veranderEindTijdstip} id="tot-invoer" className='form-control text-white' placeholder='XX:XX'></input>
+                        <input type="time" onChange={this.veranderEindTijdstip} id="tot-invoer" className='form-control text-white' placeholder='XX:XX'></input>
                     </div>
                 </div>
 
