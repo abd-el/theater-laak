@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230113113357_artiestenportaal21")]
+    partial class artiestenportaal21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -697,6 +699,7 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Donaties")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Donatie_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -766,6 +769,7 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Tickets")
                         .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -780,6 +784,7 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
                         .HasForeignKey("ArtiestenGroepId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Artiest_ArtiestenGroep_2");
 
                     b.Navigation("ArtiestenGroep");

@@ -162,6 +162,8 @@ public class AccountController : ControllerBase
 
         var responseCode = await assignRole(artiest.UserName, "Artiest");
 
+        await _context.SaveChangesAsync();
+
         return responseCode;
     }
 

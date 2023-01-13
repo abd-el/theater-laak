@@ -103,7 +103,14 @@ public class ArtiestenportaalController : ControllerBase {
         return Ok(new {
             success = true,
             bericht = "Groep successvol aangemaakt",
-            groep = groep
+            groep = new {
+                id = groep.ArtiestenGroepId,
+                naam = groep.GroepsNaam,
+                artiesten = groep.Artiesten.Select(a => new {
+                    id = a.Id,
+                    naam = a.UserName
+                })
+            }
         });
     }
 
@@ -203,8 +210,8 @@ public class ArtiestenportaalController : ControllerBase {
     }
 
     [HttpPost]
-    [Route("MaakBoeking")]
-    [AutoriseerArtiestenOfHoger]
+    [Route(template: "MaakBoeking")]
+    // [AutoriseerArtiestenOfHoger]
     public async Task<ActionResult> MaakBoeking([FromBody] BoekingJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();
         var userName = claimsIdentity.Name;

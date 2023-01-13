@@ -38,9 +38,9 @@ public class ProgrammeringController : ControllerBase
         if (!_context.Voorstellingen.Select(x => x.Titel).Contains(voorstelling.titel) || _context.Voorstellingen.Count() == 0)
         {
             await _context.Voorstellingen.AddAsync(new Voorstelling (
+                voorstelling.afbeelding,
                 voorstelling.titel,
                 voorstelling.beschrijving,
-                voorstelling.imgUrl,
                 voorstelling.tijdsduurInMinuten
             ));
 

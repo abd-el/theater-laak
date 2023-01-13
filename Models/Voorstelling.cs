@@ -23,13 +23,13 @@ public class VoorstellingJsonGegevens {
     public string titel {get; set;}    
     public int tijdsduurInMinuten {get; set;}
     public string beschrijving { get; set; }
-    public string imgUrl { get; set; }
+    public string afbeelding { get; set; }
 
-    public VoorstellingJsonGegevens(string titel, int tijdsduurInMinuten, string beschrijving, string imgUrl)
+    public VoorstellingJsonGegevens(string titel, int tijdsduurInMinuten, string beschrijving, string afbeelding)
     {
         this.titel = titel;
         this.tijdsduurInMinuten = tijdsduurInMinuten;
         this.beschrijving = beschrijving;
-        this.imgUrl = imgUrl;
+        this.afbeelding = afbeelding;
     }
 }
