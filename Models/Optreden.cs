@@ -12,7 +12,7 @@ public class Optreden {
     public Voorstelling? Voorstelling {get; set;}
     public Boolean BegunstigersExclusief {get; set;}
     public List<Ticket> Tickets {get; set;}
-    public Boolean Bevestigd {get; set;}
+    public Boolean? Bevestigd {get; set;}
     public int ZaalId {get; set;}
     public Zaal? Zaal {get; set;}
 }
@@ -24,4 +24,5 @@ public class BoekingJsonGegevens {
     public int? groep { get; set; }
     public int zaalId { get; set; }
     public int voorstellingId { get; set; }
+    // public double prijs { get; set; }
 }
