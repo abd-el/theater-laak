@@ -44,55 +44,66 @@ export function SimpleSlider() {
 
 
   const placeholder = {
-    Afbeelding: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
-    Titel: 'Card title',
-    Beschrijving: 'Some quick example text to build on the card title and make up the bulk of the cards content.',
+    afbeelding: 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg',
+    titel: 'Placeholder title',
+    beschrijving: 'Placeholder content',
   };
 
-  const Movies = null;
+
   const [voorstellingen, setVoorstellingen] = useState();
 
   async function fetchMovies() {
-    const resp = await backendApi.get('/api/programmering/voorstellingen');
+    const resp = await backendApi.get('/api/Programmering/Voorstellingen');
+    const list = [];
     if (resp.status == 200) {
-      setVoorstellingen(JSON.parse(resp.data));
+      console.log(resp.data);
+      setVoorstellingen(resp.data);
     }
     else {
-      console.log(resp.statusText);
+      console.log(resp.status + ' ' + resp.statusText);
     }
   };
 
   useEffect(() => {
-
+    const awaiter = async () => {
+      await fetchMovies();
+    }
+    awaiter();
   }, []);
+
+  useEffect(() => {
+    if(voorstellingen != null){
+      console.log(voorstellingen[3].afbeelding);
+    }
+  }, [voorstellingen]);
 
   //const Movies = [{obj : 0},{obj : 1},{obj : 2}];
   //Movies[];
   //<Card {...Movies[0]}/>
   //<Card {...Movies[1]}/>
   //<Card {...Movies[2]}/>
-
+  
 
   return (
     <div className="slider-container">
       <Slider {...settings}>
         <div className="slider-item 1">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[0] : placeholder } />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[3] : placeholder } />
         </div>
         <div className="slider-item 2">
-          <Card {...placeholder} />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[4] : placeholder } />
         </div>
         <div className="slider-item 3">
-          <Card {...placeholder} />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[5] : placeholder } />
         </div>
         <div className="slider-item 4">
-          <Card {...placeholder} />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[6] : placeholder } />
         </div>
         <div className="slider-item 5">
-          <Card {...placeholder} />
+          <Card voorstellingen = { voorstellingen != null ? voorstellingen[7] : placeholder } />
         </div>
         <div className="slider-item 6">
-          <Card {...placeholder} />
+          <Card voorstellingen = {placeholder} />
         </div>
       </Slider>
     </div>
