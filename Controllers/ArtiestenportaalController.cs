@@ -330,4 +330,29 @@ public class ArtiestenportaalController : ControllerBase {
             bericht = "Je hebt een verzoek tot een boeking gemaakt."
         });
     }
+
+    [HttpGet]
+    [Route(template: "EigenOptredens")]
+    [AutoriseerArtiestenOfHoger]
+    public async Task<ActionResult> EigenOptredens(){
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
+        var artiest = await _artiestenManager.FindByNameAsync(userName);
+
+        if (artiest == null) {
+            return StatusCode(403, new {
+                success = false,
+                bericht = "Je bent geen artiest."
+            });
+        }
+
+        var optredens = await _context.Optredens
+        .Where(o => o.ArtiestId == artiest.Id)
+        .ToListAsync();
+
+        return Ok(new {
+            success = true,
+            optredens = optredens
+        });
+    }
 }

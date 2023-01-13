@@ -32,6 +32,7 @@ const context =  [
   "/api/artiestenportaal/SluitAan",
   "/api/artiestenportaal/Vertrek",
   "/api/artiestenportaal/MaakBoeking",
+  "/api/artiestenportaal/EigenOptredens",
   "/api/zaal/GetZalen",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",

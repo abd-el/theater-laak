@@ -9,6 +9,7 @@ export class Layout extends Component {
         this.state = {
             geselecteerd: 'Boekingen',
             huidigeGroepen: [],
+            huidigeBoekingen: [],
             zalen: [],
             voorstellingen: []
         };
@@ -70,11 +71,27 @@ export class Layout extends Component {
                 voorstellingen: voorstellingenRes
             })
         }
+
+        let huidigeBoekingenRes = await fetch('/api/artiestenportaal/EigenOptredens', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.warn(`caught error: ${err}`))
+
+        if (huidigeBoekingenRes && huidigeBoekingenRes.length > -1) {
+            this.setState({
+                huidigeBoekingen: huidigeBoekingenRes
+            });
+        }
     }
 
     laatComponentZien = () => {
         if (this.state.geselecteerd === 'Boekingen') {
-            return <Boekingen zalen={this.state.zalen} voorstellingen={this.state.voorstellingen} groepen={this.state.huidigeGroepen}/>
+            return <Boekingen huidigeBoekingen={this.state.huidigeBoekingen} zalen={this.state.zalen} voorstellingen={this.state.voorstellingen} groepen={this.state.huidigeGroepen}/>
         } else if (this.state.geselecteerd === 'Groepen') {
             return <Groepen groepen={this.state.huidigeGroepen}/>;
         }

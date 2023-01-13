@@ -5,9 +5,7 @@ import { Rij } from './Rij';
 export class HuidigeBoekingen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            huidigeBoekingen: [], // deze halen we op uit de database, formaat: { titel: string, zaal: int, bevestigd: '✅'|'⏳'|'❌', datumtijdstip: string }
-        };
+        this.state = {};
     }
 
     componentDidMount() {
@@ -48,7 +46,7 @@ export class HuidigeBoekingen extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.huidigeBoekingen.map((boeking, index) => (
+                            {this.props.huidigeBoekingen.map((boeking, index) => (
                                 <Rij key={index} titel={boeking.titel} zaal={boeking.zaal} bevestigd={boeking.bevestigd} datumTijdstip={boeking.datumtijdstip} />
                             ))}
                         </tbody>

@@ -7,7 +7,7 @@ export class Boekingen extends Component {
         return (
             <div className='col-sm-10'>
                 <div className='row'>
-                    <HuidigeBoekingen />
+                    <HuidigeBoekingen huidigeBoekingen={this.props.huidigeBoekingen} />
                     <BoekenFormulier zalen={this.props.zalen} voorstellingen={this.props.voorstellingen} groepen={this.props.groepen}/>
                 </div>
             </div>
