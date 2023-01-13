@@ -59,6 +59,7 @@ public class ArtiestenportaalController : ControllerBase {
             var groep = groepen[i];
             groepData = groepData.Append(new {
                 id = groep.ArtiestenGroepId,
+                email = groep.GroepsEmail,
                 naam = groep.GroepsNaam,
                 artiesten = groep.Artiesten.Select(a => new {
                     id = a.Id,
@@ -211,7 +212,7 @@ public class ArtiestenportaalController : ControllerBase {
 
     [HttpPost]
     [Route(template: "MaakBoeking")]
-    // [AutoriseerArtiestenOfHoger]
+    [AutoriseerArtiestenOfHoger]
     public async Task<ActionResult> MaakBoeking([FromBody] BoekingJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();
         var userName = claimsIdentity.Name;
@@ -226,25 +227,26 @@ public class ArtiestenportaalController : ControllerBase {
 
         var optredensInZelfdeZaalEnZelfdeDag = await _context.Optredens
         .Where(o => o.ZaalId == gegevens.zaalId)
-        .Where(o => o.DatumTijdstip.Date == 
-            new DateTime(
-                int.Parse(gegevens.datum.Substring(
-                        gegevens.datum.LastIndexOf('-') + 1
-                    )
-                ),
-                int.Parse(
-                    gegevens.datum.Substring(
-                        gegevens.datum.IndexOf('-') + 1, 
-                        gegevens.datum.LastIndexOf('-') - gegevens.datum.IndexOf('-') - 1
-                    )
-                ),
-                int.Parse(
-                    gegevens.datum.Substring(
-                        0, 
-                        gegevens.datum.IndexOf('-')
+        .Where(o => o.DatumTijdstip.Date.CompareTo( 
+                new DateTime(
+                    int.Parse(
+                        gegevens.datum.Substring(
+                            0, 
+                            gegevens.datum.IndexOf('-')
+                        )
+                    ),
+                    int.Parse(
+                        gegevens.datum.Substring(
+                            gegevens.datum.IndexOf('-') + 1, 
+                            gegevens.datum.LastIndexOf('-') - gegevens.datum.IndexOf('-') - 1
+                        )
+                    ),
+                        int.Parse(gegevens.datum.Substring(
+                            gegevens.datum.LastIndexOf('-') + 1
+                        )
                     )
                 )
-            )
+            ) == 0
         )
         .ToListAsync();
 
@@ -261,9 +263,10 @@ public class ArtiestenportaalController : ControllerBase {
 
         for(var i = 0; i < optredensInZelfdeZaalEnZelfdeDag.Count(); i++){
             var dezeOptreden = optredensInZelfdeZaalEnZelfdeDag[i];
+            var dezeVoorstelling = await _context.Voorstellingen.FindAsync(dezeOptreden.VoorstellingId);
 
             var start = TimeOnly.FromDateTime(dezeOptreden.DatumTijdstip);
-            var end = TimeOnly.FromDateTime(dezeOptreden.DatumTijdstip).Add(new TimeSpan(0, 0, dezeOptreden.Voorstelling!.TijdsduurInMinuten, 0));
+            var end = TimeOnly.FromDateTime(dezeOptreden.DatumTijdstip).Add(new TimeSpan(0, 0, dezeVoorstelling.TijdsduurInMinuten, 0));
 
             if(timeStart >= start && timeStart <= end || timeEnd >= start && timeEnd <= end){
                 return StatusCode(400, new {
@@ -285,20 +288,20 @@ public class ArtiestenportaalController : ControllerBase {
             Voorstelling = voorstelling,
             Zaal = await _context.Zalen.FindAsync(gegevens.zaalId),
             DatumTijdstip = new DateTime(
-                int.Parse(gegevens.datum.Substring(
-                        gegevens.datum.LastIndexOf('-') + 1
+                    int.Parse(
+                    gegevens.datum.Substring(
+                        0, 
+                        gegevens.datum.IndexOf('-')
                     )
                 ),
-                int.Parse(
+                    int.Parse(
                     gegevens.datum.Substring(
                         gegevens.datum.IndexOf('-') + 1, 
                         gegevens.datum.LastIndexOf('-') - gegevens.datum.IndexOf('-') - 1
                     )
                 ),
-                int.Parse(
-                    gegevens.datum.Substring(
-                        0, 
-                        gegevens.datum.IndexOf('-')
+                    int.Parse(gegevens.datum.Substring(
+                        gegevens.datum.LastIndexOf('-') + 1
                     )
                 )
             ).AddHours(hour).AddMinutes(minute),

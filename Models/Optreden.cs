@@ -9,7 +9,7 @@ public class Optreden {
     public Artiest? Artiest {get; set;}
     public ArtiestenGroep? ArtiestenGroep {get; set;}
     public int VoorstellingId {get; set;}
-    public Voorstelling? Voorstelling {get; set;}
+    public Voorstelling Voorstelling {get; set;}
     public Boolean BegunstigersExclusief {get; set;}
     public List<Ticket> Tickets {get; set;}
     public Boolean Bevestigd {get; set;}

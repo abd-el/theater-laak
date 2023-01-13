@@ -10,9 +10,9 @@ export class BoekenFormulier extends Component {
             resultaat: '',
             resultaatSuccess: null,
 
-            voorstelling: null,
+            voorstellingId: 0,
             groep: 0,
-            zaal: null,
+            zaal: 0,
             datum: null,
             tijdstip: null,
             eindTijdstip: null,
@@ -24,10 +24,10 @@ export class BoekenFormulier extends Component {
     veranderDatum = (e) => { this.setState({ datum: e.target.value }); }
     veranderTijdstip = (e) => { this.setState({ tijdstip: e.target.value }); }
     veranderEindTijdstip = (e) => { this.setState({ eindTijdstip: e.target.value }); }
-    veranderVoorstelling = (e) => { this.setState({ voorstelling: e.target.value }); }
+    veranderVoorstellingId = (e) => { this.setState({ voorstellingId: e.target.value }); }
 
-    valideerVoorstelling = (voorstelling) => {
-        return !(voorstelling === 0 || !voorstelling)
+    valideerVoorstelling = (voorstellingId) => {
+        return !(voorstellingId < 0 || isNaN(voorstellingId));
     }
 
     valideerZaal = (zaal) => {
@@ -71,7 +71,7 @@ export class BoekenFormulier extends Component {
     }
 
     controleer = async () => {
-        if (!this.valideerVoorstelling(this.state.voorstelling)) {
+        if (!this.valideerVoorstelling(this.state.voorstellingId)) {
             this.setState({
                 resultaat: 'Voorstelling is verplicht',
                 resultaatSuccess: false
@@ -126,11 +126,11 @@ export class BoekenFormulier extends Component {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorizaton': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
             },
             body: JSON.stringify({
-                voorstelling: this.state.voorstelling,
-                zaal: this.state.zaal,
+                voorstellingId: this.state.voorstellingId,
+                zaalId: this.state.zaal,
                 datum: this.state.datum,
                 tijdstip: this.state.tijdstip,
                 eindTijdstip: this.state.eindTijdstip,
@@ -167,10 +167,10 @@ export class BoekenFormulier extends Component {
 
                 <div className='mb-2'>
                     <div>Voorstelling*</div>
-                    <select onChange={this.veranderVoorstelling} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
+                    <select onChange={this.veranderVoorstellingId} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
                         <option id="voorstelling-invoer" value="0">Geen</option>
                         {this.props.voorstellingen.map((voorstelling, index) => {
-                            return <option id="voorstelling-invoer" key={index} value={voorstelling.id}>{voorstelling.titel}</option>
+                            return <option id="voorstelling-invoer" key={index} value={voorstelling.voorstellingId}>{voorstelling.titel}</option>
                         })}
                     </select>
                 </div>
