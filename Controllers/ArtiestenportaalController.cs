@@ -152,7 +152,7 @@ public class ArtiestenportaalController : ControllerBase {
     }
 
     [HttpPost]
-    [Route(template: "Vertrek")]
+    [Route("Vertrek")]
     [AutoriseerArtiestenOfHoger]
     public async Task<ActionResult> Vertrek([FromBody] GroepIdJson gegevens){
         var groep = _context.ArtiestGroepen.Where(g => g.ArtiestenGroepId == gegevens.groepsId).First();
@@ -203,7 +203,7 @@ public class ArtiestenportaalController : ControllerBase {
     }
 
     [HttpPost]
-    [Route(template: "MaakBoeking")]
+    [Route("MaakBoeking")]
     [AutoriseerArtiestenOfHoger]
     public async Task<ActionResult> MaakBoeking([FromBody] BoekingJsonGegevens gegevens){
         var claimsIdentity = User.Identities.First();
@@ -217,8 +217,8 @@ public class ArtiestenportaalController : ControllerBase {
             });
         }
 
-        var optredensInZelfdeZaal = await _context.Optredens
-        .Where(o => o.ZaalId == gegevens.ZaalId)
+        var optredensInZelfdeZaalEnZelfdeDag = await _context.Optredens
+        .Where(o => o.ZaalId == gegevens.zaalId)
         .Where(o => o.DatumTijdstip.Date == 
             new DateTime(
                 int.Parse(gegevens.datum.Substring(
@@ -241,20 +241,79 @@ public class ArtiestenportaalController : ControllerBase {
         )
         .ToListAsync();
 
-        for(var i = 0; i < optredensInZelfdeZaal.Count(); i++){
-            // parse DD-MM-YYYY string to Date class
-            // could also be D-M-YYYY
-            // or DD-M-YYYY or D-MM-YYYY
-            var day = gegevens.datum.Substring(0, gegevens.datum.IndexOf('-'));
-            var month = gegevens.datum.Substring(gegevens.datum.IndexOf('-') + 1, gegevens.datum.LastIndexOf('-') - gegevens.datum.IndexOf('-') - 1);
-            var year = gegevens.datum.Substring(gegevens.datum.LastIndexOf('-') + 1);
-            var date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+        // parse XX:XX or X:XX to Time
+        Int32.TryParse(gegevens.tijdstip.Substring(0, gegevens.tijdstip.IndexOf(':')), out int hour);
+        Int32.TryParse(gegevens.tijdstip.Substring(gegevens.tijdstip.IndexOf(':') + 1), out int minute);
 
-            var optreden = optredensInZelfdeZaal[i];
-            if(optreden.DatumTijdstip.Date == date){
+        var timeStart = new TimeOnly(hour, minute);
 
+        Int32.TryParse(gegevens.eindTijdstip.Substring(0, gegevens.tijdstip.IndexOf(':')), out int hourEnd);
+        Int32.TryParse(gegevens.tijdstip.Substring(gegevens.tijdstip.IndexOf(value: ':') + 1), out int minuteEnd);
+
+        var timeEnd = new TimeOnly(hourEnd, minuteEnd);
+
+        for(var i = 0; i < optredensInZelfdeZaalEnZelfdeDag.Count(); i++){
+            var dezeOptreden = optredensInZelfdeZaalEnZelfdeDag[i];
+
+            var start = TimeOnly.FromDateTime(dezeOptreden.DatumTijdstip);
+            var end = TimeOnly.FromDateTime(dezeOptreden.DatumTijdstip).Add(new TimeSpan(0, 0, dezeOptreden.Voorstelling!.TijdsduurInMinuten, 0));
+
+            if(timeStart >= start && timeStart <= end || timeEnd >= start && timeEnd <= end){
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = "Er is al een optreden in deze zaal op dit tijdstip gepland."
+                });
             }
         }
+
+        var voorstelling = await _context.Voorstellingen.FindAsync(gegevens.voorstellingId);
+        if (voorstelling == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Deze voorstelling bestaat niet."
+            });
+        }
+
+        var optreden = new Optreden {
+            Voorstelling = voorstelling,
+            Zaal = await _context.Zalen.FindAsync(gegevens.zaalId),
+            DatumTijdstip = new DateTime(
+                int.Parse(gegevens.datum.Substring(
+                        gegevens.datum.LastIndexOf('-') + 1
+                    )
+                ),
+                int.Parse(
+                    gegevens.datum.Substring(
+                        gegevens.datum.IndexOf('-') + 1, 
+                        gegevens.datum.LastIndexOf('-') - gegevens.datum.IndexOf('-') - 1
+                    )
+                ),
+                int.Parse(
+                    gegevens.datum.Substring(
+                        0, 
+                        gegevens.datum.IndexOf('-')
+                    )
+                )
+            ).AddHours(hour).AddMinutes(minute),
+        };
+
+        if (gegevens.groep != null) {
+            var artiestenGroep = await _context.ArtiestGroepen.FindAsync(gegevens.groep);
+            if (artiestenGroep == null) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = "De groep bestaat niet."
+                });
+            } else {
+                optreden.ArtiestenGroep = artiestenGroep;
+            }
+        } else {
+            optreden.Artiest = artiest;
+        }
+
+        _context.Optredens.Add(optreden);
+
+        await _context.SaveChangesAsync();
 
         return Ok(new {
             success = true,

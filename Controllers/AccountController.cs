@@ -8,39 +8,7 @@ using theater_laak.Models;
 using System.Diagnostics;
 using System.Security.Claims;
 
-
 namespace theater_laak.Controllers;
-
-//redundant
-public class AdminDTO : Admin
-{
-    [Required(ErrorMessage = "Password is required")]
-    public string Password { get; set; }
-}
-
-public class ArtiestDTO : Artiest
-{
-    [Required(ErrorMessage = "Password is required")]
-    public string Password { get; set; }
-}
-
-public class MedewerkerDTO : Medewerker
-{
-
-    [Required(ErrorMessage = "Password is required")]
-    public string Password { get; set; }
-
-}
-
-public class KlantDTO : Klant
-{
-
-    [Required(ErrorMessage = "Password is required")]
-    public string Password { get; set; }
-
-}
-
-
 
 
 //[Authorize]
@@ -108,7 +76,7 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Route("RegistreerKlant")]
-    public async Task<ActionResult> RegistreerKlant([FromForm] KlantDTO klant)
+    public async Task<ActionResult> RegistreerKlant([FromForm] Klant klant)
     {
         await _klantManager.CreateAsync(klant, klant.Password);
         var responseCode = await assignRole(klant.UserName, "Klant");
@@ -164,7 +132,7 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin, Medewerker")]
-    public async Task<ActionResult> RegistreerMedewerker([FromBody] MedewerkerDTO medewerkerDTO)
+    public async Task<ActionResult> RegistreerMedewerker([FromBody] Medewerker medewerkerDTO)
     {
         var result = await _medewerkerManager
         .CreateAsync(medewerkerDTO, medewerkerDTO.Password);
@@ -182,7 +150,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Authorize(Roles = "Admin, Medewerker")]
     [Route("RegistreerArtiest")]
-    public async Task<ActionResult> RegistreerArtiest(ArtiestDTO artiestDTO)
+    public async Task<ActionResult> RegistreerArtiest(Artiest artiestDTO)
     {
         var result = await _artiestManager
         .CreateAsync(artiestDTO, artiestDTO.Password);
@@ -201,7 +169,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Authorize(Roles = "Admin")]
     [Route("RegistreerAdmin")]
-    public async Task<ActionResult> RegistreerAdmin(AdminDTO adminDTO)
+    public async Task<ActionResult> RegistreerAdmin(Admin adminDTO)
     {
         var result = await _adminManager
         .CreateAsync(adminDTO, adminDTO.Password);

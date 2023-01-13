@@ -116,6 +116,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .IsRequired();
 
         builder.Entity<Voorstelling>()
+        .HasIndex(voorstelling => voorstelling.Titel)
+        .IsUnique();
+
+        builder.Entity<Voorstelling>()
         .Property(voorstelling => voorstelling.Beschrijving)
         .IsRequired();
 
@@ -273,7 +277,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .HasConstraintName("FK_Stoel_Zaal_2")
         .OnDelete(DeleteBehavior.Cascade);
 
-    // Optrede FK naar Zaal    
+    // Optreden FK naar Zaal    
         builder.Entity<Optreden>()
         .HasOne<Zaal>(v => v.Zaal)
         .WithMany(z => z.Optredens)

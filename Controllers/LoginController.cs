@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using theater_laak.Models;
 using Newtonsoft.Json;
 
-public class loginDTO
+public class loginmodel
 {
     public string username { get; set; }
     public string password { get; set; }
@@ -32,12 +32,12 @@ public class LoginController : ControllerBase
 
     [HttpPost]
     // [Route("login")]
-    public async Task<ActionResult> login([FromBody] loginDTO credentials)
+    public async Task<ActionResult> login([FromBody] loginmodel credentials)
     {
         var user = await _usermanager.FindByNameAsync(credentials.username);
 
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
-
+        
         if (user.lockout == true)
         {
             if (DateTime.Compare((DateTime)user.unlockDate, DateTime.Now) < 0)
@@ -50,7 +50,7 @@ public class LoginController : ControllerBase
             else return Unauthorized("locked");
         }
 
-        if (result == false)
+        if (!result)
         {
             if (user.FailedAttempts >= 2)
             {

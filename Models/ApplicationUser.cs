@@ -10,6 +10,7 @@ public class ApplicationUser : IdentityUser
     public string? Adres { get; set; }
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
     public string? Telefoonnummer { get; set; }
+    public string? Password {get;set;}
     private string _Emailvoorkeur;
     public string Emailvoorkeur {
         get { return _Emailvoorkeur; }

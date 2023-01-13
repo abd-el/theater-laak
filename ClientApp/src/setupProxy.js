@@ -22,6 +22,7 @@ const context =  [
   "/api/account/EmailCheck",
   "/api/account/UpdateWachtwoord",
   "/api/account/GetUser",
+  "/api/account/DeleteUser",
   "/api/donatie/MaakDonatie",
   "/api/donatie/GetDonaties",
   "/api/donatie/Autoriseer",
