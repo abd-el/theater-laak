@@ -62,7 +62,7 @@ export class MaakVoorstellingModal extends Component {
             },
             body: JSON.stringify({
                 titel: this.state.titel,
-                imgUrl: this.state.afbeeldingUrl,
+                afbeelding: this.state.afbeeldingUrl,
                 beschrijving: this.state.beschrijving,
                 tijdsduurInMinuten: this.state.tijdsduurInMinuten
             })
