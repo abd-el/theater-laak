@@ -180,7 +180,34 @@ export function AdminPanel() {
         //setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Account/GetGroepen', {
+            const response = await fetch('https://localhost:44461/api/artiestenportaal/GetGroepen', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Er is iets fout gegaan!');
+            }
+
+            const data = await response.json();
+            console.log(data);
+            setGroep(data.groepData);
+            //console.log(data);
+        } catch (error) {
+            setError(error.message);
+        }
+        //setIsLoading(false);
+    }, []);
+
+    const getDonateurs = useCallback(async function () {
+        //event.preventDefault();
+        //setIsLoading(true);
+        setError(null);
+        try {
+            const response = await fetch('https://localhost:44461/api/Account/GetDonateurs', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,40 +221,13 @@ export function AdminPanel() {
 
             const data = await response.json();
 
-            setGroep(data);
+            setD(data);
             //console.log(data);
         } catch (error) {
             setError(error.message);
         }
         //setIsLoading(false);
     }, []);
-
-    // const getDonateurs = useCallback(async function () {
-    //     //event.preventDefault();
-    //     //setIsLoading(true);
-    //     setError(null);
-    //     try {
-    //         const response = await fetch('https://localhost:44461/api/Account/GetDonateurs', {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
-    //             }
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Er is iets fout gegaan!');
-    //         }
-
-    //         const data = await response.json();
-
-    //         setD(data);
-    //         //console.log(data);
-    //     } catch (error) {
-    //         setError(error.message);
-    //     }
-    //     //setIsLoading(false);
-    // }, []);
 
     const getZalen = useCallback(async function () {
         //event.preventDefault();
@@ -318,7 +318,8 @@ export function AdminPanel() {
         getZalen();
         getVoorstellingen();
         getOptredens();
-    }, [getMedewerkers, getAdmins, getArtiesten, getGroepen, getZalen, getVoorstellingen, getOptredens]);
+        getDonateurs();
+    }, [getMedewerkers, getAdmins, getArtiesten, getGroepen, getZalen, getVoorstellingen, getOptredens, getDonateurs]);
 
     function update() {
         getAdmins();
@@ -328,6 +329,7 @@ export function AdminPanel() {
         getZalen();
         getVoorstellingen();
         getOptredens();
+        getDonateurs();
     }
 
     async function voegAdmin() {
@@ -472,6 +474,26 @@ export function AdminPanel() {
         console.log(voorstelling)
     }
 
+    async function voegOptredens() {
+        let optreden = {
+            voorstellingId: username,
+            zaalId: voornaam,
+            artiestId: tijdsduurInMinuten,
+            groepId: afbeelding,
+            voorstellingen: []
+        };
+
+        fetch('https://localhost:44461/api/Programmering/Voorstelling', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: JSON.stringify(optreden)
+        });
+        console.log(optreden)
+    }
+
     function submitHandler(event) {
         event.preventDefault();
         setUsername('');
@@ -557,10 +579,10 @@ export function AdminPanel() {
         content = groepen.map((list) => (
             <tr>
                 <td className="Id">
-                    {list.artiestenGroepId}
+                    {list.id}
                 </td>
                 <td className="Naam">
-                    {list.groepsNaam}
+                    {list.naam}
                 </td>
                 <td className="Email">
                     {list.groepsEmail == '' && 'onbekend'}

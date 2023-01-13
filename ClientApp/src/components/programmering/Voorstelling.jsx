@@ -47,6 +47,9 @@ export function Voorstelling(props) {
                 {new Date(props.array.datumTijdstip.split('T')[0]).getDate()}&nbsp;
                 {months[new Date(props.array.datumTijdstip.split('T')[0]).getMonth()]}
             </td>
+            <td className='zaalId'>
+                {props.array.zaalId}
+            </td>
             <td className="tijdstip">
                 <button id='tijdstipKnop'>{props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}</button>
             </td>

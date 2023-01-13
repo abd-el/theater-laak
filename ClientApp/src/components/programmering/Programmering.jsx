@@ -226,6 +226,9 @@ export function Programmering() {
                             <th scope='col'>
                                 Tijdstip
                             </th>
+                            <th scope='col'>
+                                Zaal
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
