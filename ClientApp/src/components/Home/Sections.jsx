@@ -8,7 +8,7 @@ export function Sections({ img_path, title, text, btn_text, img_path2, title2, t
     return (
         <div className='container_sections'>
             <div className='container_section_1'>
-                <img className='test1' src={img_path} alt='' />
+                <img className='image' src={img_path} alt='foto van theater laak' />
                 <div className='textblock'>
                     <h1>{title}</h1>
                     <p>{text}</p>
