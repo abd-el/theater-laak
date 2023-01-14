@@ -32,11 +32,11 @@ const AppRoutes = [
   },
   {
     path: '/artiestenportaal',
-    element: <Artiestenportaal />
+    element: <Artiestenportaal AllowedRoles={['Admin', 'Artiest', 'Medewerker']}/>
   },
   {
     path: '/accountinstellingen',
-    element: <RequireAuth AllowedRoles={['Klant', 'Admin', "Medewerker"]}><AccountInstellingen /></RequireAuth>
+    element: <RequireAuth AllowedRoles={['Klant', 'Admin', 'Artiest', 'Medewerker']}><AccountInstellingen /></RequireAuth>
   },
   {
     path: '/login',

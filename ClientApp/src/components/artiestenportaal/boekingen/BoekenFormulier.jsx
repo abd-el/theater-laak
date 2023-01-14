@@ -248,7 +248,7 @@ export class BoekenFormulier extends Component {
 
                 <MaakVoorstellingModal />
 
-                <div id="resultaat" className={`mt-2 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
+                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                     {this.state.resultaat}
                 </div>
             </div>
