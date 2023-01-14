@@ -68,7 +68,7 @@ export function LoginForm() {
                                     <ReCAPTCHA className="mt-3" sitekey={keys.REACT_APP_SITE_KEY} ref={captcha} theme="dark" />
 
                                     <div className="form-group">
-                                        <label htmlFor="remember-me" className="text-white"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
+                                        <label htmlFor="remember-me" className="text-white"><span>Blijf ingelogd </span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
                                         <button type="submit" name="button" className="btn btn-primary btn-md" value="submit">Submit</button>
                                     </div>
                                     <div id="register-link" className="text-right">

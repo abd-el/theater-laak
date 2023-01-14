@@ -3,10 +3,10 @@
     align-items: center;
     width: 100%;
     height: 500px;
-    position: absolute;
-    top: 75px;
+    position: relative;
+    top: 25px;
     padding: 40px;
-  background: #419be0;
+    background: #000000;
   }
 
   .slick-slide div {
@@ -28,7 +28,7 @@
 @media (max-width: 900px){
   .slick-slide div{
     width: 200px;
-    height: 330px;
+    height: 400px;
   }
 } 
 

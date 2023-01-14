@@ -161,7 +161,7 @@ export function Programmering() {
     for (let i = 0; i < AangepasteArray.length; i++) {
         for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
             if (AangepasteArray[i].voorstelling[j].titel == enteredName) {
-                content = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId -1].titel == enteredName).map((Optreden) => (
+                content = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId - 1].titel == enteredName).map((Optreden) => (
                     <Voorstelling array={Optreden} />
                 ));
             }
@@ -171,10 +171,10 @@ export function Programmering() {
     for (let i = 0; i < AangepasteArray.length; i++) {
         for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
             if (AangepasteArray[i].voorstelling[j].titel == enteredName && AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
-                let filteredArray = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId -1].titel == enteredName);
+                let filteredArray = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId - 1].titel == enteredName);
                 content = filteredArray.filter(fa => fa.datumTijdstip.split('T')[0] == enteredDatum).map((Optreden) => (
                     <Voorstelling array={Optreden} />
-                ));    
+                ));
             }
         }
     }
@@ -187,7 +187,7 @@ export function Programmering() {
         content = <tr><td>Loading...</td></tr>;
     }
 
-
+    console.log(AangepasteArray);
 
     return (
         <div>
@@ -224,10 +224,10 @@ export function Programmering() {
                                 Dag/Datum
                             </th>
                             <th scope='col'>
-                                Tijdstip
+                                Zaal
                             </th>
                             <th scope='col'>
-                                Zaal
+                                Tijdstip
                             </th>
                         </tr>
                     </thead>
