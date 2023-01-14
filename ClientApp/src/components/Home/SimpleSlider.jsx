@@ -51,13 +51,16 @@ export function SimpleSlider() {
 
 
   const [voorstellingen, setVoorstellingen] = useState();
+  const [length, setLength] = useState();
 
   async function fetchMovies() {
     const resp = await backendApi.get('/api/Programmering/Voorstellingen');
-    const list = [];
+    
     if (resp.status == 200) {
-      console.log(resp.data);
-      setVoorstellingen(resp.data);
+      let arr = [];
+      arr = Array.from(resp.data);
+      setVoorstellingen(arr);
+      setLength(arr.length);
     }
     else {
       console.log(resp.status + ' ' + resp.statusText);
@@ -88,22 +91,22 @@ export function SimpleSlider() {
     <div className="slider-container">
       <Slider {...settings}>
         <div className="slider-item 1">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[3] : placeholder } />
+          <Card voorstellingen = { !voorstellingen ? placeholder : voorstellingen[length - 1] } />
         </div>
         <div className="slider-item 2">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[4] : placeholder } />
+          <Card voorstellingen = { !voorstellingen || length < 1 ? placeholder : voorstellingen[length - 2] } />
         </div>
         <div className="slider-item 3">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[5] : placeholder } />
+          <Card voorstellingen = { !voorstellingen || length < 2 ? placeholder : voorstellingen[length - 3] } />
         </div>
         <div className="slider-item 4">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[6] : placeholder } />
+          <Card voorstellingen = { !voorstellingen || length < 3 ? placeholder : voorstellingen[length - 4] } />
         </div>
         <div className="slider-item 5">
-          <Card voorstellingen = { voorstellingen != null ? voorstellingen[7] : placeholder } />
+          <Card voorstellingen = { !voorstellingen || length < 4 ? placeholder : voorstellingen[length - 5] } />
         </div>
         <div className="slider-item 6">
-          <Card voorstellingen = {placeholder} />
+          <Card voorstellingen = { !voorstellingen || length < 5 ? placeholder : voorstellingen[length - 6] } />
         </div>
       </Slider>
     </div>
