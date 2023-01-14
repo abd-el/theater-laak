@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AdminPanel } from './AdminPanel';
 
 export function Optreden(props) {
 
@@ -113,17 +114,18 @@ export function Optreden(props) {
                     {list.zaalId}
                 </td>
                 <td className='artiestOfGroep'>
-                    {list.artiestId == '' && list.artiestenGroepId}
-                    {list.artiestenGroepId == '' && list.artiestId}
+                {list.artiestenGroepId != null && list.artiestenGroepId}
+                    {list.artiestenGroepId == null && list.artiestId}
+                    {list.artiestenGroepId == null && list.artiestId == null && 'onbekend'}
                 </td>
                 <td className='prijs'>
                     €{list.prijs}
                 </td>
                 <td className='datum'>
-                    {list.datum.split('T')[0].substring(8, 10) + list.datum.split('T')[0].substring(4, 8) + list.datum.split('T')[0].substring(0, 4)}
+                    {list.datumTijdstip.split('T')[0].substring(8, 10) + list.datumTijdstip.split('T')[0].substring(4, 8) + list.datumTijdstip.split('T')[0].substring(0, 4)}
                 </td>
                 <td className='tijdstip'>
-                    {list.datum.split('T')[1].substring(0, 5)}
+                    {list.datumTijdstip.split('T')[1].substring(0, 5)}
                 </td>
             </tr>
         ));
@@ -139,13 +141,13 @@ export function Optreden(props) {
                                 ID
                             </th>
                             <th scope='col'>
-                                VoorstellingID
+                                Voorstelling ID
                             </th>
                             <th scope='col'>
-                                ZaalID
+                                Zaal ID
                             </th>
                             <th scope='col'>
-                                ArtiestID/GroepID
+                                Artiest ID / Groep ID
                             </th>
                             <th scope='col'>
                                 Prijs

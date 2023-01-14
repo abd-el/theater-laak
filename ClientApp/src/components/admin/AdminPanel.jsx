@@ -14,8 +14,6 @@ export function AdminPanel() {
     const [getter, setGetter] = useState('');
     const [setter, setSetter] = useState('');
 
-
-
     // useEffect(() => {
     //     getGroepen();
     //     getZalen();
@@ -24,8 +22,6 @@ export function AdminPanel() {
     //     getDonateurs();
     // }, [ getArtiesten, getGroepen, getZalen, getVoorstellingen, getOptredens, getDonateurs]);
 
-    function update() {
-    }
     function submitHandler(event) {
         event.preventDefault();
     }
