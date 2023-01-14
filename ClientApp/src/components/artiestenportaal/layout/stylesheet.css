@@ -14,12 +14,24 @@ table td.datum-tijdstip, table th.datum-tijdstip {
     width: 200px;
 }
 
+.w-7 {
+    width: 7%;
+}
+
 .w-25 {
     width: 25%;
 }
 
 .w-45 {
     width: 45%;
+}
+
+.w-93 {
+    width: 93%;
+}
+
+.vertical-align-sub {
+    vertical-align: sub;
 }
 
 .dropdown-icon {

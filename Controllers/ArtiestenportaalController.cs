@@ -225,6 +225,13 @@ public class ArtiestenportaalController : ControllerBase {
             });
         }
 
+        if (gegevens.prijs < 1 || gegevens.prijs > 30){
+            return StatusCode(400, new {
+                success = false,
+                bericht = "De prijs moet tussen 1 en 30 euro liggen."
+            });
+        }
+
         var optredensInZelfdeZaalEnZelfdeDag = await _context.Optredens
         .Where(o => o.ZaalId == gegevens.zaalId)
         .Where(o => o.DatumTijdstip.Date.CompareTo( 
@@ -260,6 +267,13 @@ public class ArtiestenportaalController : ControllerBase {
         Int32.TryParse(gegevens.tijdstip.Substring(gegevens.tijdstip.IndexOf(value: ':') + 1), out int minuteEnd);
 
         var timeEnd = new TimeOnly(hourEnd, minuteEnd);
+
+        if(timeStart.CompareTo(new TimeOnly(8, 0)) < 0 || timeStart.CompareTo(new TimeOnly(23, 0)) > 0 || timeEnd.CompareTo(new TimeOnly(8, 0)) < 0 || timeEnd.CompareTo(new TimeOnly(23, 0)) > 0){
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Je kan niet voor 08:00 of na 23:00 boeken."
+            });
+        }
 
         for(var i = 0; i < optredensInZelfdeZaalEnZelfdeDag.Count(); i++){
             var dezeOptreden = optredensInZelfdeZaalEnZelfdeDag[i];
@@ -306,6 +320,7 @@ public class ArtiestenportaalController : ControllerBase {
                     )
                 )
             ).AddHours(hour).AddMinutes(minute),
+            Prijs = gegevens.prijs
         };
 
         if (gegevens.groep != null) {

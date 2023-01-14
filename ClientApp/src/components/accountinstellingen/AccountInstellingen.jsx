@@ -10,8 +10,8 @@ export class AccountInstellingen extends Component {
 
         super(props);
         this.state = {
-            resultaat: undefined,
-            resultaatSuccess: undefined,
+            resultaat: '',
+            resultaatSuccess: '',
 
             // deze informatie halen we op uit de database
             voornaam: '',
@@ -216,7 +216,7 @@ export class AccountInstellingen extends Component {
                         </div>
 
                         <div className='col-sm-12 mt-3'>
-                            <div id="resultaat" className={`d-inline h6 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
+                            <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                 {this.state.resultaat}
                             </div>
                         </div>

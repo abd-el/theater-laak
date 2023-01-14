@@ -11,6 +11,8 @@ public class ApplicationUser : IdentityUser
     public string? Geslacht { get; set; } // Man / Vrouw / Anders
     public string? Telefoonnummer { get; set; }
     public string? Password {get;set;}
+    public string? _2faToken {get;set;}
+    public DateTime? _2faExpDate {get;set;}
     private string _Emailvoorkeur;
     public string Emailvoorkeur {
         get { return _Emailvoorkeur; }
