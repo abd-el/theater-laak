@@ -95,7 +95,7 @@ export class Layout extends Component {
                 }
                 let optreden = null;
                 for(let j = 0; j < this.state.voorstellingen.length; j++){
-                    if(this.state.voorstellingen[j].voorstellingId === boeking.optredenId){
+                    if(this.state.voorstellingen[j].voorstellingId === boeking.voorstellingId){
                         optreden = this.state.voorstellingen[j];
                     }
                 }

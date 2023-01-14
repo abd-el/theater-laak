@@ -13,6 +13,7 @@ export class BoekenFormulier extends Component {
             voorstellingId: 0,
             groep: 0,
             zaal: 0,
+            prijs: 0,
             datum: null,
             tijdstip: null,
             eindTijdstip: null,
@@ -25,6 +26,15 @@ export class BoekenFormulier extends Component {
     veranderTijdstip = (e) => { this.setState({ tijdstip: e.target.value }); }
     veranderEindTijdstip = (e) => { this.setState({ eindTijdstip: e.target.value }); }
     veranderVoorstellingId = (e) => { this.setState({ voorstellingId: e.target.value }); }
+    veranderPrijs = (e) => { this.setState({ prijs: e.target.value }); }
+
+    valideerPrijs = (prijs) => {
+        // min 1
+        // max 30
+        // max 2 decimalen
+        prijs = parseFloat(prijs);
+        return !(isNaN(prijs) || prijs < 1 || prijs > 30 || prijs.toString().split('.')?.[1]?.length > 2);
+    }
 
     valideerVoorstelling = (voorstellingId) => {
         return !(voorstellingId < 0 || isNaN(voorstellingId));
@@ -121,6 +131,14 @@ export class BoekenFormulier extends Component {
             return false;
         }
 
+        if (!this.valideerPrijs(this.state.prijs)) {
+            this.setState({
+                resultaat: 'De prijs is verplicht en moet tussen 1 en 30 euro liggen met maximaal 2 decimalen',
+                resultaatSuccess: false
+            });
+            return false;
+        }
+
         // maak hier een POST request naar de server
         let res = await fetch('/api/artiestenportaal/MaakBoeking', {
             method: 'POST',
@@ -134,7 +152,8 @@ export class BoekenFormulier extends Component {
                 datum: this.state.datum,
                 tijdstip: this.state.tijdstip,
                 eindTijdstip: this.state.eindTijdstip,
-                groep: this.state.groep
+                groep: this.state.groep,
+                prijs: this.state.prijs 
             })
         })
         .then(res => res.json())
@@ -211,6 +230,15 @@ export class BoekenFormulier extends Component {
                     <div className='mb-2 d-inline-block ms-2 w-25'>
                         <div>Tot*</div>
                         <input type="time" onChange={this.veranderEindTijdstip} id="tot-invoer" className='form-control text-white' placeholder='XX:XX'></input>
+                    </div>
+                </div>
+
+                <div className='mb-1'>
+                    <div>Prijs</div>
+
+                    <div>
+                        <h2 className='vertical-align-sub d-inline-block w-7'>€</h2>
+                        <input type="number" onChange={this.veranderPrijs} id="prijs-invoer" className='form-control d-inline-block w-93 text-white' placeholder='Max. 2 getallen achter de komma'></input>
                     </div>
                 </div>
 

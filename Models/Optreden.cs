@@ -24,5 +24,5 @@ public class BoekingJsonGegevens {
     public int? groep { get; set; }
     public int zaalId { get; set; }
     public int voorstellingId { get; set; }
-    // public double prijs { get; set; }
+    public double prijs { get; set; }
 }
