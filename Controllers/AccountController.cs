@@ -231,12 +231,12 @@ public class AccountController : ControllerBase
         }
 
         return Ok(
-    new
-    {
-        success = true,
-        resultaat = "De user is geauthenticeerd"
-    }
-);
+            new
+            {
+                success = true,
+                resultaat = user
+            }
+        );
     }
 
     [HttpGet]
@@ -452,14 +452,21 @@ public class AccountController : ControllerBase
         user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
-        await _userManager.UpdateAsync(user);
+        var result = await _userManager.UpdateAsync(user);
 
-        return Ok(
-            new
-            {
-                success = true,
-                resultaat = "Instellingen zijn succesvol gewijzigd"
-            }
-        );
+        if (!result.Succeeded) {
+            string errors = result.Errors.Aggregate("", (current, error) => current + error.Description + "\n");
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Er is iets fout gegaan bij het updaten van uw gegevens " + errors
+            });
+        } else {
+            return Ok(
+                new {
+                    success = true,
+                    bericht = "Uw gegevens zijn succesvol gewijzigd"
+                }
+            );
+        }
     }
 }
