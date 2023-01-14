@@ -12,7 +12,7 @@ export function Footer() {
                         <div className="col-lg-4 col-md-6">
                             <h5 className="h1 text-white">Theater Laak</h5>
                             <p className="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
-                            <p className="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a className="text-primary" href="#">Bootstrapious.com</a></p>
+                            <p className="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a className="text-primary" href="#">getbootstrap.com</a></p>
                         </div>
                         <div className="col-lg-2 col-md-6">
                             <h5 className="text-white mb-3">Quick links</h5>
@@ -33,7 +33,7 @@ export function Footer() {
                             </ul>
                         </div>
                         <div className="col-lg-4 col-md-6">
-                            <h5 className="text-white mb-3">Newsletter</h5>
+                            <h5 className="text-white mb-3">Nieuwsbrief</h5>
                             <p className="small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
                             <form action="#">
                                 <div className="input-group mb-3">

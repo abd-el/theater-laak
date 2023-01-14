@@ -137,10 +137,6 @@ export function SignupForm() {
 		return /^[A-Za-z0-9]*$/.test(str);
 	}
 
-	// const containsSpaces = (str) => {
-	// 	return /^(?!.* )$/.test(str);
-	// }
-
 	const isEmail = (email) => {
 		return /\S+@\S+\.\S+/.test(email);
 	}
@@ -240,9 +236,7 @@ export function SignupForm() {
 			if (findRepeatedPattern(input.current.value)) {
 				error.current.value = 'uw wachtwoord mag geen herhalende patronen bevatten';
 			}
-			// if (containsSpaces(input.current.value)) {
-			// 	error.current.value = 'uw wachtwoord mag geen spaties bevatten';
-			// }
+
 			if (onlyLettersAndNumbers(input.current.value)) {
 				error.current.value = 'uw wachtwoord moet tenminste een van de volgende karakters bevatten: !@#$%^&'
 			}
@@ -288,7 +282,7 @@ export function SignupForm() {
 			<div className="container-fluid bg">
 				<div className="container">
 					<div className="row">
-						<div className="col-md-7 ">
+						<div className="col-md-6 ">
 							<div className="row">
 								<div className="col-sm-3 col-md-2 col-lg-2">
 									<i className="lni lni-enter" aria-hidden="true"></i>
@@ -296,7 +290,7 @@ export function SignupForm() {
 
 								<div className="col-sm-9 col-md-10 col-lg-10">
 									<h1 className="heading">Extra mogelijkheden</h1>
-									<p>Door uzelf te registreren voor onze service, krijgt u toegang tot een wereld vol extra mogelijkheden. Zo kunt u bijvoorbeeld gemakkelijk uw persoonlijke gegevens aanpassen en heeft u de mogelijkheid om al uw aankopen terug te kijken. Maak gebruik van deze handige opties en blijf op de hoogte van al uw activiteiten binnen ons platform.</p>
+									<p>Door uzelf te registreren voor onze service, krijgt u toegang tot een wereld vol extra mogelijkheden.</p>
 								</div>
 							</div>
 
@@ -307,7 +301,7 @@ export function SignupForm() {
 
 								<div className="col-sm-9 col-md-10 col-lg-10">
 									<h1 className="heading">Donateurs</h1>
-									<p>Als donateurslid kunt u deelnemen aan ons unieke programma waarbij u uw donaties kunt opstapelen. Zo kunt u uiteindelijk toegang krijgen tot onze exclusieve mogelijkheden die alleen beschikbaar zijn voor leden van ons platform. Word dus vandaag nog donateur en maak gebruik van deze bijzondere mogelijkheid om uw impact te vergroten.</p>
+									<p>Als donateurslid kunt u deelnemen aan ons unieke programma waarbij u uw donaties kunt opstapelen. Zo kunt u uiteindelijk toegang krijgen tot onze exclusieve mogelijkheden die alleen beschikbaar zijn voor leden van ons platform.</p>
 								</div>
 							</div>
 
@@ -335,32 +329,32 @@ export function SignupForm() {
 										</div>
 										<form onSubmit={HandleSubmit} name="registration" id="registration">
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Voornaam*</label>
+												<label>Voornaam*</label>
 												<input ref={voornaam} type="text" name="Voornaam" className="form-control" id="firstname" aria-describedby="voornaam" placeholder="Voornaam" />
 												<label ref={naamError} className="text-danger">{state[0][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Achternaam*</label>
+												<label>Achternaam*</label>
 												<input ref={achternaam} type="text" name="Achternaam" className="form-control" id="lastname" aria-describedby="achternaam" placeholder="Achternaam" />
 												<label ref={achterError} className="text-danger">{state[1][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Gebruikersnaam*</label>
+												<label>Gebruikersnaam*</label>
 												<input ref={gebruikersnaam} type="text" name="userName" id="username" className="form-control" aria-describedby="gebruikersnaam" placeholder="Gebruikersnaam" />
 												<label ref={gebruikerError} className="text-danger">{state[2][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Email*</label>
+												<label>Email*</label>
 												<input ref={email} type="email" name="Email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Email" />
 												<label ref={mailError} className="text-danger">{state[3][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Wachtwoord*</label>
+												<label>Wachtwoord*</label>
 												<input ref={wachtwoord} type="password" name="Password" id="password" className="form-control" aria-describedby="wachtwoord" placeholder="Wachtwoord" />
 												<label ref={wwError} className="text-danger">{state[4][1].current.value}</label>
 											</div>
 											<div className="form-group">
-												<label htmlFor="exampleInputEmail1">Telefoonnummer</label>
+												<label>Telefoonnummer</label>
 												<input ref={telefoonnummer} type='tel' name="PhoneNumber" id="phonenumber" className="form-control" aria-describedby="telefoonnummer" placeholder="Telefoonnummer" />
 												<label ref={telError} className="text-danger">{state[5][1].current.value}</label>
 											</div>
