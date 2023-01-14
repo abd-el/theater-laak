@@ -10,13 +10,7 @@ export class HuidigeBoekingen extends Component {
 
     componentDidMount() {
         // haal de huidige boekingen op uit de database
-        let huidigeBoekingen = [
-            { titel: 'Roodkapje', zaal: 3, bevestigd: '✅', datumtijdstip: '01-01-2023 15:00' },
-            { titel: 'Roodkapje', zaal: 2, bevestigd: '⏳', datumtijdstip: '04-01-2023 17:00' },
-            { titel: 'Roodkapje', zaal: 4, bevestigd: '❌', datumtijdstip: '09-01-2023 20:00' },
-        ];
-
-        this.setState({ huidigeBoekingen: huidigeBoekingen });
+        console.log(this.props.huidigeBoekingen);
     }
 
     render() {
@@ -47,7 +41,7 @@ export class HuidigeBoekingen extends Component {
                         </thead>
                         <tbody>
                             {this.props.huidigeBoekingen.map((boeking, index) => (
-                                <Rij key={index} titel={boeking.titel} zaal={boeking.zaal} bevestigd={boeking.bevestigd} datumTijdstip={boeking.datumtijdstip} />
+                                <Rij key={index} titel={boeking.titel} zaal={boeking.zaal} bevestigd={boeking.bevestigd} datumTijdstip={boeking.datumTijdstip.replace('T', ' om ').slice(0, -3)} />
                             ))}
                         </tbody>
                     </table>

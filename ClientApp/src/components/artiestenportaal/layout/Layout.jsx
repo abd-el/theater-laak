@@ -82,9 +82,34 @@ export class Layout extends Component {
         .then(res => res.json())
         .catch(err => console.warn(`caught error: ${err}`))
 
-        if (huidigeBoekingenRes && huidigeBoekingenRes.length > -1) {
+        if (huidigeBoekingenRes && huidigeBoekingenRes.optredens.length > -1) {
+            let boekingen = [];
+
+            for(let i = 0; i < huidigeBoekingenRes.optredens.length; i++){
+                let boeking = huidigeBoekingenRes.optredens[i];
+                let bevestigdEmoji = '⏳';
+                if (boeking.bevestigd === true) {
+                    bevestigdEmoji = '✅';
+                } else if (boeking.bevestigd === false) {
+                    bevestigdEmoji = '❌';
+                }
+                let optreden = null;
+                for(let j = 0; j < this.state.voorstellingen.length; j++){
+                    if(this.state.voorstellingen[j].voorstellingId === boeking.optredenId){
+                        optreden = this.state.voorstellingen[j];
+                    }
+                }
+                boekingen.push({
+                    id: boeking.optredenId,
+                    datumTijdstip: boeking.datumTijdstip,
+                    bevestigd: bevestigdEmoji,
+                    titel: optreden.titel,
+                    zaal: boeking.zaalId
+                })
+            }
+
             this.setState({
-                huidigeBoekingen: huidigeBoekingenRes
+                huidigeBoekingen: boekingen
             });
         }
     }

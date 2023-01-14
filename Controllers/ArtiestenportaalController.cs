@@ -285,6 +285,7 @@ public class ArtiestenportaalController : ControllerBase {
         }
 
         var optreden = new Optreden {
+            Bevestigd = null,
             Voorstelling = voorstelling,
             Zaal = await _context.Zalen.FindAsync(gegevens.zaalId),
             DatumTijdstip = new DateTime(
@@ -347,7 +348,7 @@ public class ArtiestenportaalController : ControllerBase {
         }
 
         var optredens = await _context.Optredens
-        .Where(o => o.ArtiestId == artiest.Id)
+        .Where(o => o.ArtiestId == artiest.Id || o.ArtiestenGroepId == artiest.ArtiestenGroepId)
         .ToListAsync();
 
         return Ok(new {
