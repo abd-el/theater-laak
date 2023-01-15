@@ -63,15 +63,21 @@ export class NavMenu extends Component {
   }
 
   componentDidUpdate() {
-      const { authState } = this.context;
+    const { authState } = this.context;
 
-      if (authState != null && this.state.ingelogd == false)
-        this.setState({ ingelogd: true });
+    if (authState != null && this.state.ingelogd == false)
+      this.setState({ ingelogd: true });
 
-      if (authState == null && this.state.ingelogd == true)
-        this.setState({ ingelogd: false });
+    if (authState == null && this.state.ingelogd == true)
+      this.setState({ ingelogd: false });
   }
 
+  ExpirationModal = () => {
+    if (this.state.ingelogd) {
+      return <ExpirationModal />
+    }
+    return
+  }
 
   render() {
     return (
@@ -88,7 +94,7 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"Dashboard" == this.state.geselecteerd} text="Dashboard" to="/Dashboard" hidden={!this.state.ingelogd} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
-              <ExpirationModal />
+              {this.ExpirationModal()}
               {this.loginMenu()}
 
             </ul>
