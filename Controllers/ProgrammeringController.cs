@@ -37,7 +37,7 @@ public class ProgrammeringController : ControllerBase
     {
         if (!_context.Voorstellingen.Select(x => x.Titel).Contains(voorstelling.titel) || _context.Voorstellingen.Count() == 0)
         {
-            await _context.Voorstellingen.AddAsync(new Voorstelling (
+            await _context.Voorstellingen.AddAsync(new Voorstelling(
                 voorstelling.afbeelding,
                 voorstelling.titel,
                 voorstelling.beschrijving,
@@ -46,14 +46,16 @@ public class ProgrammeringController : ControllerBase
 
             await _context.SaveChangesAsync();
 
-            return Ok(new {
+            return Ok(new
+            {
                 bericht = $"{voorstelling.titel} is toegevoegd.",
                 success = true
             });
         }
 
-        return StatusCode(403, new {
-            bericht = $"{voorstelling.titel} was al eerder toegevoegd.", 
+        return StatusCode(403, new
+        {
+            bericht = $"{voorstelling.titel} was al eerder toegevoegd.",
             success = false
         });
     }
@@ -123,6 +125,36 @@ public class ProgrammeringController : ControllerBase
         return await _context.Optredens.Where(o => o.DatumTijdstip >= vandaag).ToListAsync();
     }
 
+    [HttpGet]
+    [Route("BevestigdeOptredens")]
+    public async Task<ActionResult<IEnumerable<Optreden>>> GetBevestigdeOptredens()
+    {
+        var vandaag = DateTime.Today;
+        if (_context.Optredens == null)
+        {
+            return NotFound();
+        }
+
+        var Optredens = await _context.Optredens.Where(o => o.DatumTijdstip >= vandaag).Where(o => o.Bevestigd == true).ToListAsync();
+
+        return Optredens;
+    }
+
+    [HttpGet]
+    [Route("NietBevestigdeOptredens")]
+    public async Task<ActionResult<IEnumerable<Optreden>>> GetNietBevestigdeOptredens()
+    {
+        var vandaag = DateTime.Today;
+        if (_context.Optredens == null)
+        {
+            return NotFound();
+        }
+
+        var Optredens = await _context.Optredens.Where(o => o.DatumTijdstip >= vandaag).Where(o => o.Bevestigd != true).ToListAsync();
+
+        return Optredens;
+    }
+
     [HttpPost]
     [Route("Optreden")]
     public async Task<ActionResult> VoegOptreden([FromBody] Optreden optreden)
@@ -136,7 +168,7 @@ public class ProgrammeringController : ControllerBase
         var vandaag = DateTime.Today;
         var voorstelling = await _context.Voorstellingen.FindAsync(optreden.VoorstellingId);
 
-        if (_context.Optredens.Select(o => o.DatumTijdstip).Contains(optreden.DatumTijdstip) && 
+        if (_context.Optredens.Select(o => o.DatumTijdstip).Contains(optreden.DatumTijdstip) &&
         optreden.DatumTijdstip.CompareTo(_context.Optredens.Select(o => o.DatumTijdstip.AddMinutes(voorstelling.TijdsduurInMinuten))) <= 0) //controleert of de aangegeven datumTijdstip niet bestaat en of 
         {
             return BadRequest($"Deze voorstelling is al ingepland voor de gekozen datum en tijdstip: {optreden.DatumTijdstip}, probeer een optreden op een latere tijdstip dan {optreden.DatumTijdstip.AddMinutes(voorstelling.TijdsduurInMinuten)} toe te voegen.");
@@ -149,9 +181,66 @@ public class ProgrammeringController : ControllerBase
         return Ok($"Optreden met id: {optreden.OptredenId} is toegevoegd voor {voorstelling.Titel}!");
     }
 
-    [HttpDelete]
+    [HttpPut]
+    [Authorize(Roles = "Admin")]
+    [Route("BevestigOptreden")]
+    public async Task<IActionResult> BevestigOptreden(int id)
+    {
+
+        if (_context.Optredens.Count() == 0)
+        {
+            return NotFound("Er zijn geen optredens beschikbaar.");
+        }
+
+        var optreden = await _context.Optredens.FindAsync(id);
+
+        if (optreden == null)
+        {
+            return NotFound($"Optreden met de Id: {id} niet gevonden.");
+        }
+
+        optreden.Bevestigd = true;
+
+        _context.Optredens.Update(optreden);
+        await _context.SaveChangesAsync();
+        return Ok($"Optreden met de Id: {id} is bevestigd!");
+    }
+
+    [HttpPut]
     [Route("Optreden")]
-    public async Task<ActionResult> VerwijdesrVoorstelling(int OptredenId)
+    public async Task<IActionResult> veranderOptreden(int id, Optreden o)
+    {
+
+        if (_context.Optredens.Count() == 0)
+        {
+            return NotFound("Er zijn geen optredens beschikbaar.");
+        }
+
+        var optreden = await _context.Optredens.FindAsync(id);
+
+        if (optreden == null)
+        {
+            return NotFound($"Optreden met de Id: {id} niet gevonden.");
+        }
+        optreden.Prijs = o.Prijs;
+        optreden.DatumTijdstip = o.DatumTijdstip;
+        optreden.ArtiestenGroepId = o.ArtiestenGroepId;
+        optreden.ArtiestId = o.ArtiestId;
+        optreden.VoorstellingId = o.VoorstellingId;
+        optreden.BegunstigersExclusief = o.BegunstigersExclusief;
+        optreden.Tickets = o.Tickets;
+        optreden.Bevestigd = o.Bevestigd;
+        optreden.ZaalId = o.ZaalId;
+
+        _context.Optredens.Update(optreden);
+        await _context.SaveChangesAsync();
+        return Ok($"Optreden met de Id: {id} is bevestigd!");
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "Admin")]
+    [Route("Optreden")]
+    public async Task<ActionResult> VerwijderOptreden(int OptredenId)
     {
         if (_context.Optredens.Count() == 0)
         {

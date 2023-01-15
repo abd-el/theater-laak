@@ -45,7 +45,10 @@ const context =  [
   "/api/Account/GetDonateurs",
   "/api/Account/RegistreerArtiest",
   "/api/Account/RegistreerAdmin",
-  "/api/Account/RegistreerGroep"
+  "/api/Account/RegistreerGroep",
+  "/api/Programmering/NietBevestigdeOptredens",
+  "/api/Programmering/BevestigdeOptredens",
+  "/api/Programmering/BevestigOptreden"
 ];
 
 module.exports = function(app) {
