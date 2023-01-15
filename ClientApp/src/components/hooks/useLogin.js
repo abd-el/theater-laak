@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 export function useLogin() {
     const [message, setMessage] = useState();
-    const { authState, dispatch } = useAuthContext();
+    const { dispatch } = useAuthContext();
 
 
     async function login(username, password) {
@@ -17,11 +17,6 @@ export function useLogin() {
         });
 
         if (resp.status == 200) {
-            console.log(resp.data);
-            console.log(resp.status);
-            console.log(resp.statusText);
-            console.log(resp.header);
-            console.log(resp.config);
             setMessage('login gelukt');
 
             dispatch({
@@ -32,8 +27,8 @@ export function useLogin() {
 
         }
         else if (resp.data == 'locked') {
-            setMessage('we hebben gemerkt dat u recentelijk te vaak heeft geprobeerd in te loggen op uw account.' 
-            + ' Om uw account te beschermen, is het voor 10 minuten geblokkeerd.');
+            setMessage('we hebben gemerkt dat u recentelijk te vaak heeft geprobeerd in te loggen op uw account.'
+                + ' Om uw account te beschermen, is het voor 10 minuten geblokkeerd.');
         }
         else {
             setMessage('login mislukt, controleer uw gegevens');
