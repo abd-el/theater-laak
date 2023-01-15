@@ -11,8 +11,6 @@ export function useGetUser() {
     // }, [authState]);
 
     async function getAuthUser() {
-        
-
         if (authState != null) {
             console.log(authState);
         }
@@ -32,14 +30,10 @@ export function useGetUser() {
             }
 
             dispatch(payload);
-
-        }
-        else {
+        } else {
             console.error(resp.statusText);
         }
     }
 
-return { getAuthUser };
-
-
+    return { getAuthUser };
 }

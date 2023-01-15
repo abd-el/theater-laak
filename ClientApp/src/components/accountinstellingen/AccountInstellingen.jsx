@@ -10,8 +10,8 @@ export class AccountInstellingen extends Component {
 
         super(props);
         this.state = {
-            resultaat: undefined,
-            resultaatSuccess: undefined,
+            resultaat: '',
+            resultaatSuccess: '',
 
             // deze informatie halen we op uit de database
             voornaam: '',
@@ -24,9 +24,33 @@ export class AccountInstellingen extends Component {
         };
     }
 
-    componentDidMount() {
-        // hier halen we de gegevens op uit de database
+    verversGegevens = async () => {
+        let res = await fetch('/api/account/GetUser', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.warn(`caught error: ${err}`));
+
+        if (!res?.data?.user) {
+            console.warn(`res?.data?.user is undefined`);
+            console.warn(res);
+            console.warn(res?.data);
+            console.warn(res?.data?.user);
+            return;
+        }
         
+        localStorage.setItem('authState', JSON.stringify({
+            token: JSON.parse(localStorage.getItem('authState')).token,
+            user: res.data.user
+        }));
+    }
+
+    componentDidMount = () => {
+        // hier halen we de gegevens op uit de database
         const { authState } = this.context;
 
         console.log(authState)
@@ -52,12 +76,12 @@ export class AccountInstellingen extends Component {
 
     controleerDatum = (datum) => {
         // controleer of datum in het juiste formaat is
-        // eerst kijken we naar de dag dus: 0[1-9]|[1-9]|[1-2][0-9]|3[0-1] d.w.z 01-09, 1-9, 10-29 of 30-31
+        // eerst kijken we naar het jaar dus: 19[0-9][0-9]|20[0-2][0-3] d.w.z 1900-1999 of 2000-2023
         // dan kijken we naar de maand dus: 0[1-9]|[1-9]|1[0-2] d.w.z 01-09, 1-9 of 10-12
-        // dan kijken we naar het jaar dus: 19[0-9][0-9]|20[0-2][0-3] d.w.z 1900-1999 of 2000-2023
+        // dan kijken we naar de dag dus: 0[1-9]|[1-9]|[1-2][0-9]|3[0-1] d.w.z 01-09, 1-9, 10-29 of 30-31
         // streepje ("-") tussen de dag, maand en jaar
 
-        const datumRegex = new RegExp('^(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|[1-9]|1[0-2])-((19[0-9][0-9]|20[0-2][0-3]))$');
+        const datumRegex = new RegExp('^(19[0-9][0-9]|20[0-2][0-3])-(0[1-9]|[1-9]|1[0-2])-(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$');
         return datumRegex.test(datum);
     }
 
@@ -131,16 +155,20 @@ export class AccountInstellingen extends Component {
         .then(res => res.json())
         .catch(err => console.warn(`caught error: ${err}`));
 
-        if (!res) {
+        if (res && res.resultaat) {
             this.setState({
-                resultaat: 'Er is iets misgegaan. Probeer het later opnieuw.',
-                resultaatSuccess: false
+                resultaat: res.bericht,
+                resultaatSuccess: res.succes
             });
         } else {
             this.setState({
-                resultaat: res.resultaat || 'Er is iets misgegaan. Probeer het later opnieuw.',
-                resultaatSuccess: res.succes || false
+                resultaat: 'Er is iets misgegaan. Probeer het later opnieuw.',
+                resultaatSuccess: res.succes
             });
+        }
+
+        if (res) {
+            this.verversGegevens();
         }
     }
 
@@ -170,7 +198,7 @@ export class AccountInstellingen extends Component {
 
                         <div className='col-sm-2 mb-2'>
                             <div className='mb-2'>Geboortedatum*</div>
-                            <input onChange={this.veranderGeboortedatum} id="geboortedatum-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum}/>
+                            <input type="date" onChange={this.veranderGeboortedatum} id="geboortedatum-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum}/>
                         </div>
                     </div>
 
@@ -216,7 +244,7 @@ export class AccountInstellingen extends Component {
                         </div>
 
                         <div className='col-sm-12 mt-3'>
-                            <div id="resultaat" className={`d-inline h6 ${this.state.resultaatSuccess === null && `d-none`} ${(this.state.resultaatSuccess === true && `licht-groen`) || (this.state.resultaatSuccess === false && 'licht-rood')}`}>
+                            <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                 {this.state.resultaat}
                             </div>
                         </div>

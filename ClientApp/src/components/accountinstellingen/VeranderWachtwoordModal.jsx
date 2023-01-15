@@ -134,7 +134,7 @@ export class VeranderWachtwoordModal extends Component {
                                     <input type="password" className="form-control text-white" id="wachtwoordHerhaal" placeholder="Herhaal wachtwoord" value={this.state.wachtwoordHerhaal} onChange={this.veranderWachtwoordHerhaal} />
                                 </div>
 
-                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaatSuccess === true && 'licht-groen' || this.state.resultaatSuccess === false && 'licht-rood' || ''}`}>
+                                <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                     {this.state.resultaat}
                                 </div>
                             </div>

@@ -231,12 +231,12 @@ public class AccountController : ControllerBase
         }
 
         return Ok(
-    new
-    {
-        success = true,
-        resultaat = "De user is geauthenticeerd"
-    }
-);
+            new
+            {
+                success = true,
+                resultaat = user
+            }
+        );
     }
 
     [HttpGet]
@@ -401,8 +401,19 @@ public class AccountController : ControllerBase
             );
         }
 
-        await _userManager.RemovePasswordAsync(user);
-        await _userManager.AddPasswordAsync(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+        // change password with check for password strength
+        var passwordValidator = new PasswordValidator<ApplicationUser>();
+        var passwordValidationResult = await passwordValidator.ValidateAsync(_userManager, user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+
+        if (!passwordValidationResult.Succeeded) {
+            return StatusCode(400, new {
+                success = false,
+                resultaat = "Uw wachtwoord heeft minsters 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken nodig en moet minstens 8 tekens lang zijn"
+            });
+        } else {
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+            await _userManager.UpdateAsync(user);
+        }
 
         return Ok(
             new
@@ -441,14 +452,21 @@ public class AccountController : ControllerBase
         user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
-        await _userManager.UpdateAsync(user);
+        var result = await _userManager.UpdateAsync(user);
 
-        return Ok(
-            new
-            {
-                success = true,
-                resultaat = "Instellingen zijn succesvol gewijzigd"
-            }
-        );
+        if (!result.Succeeded) {
+            string errors = result.Errors.Aggregate("", (current, error) => current + error.Description + "\n");
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Er is iets fout gegaan bij het updaten van uw gegevens " + errors
+            });
+        } else {
+            return Ok(
+                new {
+                    success = true,
+                    bericht = "Uw gegevens zijn succesvol gewijzigd"
+                }
+            );
+        }
     }
 }
