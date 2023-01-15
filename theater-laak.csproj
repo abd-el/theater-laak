@@ -24,6 +24,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     <PackageReference Include="FluentEmail.Smtp" Version="3.0.2"/>
     <PackageReference Include="MailKit" Version="3.4.3"/>
+    <PackageReference Include="PasswordGenerator" Version="2.1.0"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true"/>
