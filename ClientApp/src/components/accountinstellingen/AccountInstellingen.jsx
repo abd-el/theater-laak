@@ -35,17 +35,16 @@ export class AccountInstellingen extends Component {
         .then(res => res.json())
         .catch(err => console.warn(`caught error: ${err}`));
 
-        if (!res?.data?.user) {
-            console.warn(`res?.data?.user is undefined`);
+        if (!res?.resultaat) {
+            console.warn(`res?.resultaat? is undefined`);
             console.warn(res);
-            console.warn(res?.data);
-            console.warn(res?.data?.user);
+            console.warn(res?.resultaat);
             return;
         }
         
         localStorage.setItem('authState', JSON.stringify({
             token: JSON.parse(localStorage.getItem('authState')).token,
-            user: res.data.user
+            user: res.resultaat
         }));
     }
 
@@ -53,16 +52,16 @@ export class AccountInstellingen extends Component {
         // hier halen we de gegevens op uit de database
         const { authState } = this.context;
 
-        console.log(authState)
+        console.log(authState.user);
 
         this.setState({
             voornaam: authState.user.voornaam,
             achternaam: authState.user.achternaam,
             email: authState.user.email,
             telefoonnummer: authState.user.telefoonnummer,
-            geboortedatum: authState.user.geboortedatum,
+            geboortedatum: authState.user.geboorteDatum,
             emailvoorkeur: authState.user.emailvoorkeur,
-            geslacht: authState.user.geslacht
+            geslacht: authState.user.geslacht.toLowerCase()
         })
     }
 
@@ -155,10 +154,10 @@ export class AccountInstellingen extends Component {
         .then(res => res.json())
         .catch(err => console.warn(`caught error: ${err}`));
 
-        if (res && res.resultaat) {
+        if (res && res.bericht) {
             this.setState({
                 resultaat: res.bericht,
-                resultaatSuccess: res.succes
+                resultaatSuccess: res.success
             });
         } else {
             this.setState({
@@ -210,7 +209,7 @@ export class AccountInstellingen extends Component {
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Telefoonnummer</div>
-                            <input onChange={this.veranderTelefoonnummer} id="tel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' />
+                            <input onChange={this.veranderTelefoonnummer} id="tel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' value={this.state.telefoonnummer}/>
                         </div>
                     </div>
 
