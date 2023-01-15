@@ -40,6 +40,7 @@ export function AdminPanel() {
                 <label className='text-white display-6 mb-1 d-block'>Getters(Ophalen)</label>
                 <br />
                 {/* <button onClick={update}>Update</button> */}
+                <Optreden update='update' />
                 <button onClick={() => setGetter('GetAdmins')}>Admins</button>
                 <button onClick={() => setGetter('GetMedewerkers')}>Medewerkers</button>
                 <button onClick={() => setGetter('GetArtiesten')}>Artiesten</button>
@@ -48,6 +49,7 @@ export function AdminPanel() {
                 <button onClick={() => setGetter('GetZalen')}>Zalen</button>
                 <button onClick={() => setGetter('GetVoorstellingen')}>Voorstellingen</button>
                 <button onClick={() => setGetter('GetOptredens')}>Optredens</button>
+                <button onClick={() => setGetter('GetNBOptredens')}>Verzoeken</button>
             </div>
             <br />
             <div>

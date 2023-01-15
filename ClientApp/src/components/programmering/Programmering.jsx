@@ -30,7 +30,7 @@ export function Programmering() {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Programmering/Voorstellingen');
+            const response = await fetch('/api/Programmering/Voorstellingen');
 
             if (!response.ok) {
                 throw new Error('Er is iets fout gegaan!');
@@ -52,7 +52,7 @@ export function Programmering() {
         //setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Programmering/Optredens');
+            const response = await fetch('/api/Programmering/BevestigdeOptredens');
 
             if (!response.ok) {
                 throw new Error('Er is iets fout gegaan!');
