@@ -32,6 +32,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         .Property(user => user.PasswordHash)
         .IsRequired();
 
+        builder.Entity<ApplicationUser>()
+        .Ignore(user => user.Password);
 
     // Class Medewerker
         builder.Entity<Medewerker>()
