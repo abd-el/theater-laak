@@ -10,7 +10,7 @@ export function LogoutMenu() {
     const { authState } = useAuthContext();
     
     let message;
-    authState == null ? (message = '') : (message = authState.user.userName)
+    authState == null ? (message = '') : (message = authState.user.voornaam)
 
     return (
         <>
