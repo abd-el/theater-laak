@@ -6,61 +6,53 @@ import { useAuthContext } from './hooks/useAuthContext';
 import { useLogin } from './hooks/useLogin';
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import jwtDecode from 'jwt-decode';
-//import "bootstrap/dist/css/bootstrap.css";
 
 
 
 export function ExpirationModal() {
     const [modal, setModal] = useState(false);
-    // const [isLoading, setLoading] = useState(true);
     const { authState, } = useAuthContext();
     const { logout } = useLogin();
-
-    let [counter, setCounter] = useState();
-
     const toggle = () => setModal(!modal);
+    let [counter, setCounter] = useState(new Date() / 1000);
+    let [counterID, setCounterID] = useState();
+
 
     useEffect(() => {
         if (authState != null) {
-            const json = localStorage.getItem('counter');
-            if(json != null){
-                const parsedcounter = JSON.parse(json);
-                setCounter(parsedcounter);
-            }
-
-            const interval = setInterval(() => {
+            counterID = setInterval(() => {
                 setCounter((prevCounter) => prevCounter + 1);
             }, 1000);
 
-            return () => clearInterval(interval);
+            setCounterID(counterID);
         }
-        else { //haal huidige date op
-            setCounter(new Date()/1000);
-        }
-
+        return () => clearInterval(counterID);
     }, [authState]);
 
+
+
     useEffect(() => {
-        //console.log(counter);
-        if(counter != null){
+        if (counter != null) {
             localStorage.setItem('counter', counter);
         }
     }, [counter]);
 
+
+
     useEffect(() => {
         if (authState != null) {
+            const decodedJwt = jwtDecode(authState.token);
+            const expDate = decodedJwt.exp;
 
-           const decodedJwt = jwtDecode(authState.token);
-           const expDate = decodedJwt.exp;
-           //console.log('expiration date: ' + expDate);
-
-            if (counter > expDate) {
-                setCounter(0);
-                logout();
+            if (counter < expDate && counter + 1 > expDate) {
                 setModal(!modal);
+            }
+            if (counter > expDate + 5) {
+                logout();
             }
         }
     }, [counter]);
+
 
 
     return (
