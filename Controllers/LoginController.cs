@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using theater_laak.Models;
 using Newtonsoft.Json;
+using theater_laak.Data;
+using PasswordGenerator;
 
 public class loginmodel
 {
@@ -23,10 +25,12 @@ public class LoginController : ControllerBase
 
     static HttpClient client = new HttpClient();
     UserManager<ApplicationUser> _usermanager;
+    ApplicationDbContext _context;
 
-    public LoginController(UserManager<ApplicationUser> u)
+    public LoginController(UserManager<ApplicationUser> u, ApplicationDbContext context)
     {
         _usermanager = u;
+        _context = context;
     }
 
 
@@ -34,10 +38,10 @@ public class LoginController : ControllerBase
     // [Route("login")]
     public async Task<ActionResult> login([FromBody] loginmodel credentials)
     {
-        var user = await _usermanager.FindByNameAsync(credentials.username);
 
+        var user = await _usermanager.FindByNameAsync(credentials.username);
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
-        
+
         if (user.lockout == true)
         {
             if (DateTime.Compare((DateTime)user.unlockDate, DateTime.Now) < 0)
@@ -62,14 +66,16 @@ public class LoginController : ControllerBase
                 return Unauthorized("locked");
             }
 
-            if(user.FailedAttempts == null){
+            if (user.FailedAttempts == null)
+            {
                 user.FailedAttempts = 1;
                 await _usermanager.UpdateAsync(user);
             }
-            else{
+            else
+            {
                 user.FailedAttempts++;
             }
-            
+
             await _usermanager.UpdateAsync(user);
             return Unauthorized("wrong username or password");
         }
@@ -79,6 +85,48 @@ public class LoginController : ControllerBase
             await _usermanager.UpdateAsync(user);
         }
 
+        if (user.EmailConfirmed && user.TwoFactorEnabled)
+        {
+
+            var pwd = new Password(12);
+            var randomstring = pwd.Next();
+            var date = DateTime.Now;
+            var expire = date.AddMinutes(30);
+            user._2faExpDate = expire;
+            user._2faToken = randomstring;
+            await _usermanager.UpdateAsync(user);
+
+            EmailSender emailsender = new EmailSender();
+            await emailsender.SendEmail($"uw toegangs code is: {randomstring} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
+            return Ok("2fa");
+        }
+
+        var tokenOptions = await GenerateJwt(user);
+
+        return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
+
+    }
+
+    public class _2faJson { public string token {get;set;} public string userName {get;set;} }
+    [HttpPost]
+    [Route("validateEmail")]
+    public async Task<ActionResult> validateEmail(_2faJson json)
+    {
+        var user = await _usermanager.FindByNameAsync(json.userName);
+        if (json.token == user._2faToken)
+        {
+            if (DateTime.Compare(DateTime.Now, (DateTime)user._2faExpDate) <= 0)
+            {
+                var tokenOptions = await GenerateJwt(user);
+                return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
+            }
+            return BadRequest("expired");
+        }
+        return BadRequest("wrong");
+    }
+
+    private async Task<JwtSecurityToken> GenerateJwt(ApplicationUser user)
+    {
         var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh89awe98f89uawef9j8aw89hefawef"));
 
         var signingCredentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
@@ -92,11 +140,11 @@ public class LoginController : ControllerBase
             issuer: "https://localhost:7209",
             audience: "https://localhost:7209",
             claims: claims,
-            expires: DateTime.Now.AddMinutes(60),
+            expires: DateTime.Now.AddMinutes(30),
             signingCredentials: signingCredentials
         );
-        return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
 
+        return tokenOptions;
     }
 
     public class captchaResponse { public string responseToken { get; set; } }

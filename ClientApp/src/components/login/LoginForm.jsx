@@ -7,21 +7,22 @@ import { keys } from "./reCaptcha_Keys";
 import { backendApi } from "../api";
 import { Route, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { TwoStepModal } from "../2StepModal";
 
 
 
 
 export function LoginForm() {
-    const { login, message, setMessage } = useLogin();
+    const { login, message, setMessage, _2fa, set2FA, verifyEmailToken } = useLogin();
     const { authState } = useAuthContext();
-    const  navigate = useNavigate();
+    const navigate = useNavigate();
 
     const username = useRef();
     const password = useRef();
     const captcha = useRef();
 
-    useEffect(()=>{
-        if(authState != null){
+    useEffect(() => {
+        if (authState != null) {
             navigate('/');
         }
     }, [authState]);
@@ -32,7 +33,7 @@ export function LoginForm() {
         const resp = await backendApi.post("api/login/ReCaptcha", {
             responseToken: token
         });
-        
+
         if (resp.data == true) {
             await login(
                 username.current.value,
@@ -78,6 +79,12 @@ export function LoginForm() {
                                         <h5>{message}</h5>
                                     </div>
                                 </form>
+                                <TwoStepModal
+                                    _2fa={_2fa}
+                                    set2FA={set2FA}
+                                    verify={verifyEmailToken}
+                                    username={username}
+                                />
                             </div>
                         </div>
                     </div>
