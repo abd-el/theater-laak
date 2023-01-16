@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 export function Programmering() {
 
+    //vandaag zonder functie
     let today = new Date();
     let dd = today.getDate();
     let mm = today.getMonth() + 1;
@@ -18,8 +19,40 @@ export function Programmering() {
 
     today = yyyy + '-' + mm + '-' + dd;
 
+    //morgen zonder functie
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    let dd1 = tomorrow.getDate();
+    let mm1 = tomorrow.getMonth() + 1;
+    let yyyy1 = tomorrow.getFullYear();
+    if (dd1 < 10) {
+        dd1 = '0' + dd1;
+    }
+
+    if (mm1 < 10) {
+        mm1 = '0' + mm1;
+    }
+
+    tomorrow = yyyy1 + '-' + mm1 + '-' + dd1;
+
+    //overmorgen zonder functie
+    let overmorgen = new Date();
+    overmorgen.setDate(overmorgen.getDate() + 2);
+    let dd2 = overmorgen.getDate();
+    let mm2 = overmorgen.getMonth() + 1;
+    let yyyy2 = overmorgen.getFullYear();
+    if (dd2 < 10) {
+        dd2 = '0' + dd2;
+    }
+
+    if (mm2 < 10) {
+        mm2 = '0' + mm2;
+    }
+
+    overmorgen = yyyy2 + '-' + mm2 + '-' + dd2;
+
     const [enteredName, setName] = useState('');
-    const [enteredDatum, setDatum] = useState('');
+    const [enteredDatum, setDatum] = useState(new Date().toISOString().split('T')[0]);
     const [Voorstellingen, setV] = useState([]);
     const [Optredens, setO] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -69,6 +102,11 @@ export function Programmering() {
     }, []);
 
     useEffect(() => {
+        const query = new URLSearchParams(window.location.search);
+        if (query.get('titel') != null) {
+            setName(query.get('titel'));
+            setDatum(query.get('date'));
+        }
         getOptredens();
         getVoorstellingen();
     }, [getVoorstellingen, getOptredens]);
@@ -114,11 +152,11 @@ export function Programmering() {
     }
 
     function Morgen() {
-        let date = new Date();
-        date.setDate(date.getDate() + 1);
-        let dd = date.getDate();
-        let mm = date.getMonth() + 1;
-        let yyyy = date.getFullYear();
+        let tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        let dd = tomorrow.getDate();
+        let mm = tomorrow.getMonth() + 1;
+        let yyyy = tomorrow.getFullYear();
         if (dd < 10) {
             dd = '0' + dd;
         }
@@ -127,16 +165,16 @@ export function Programmering() {
             mm = '0' + mm;
         }
 
-        date = yyyy + '-' + mm + '-' + dd;
-        setDatum(date);
+        tomorrow = yyyy + '-' + mm + '-' + dd;
+        setDatum(tomorrow);
     }
 
     function Overmorgen() {
-        let date = new Date();
-        date.setDate(date.getDate() + 2);
-        let dd = date.getDate();
-        let mm = date.getMonth() + 1;
-        let yyyy = date.getFullYear();
+        let overmorgen = new Date();
+        overmorgen.setDate(overmorgen.getDate() + 2);
+        let dd = overmorgen.getDate();
+        let mm = overmorgen.getMonth() + 1;
+        let yyyy = overmorgen.getFullYear();
         if (dd < 10) {
             dd = '0' + dd;
         }
@@ -145,13 +183,13 @@ export function Programmering() {
             mm = '0' + mm;
         }
 
-        date = yyyy + '-' + mm + '-' + dd;
-        setDatum(date);
+        overmorgen = yyyy + '-' + mm + '-' + dd;
+        setDatum(overmorgen);
     }
 
     // Filtert voorstellingen op gekozen dag in de datum picker
     for (let i = 0; i < AangepasteArray.length; i++) {
-        if (AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
+        if (AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum && enteredName == '') {
             content = AangepasteArray.filter(aa => aa.datumTijdstip.split('T')[0] == enteredDatum).map((Optreden) => (
                 <Voorstelling array={Optreden} />
             ));
@@ -160,14 +198,14 @@ export function Programmering() {
     // Filtert voorstellingen op getypte naam in de zoekbalk
     for (let i = 0; i < AangepasteArray.length; i++) {
         for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
-            if (AangepasteArray[i].voorstelling[j].titel == enteredName) {
+            if (AangepasteArray[i].voorstelling[j].titel == enteredName && enteredDatum == '') {
                 content = AangepasteArray.filter(aa => aa.voorstelling[aa.voorstellingId - 1].titel == enteredName).map((Optreden) => (
                     <Voorstelling array={Optreden} />
                 ));
             }
         }
     }
-
+    // Filtert voorstellingen op getypte naam en gekozen datum
     for (let i = 0; i < AangepasteArray.length; i++) {
         for (let j = 0; j < AangepasteArray[i].voorstelling.length; j++) {
             if (AangepasteArray[i].voorstelling[j].titel == enteredName && AangepasteArray[i].datumTijdstip.split('T')[0] == enteredDatum) {
@@ -187,7 +225,8 @@ export function Programmering() {
         content = <tr><td>Loading...</td></tr>;
     }
 
-    console.log(AangepasteArray);
+    console.log(enteredDatum);
+    //console.log(enteredName);
 
     return (
         <div>
@@ -197,16 +236,43 @@ export function Programmering() {
             <br />
             <br />
             <div className='inputs'>
-                <input id='searchbar' placeholder='Voorstelling zoeken' value={enteredName} onChange={changeNameHandler} />
-                <input id='date' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
+                <input id='searchbar' className='mb-2 btn btn-dark' placeholder='Voorstelling zoeken' value={enteredName} onChange={changeNameHandler} /> &nbsp;&nbsp;&nbsp;&nbsp;
+                <input id='tomorrow' className='mb-2 btn btn-dark' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
             </div>
             <br />
-            <div className='buttons'>
-                <button id='today' onClick={Vandaag}>Vandaag</button>
-                <button id='tomorrow' onClick={Morgen}>Morgen</button>
-                <button id='dag1' onClick={Overmorgen}>Overmorgen</button>
-                <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
-            </div>
+
+            {enteredDatum == today &&
+                <div className='buttons'>
+                    <button className="btn btn-danger" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
+                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
+                </div>
+            }
+            {enteredDatum == tomorrow &&
+                <div className='buttons'>
+                    <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
+                    <button class="btn btn-danger" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
+                </div>
+            }
+            {enteredDatum == overmorgen &&
+                <div className='buttons'>
+                    <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
+                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button class="btn btn-danger" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
+                </div>
+            }
+            {enteredDatum == '' &&
+                <div className='buttons'>
+                    <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
+                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
+                </div>
+            }
             <br />
             <br />
             <br />

@@ -68,7 +68,7 @@ export class AccountInstellingen extends Component {
             emailvoorkeur: authState.user.emailvoorkeur,
             isEmailConfirmed: authState.user.emailConfirmed,
             twoFactorEnabled: authState.user.twoFactorEnabled,
-            geslacht: authState.user.geslacht.toLowerCase()
+            geslacht: authState.user.geslacht?.toLowerCase() ?? 'anders'
         })
     }
 

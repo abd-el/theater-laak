@@ -171,7 +171,7 @@ public class AccountController : ControllerBase
 
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("RegistreerAdmin")]
     public async Task<ActionResult> RegistreerAdmin(Admin adminDTO)
     {
