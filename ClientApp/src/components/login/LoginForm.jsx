@@ -45,7 +45,7 @@ export function LoginForm() {
     }, [emailConfirmation.message]);
 
 
-    async function HandleClick(e) {
+    async function HandleSubmit(e) {
         e.preventDefault();
         const token = captcha.current.getValue();
         const resp = await backendApi.post("api/login/ReCaptcha", {
@@ -65,7 +65,7 @@ export function LoginForm() {
         captcha.current.reset();
     }
 
-    const ClickHandler = (e) => {
+    const HandleClick = (e) => {
         SetForgotPass(true);
     }
 
@@ -77,7 +77,7 @@ export function LoginForm() {
                     <div id="login-row" className="row justify-content-center align-items-center">
                         <div id="login-column" className="col-md-6">
                             <div id="login-box" className="col-md-12">
-                                <form id="login-form" className="form" onSubmit={HandleClick} action="" method="post">
+                                <form id="login-form" className="form" onSubmit={HandleSubmit} action="" method="post">
                                     <h3 className="text-center text-white">Login</h3>
                                     <div className="form-group">
                                         <label htmlFor="username" className="text-white">Username:</label><br />
@@ -97,7 +97,7 @@ export function LoginForm() {
                                 </form>
 
                                 <div id="passwordReset-button" className="">
-                                    <button onClick={ClickHandler} style={{ border: 'none' }} className="text-info bg-black position-absolute">Wachtwoord vergeten?</button>
+                                    <button onClick={HandleClick} style={{ border: 'none' }} className="text-info bg-black position-absolute">Wachtwoord vergeten?</button>
                                 </div>
                                 <div className="errorMsg text-center text-white pt-5">
                                     <h5>{ErrorMessage}</h5>
