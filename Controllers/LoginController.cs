@@ -89,7 +89,7 @@ public class LoginController : ControllerBase
         {
             var token = await Add2FaToken(user);
             EmailSender emailsender = new EmailSender();
-            await emailsender.SendEmail($"uw toegangs code is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
+            await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
             return Ok("2fa");
         }
 
@@ -148,7 +148,7 @@ public class usernameJson{ public string userName {get;set;} }
         var token = await Add2FaToken(user);
 
         EmailSender sender = new EmailSender();
-        await sender.SendEmail($"uw toegangs code is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
+        await sender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
         return Ok();
     }   
 

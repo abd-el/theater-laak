@@ -9,35 +9,41 @@ import { Route, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { TwoStepModal } from "./2StepModal";
 import { ResetModal } from "./ResetPWModal";
+import { useLogout } from "../hooks/useLogout";
+import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
 
 
 
 
 export function LoginForm() {
-    const
-        {   login,
-            message,
-            setMessage,
-            _2fa,
-            set2FA,
-            verifyEmailToken,
-            verifyPwResetToken,
-            sendEmailToken
-        } = useLogin();
-
-    const [forgotPass, SetPass] = useState(false);
+    const [ErrorMessage, SetErrMsg] = useState();
+    const [forgotPass, SetForgotPass] = useState(false);
     const { authState } = useAuthContext();
+
     const navigate = useNavigate();
+    const login = useLogin();
+    const emailConfirmation = useEmailConfirmation();
 
     const username = useRef();
     const password = useRef();
     const captcha = useRef();
 
+
     useEffect(() => {
-        if (authState != null) {
+        if (authState != null)
             navigate('/');
-        }
     }, [authState]);
+
+
+    useEffect(() => {
+        SetErrMsg(login.message);
+    }, [login.message]);
+
+
+    useEffect(() => {
+        SetErrMsg(emailConfirmation.message);
+    }, [emailConfirmation.message]);
+
 
     async function HandleClick(e) {
         e.preventDefault();
@@ -47,20 +53,20 @@ export function LoginForm() {
         });
 
         if (resp.data == true) {
-            await login(
+            await login.login(
                 username.current.value,
                 password.current.value
             );
         }
         else {
-            setMessage('login mislukt, probeer het opnieuw');
+            SetErrMsg('login mislukt, probeer het opnieuw');
         }
 
         captcha.current.reset();
     }
 
     const ClickHandler = (e) => {
-        SetPass(true);
+        SetForgotPass(true);
     }
 
     return (
@@ -94,20 +100,17 @@ export function LoginForm() {
                                     <button onClick={ClickHandler} style={{ border: 'none' }} className="text-info bg-black position-absolute">Wachtwoord vergeten?</button>
                                 </div>
                                 <div className="errorMsg text-center text-white pt-5">
-                                    <h5>{message}</h5>
+                                    <h5>{ErrorMessage}</h5>
                                 </div>
 
                                 <ResetModal
                                     forgotPass={forgotPass}
-                                    setPass={SetPass}
-                                    verify={verifyPwResetToken}
-                                    sendMail={sendEmailToken}
+                                    setPass={SetForgotPass}
                                 />
 
                                 <TwoStepModal
-                                    _2fa={_2fa}
-                                    set2FA={set2FA}
-                                    verify={verifyEmailToken}
+                                    _2fa={login.isTweeFactorNodig}
+                                    set2FA={login.setTweeFactorNodig}
                                     username={username}
                                 />
                             </div>
