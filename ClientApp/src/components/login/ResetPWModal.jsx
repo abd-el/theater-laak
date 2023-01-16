@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter, Input, InputGroup, Form } from 'reactstrap';
 import { backendApi } from "../api";
+import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
 
-export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
+export function ResetModal({ forgotPass, setPass, confirm, sendMail }) {
+    const { confirmToken, sendTokenToEmail, } = useEmailConfirmation();
     const [showModal, setShowModal] = useState(false);
     const [hideToken, setHideToken] = useState(true);
     const [hidePw, setHidePw] = useState(true);
     const [hideStopBtn, setHideStop] = useState(true);
+    const [hideKlaarBtn, setHideKlaar] = useState(false);
     const [mailError, setMailError] = useState(' ');
     const [tokenError, setTokenError] = useState(' ');
     const [PasswordError, setPasswordErr] = useState(' ');
+
     const usernameRef = useRef(' ');
     const PasswordRef = useRef('');
 
@@ -20,18 +24,16 @@ export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
         setHidePw(true);
         setHideToken(true);
         setMailError(' ');
+        setTokenError(' ');
         setPasswordErr(' ');
+        setHideStop(true);
+        setHideKlaar(false);
     }
-
-
-    useEffect(() => {
-        setShowModal(forgotPass);
-    }, [forgotPass]);
 
 
     const ClickHandler = async (e) => {
         const username = usernameRef.current.value;
-        const isMailConfirmed = await sendMail(username);
+        const isMailConfirmed = await sendTokenToEmail(username);
         if (!isMailConfirmed) {
             setMailError('de bijbehorende email-adres is niet geverifieerd ❌, neem contact op met onze klantenservice');
         }
@@ -48,7 +50,7 @@ export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
         console.log(e.target.value);
 
         if (token.length >= 12) {
-            const data = await verify(token, username, false);
+            const data = await confirmToken(token, username, false, true);
             if (data != null) {
                 setTokenError('✔️');
                 localStorage.setItem('swt', data.token);
@@ -63,19 +65,24 @@ export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
     const PwClickHandler = async () => {
         const NewPass = PasswordRef.current.value;
         const SWT = localStorage.getItem('swt');
-        console.log(SWT);
         const resp = await backendApi.put('/api/account/UpdateVergetenWachtwoord', {
             nieuwWachtwoord: NewPass
         }, { headers: { 'Authorization': 'Bearer ' + SWT } });
 
         if (resp.status == 200) {
             setPasswordErr('🔑 Uw wachtwoord is aangepast ✔️');
+            setHideKlaar(true);
             localStorage.removeItem('swt');
         }
         else {
             setPasswordErr('🔑 Het opgegeven wachtwoord is niet sterk genoeg ❌');
         }
     }
+
+
+    useEffect(() => {
+        setShowModal(forgotPass);
+    }, [forgotPass]);
 
 
     const CloseHandler = () => {
@@ -110,12 +117,12 @@ export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
                     </ModalBody>
                     <ModalFooter>
 
-                        <Button color="danger" onClick={toggle} hidden={hideStopBtn}>
-                            stop
+                        <Button color="secondary" onClick={toggle} hidden={hideStopBtn}>
+                            Sluit
                         </Button>
 
-                        <Button color="primary" onClick={CloseHandler}>
-                            klaar
+                        <Button color="primary" onClick={CloseHandler} hidden={hideKlaarBtn}>
+                            Ok
                         </Button>
 
                     </ModalFooter>
