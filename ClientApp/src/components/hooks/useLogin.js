@@ -53,7 +53,7 @@ export function useLogin() {
         localStorage.clear();
     }
 
-    async function verifyEmailToken(token, username) {
+    async function verifyEmailToken(token, username, instellingenOpen) {
         const resp = await backendApi.post('/api/login/validateEmail', {
             token: token,
             userName: username
@@ -66,7 +66,13 @@ export function useLogin() {
                 payload: resp.data,
             });
             localStorage.setItem('authState', JSON.stringify(resp.data));
-            navigate('/');
+
+            if(!instellingenOpen){
+                navigate('/');
+            }
+            else{
+                navigate('/accountinstellingen');
+            }
         }
         else {
             setMessage('login mislukt');
@@ -88,7 +94,7 @@ export function useLogin() {
         }
     }
 
-    async function sendPwResetToken(username) {
+    async function sendEmailToken(username) {
         const resp = await backendApi.post('/api/login/sendEmail', {
             userName: username
         });
@@ -110,6 +116,6 @@ export function useLogin() {
         set2FA,
         verifyEmailToken,
         verifyPwResetToken,
-        sendPwResetToken
+        sendEmailToken
     };
 }

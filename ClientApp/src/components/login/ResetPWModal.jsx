@@ -48,7 +48,7 @@ export function ResetModal({ forgotPass, setPass, verify, sendMail }) {
         console.log(e.target.value);
 
         if (token.length >= 12) {
-            const data = await verify(token, username);
+            const data = await verify(token, username, false);
             if (data != null) {
                 setTokenError('✔️');
                 localStorage.setItem('swt', data.token);

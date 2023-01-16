@@ -49,6 +49,9 @@ public class AccountInstellingenJsonGegevens
     public string emailvoorkeur { get; set; }
     public string geslacht { get; set; }
 
+    public bool EmailConfirmed {get;set;}
+    public bool TwoFactorEnabled {get;set;}
+
     public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht)
     {
         this.voornaam = voornaam;

@@ -122,6 +122,8 @@ public class LoginController : ControllerBase
         {
             if (DateTime.Compare(DateTime.Now, (DateTime)user._2faExpDate) <= 0)
             {
+                user.EmailConfirmed = true;
+                await _usermanager.UpdateAsync(user);
                 var tokenOptions = await GenerateJwt(user);
                 return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
             }

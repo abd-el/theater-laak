@@ -1,6 +1,7 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import '../../custom.css'
 import { VeranderWachtwoordModal } from './VeranderWachtwoordModal';
+import { BevestigEmailModal } from './BevestigEmailModal';
 import { AuthContext } from '../context/AuthContext';
 
 export class AccountInstellingen extends Component {
@@ -14,12 +15,15 @@ export class AccountInstellingen extends Component {
             resultaatSuccess: '',
 
             // deze informatie halen we op uit de database
+            username: '',
             voornaam: '',
             achternaam: '',
             email: '',
             telefoonnummer: '',
             geboortedatum: '',
             emailvoorkeur: '', // 'geen' | 'belangrijk' | 'nieuws'
+            isEmailConfirmed: '',
+            twoFactorEnabled: '',
             geslacht: '' // 'man' | 'vrouw' | 'anders'
         };
     }
@@ -32,8 +36,8 @@ export class AccountInstellingen extends Component {
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
             }
         })
-        .then(res => res.json())
-        .catch(err => console.warn(`caught error: ${err}`));
+            .then(res => res.json())
+            .catch(err => console.warn(`caught error: ${err}`));
 
         if (!res?.resultaat) {
             console.warn(`res?.resultaat? is undefined`);
@@ -41,7 +45,7 @@ export class AccountInstellingen extends Component {
             console.warn(res?.resultaat);
             return;
         }
-        
+
         localStorage.setItem('authState', JSON.stringify({
             token: JSON.parse(localStorage.getItem('authState')).token,
             user: res.resultaat
@@ -55,12 +59,15 @@ export class AccountInstellingen extends Component {
         console.log(authState.user);
 
         this.setState({
+            username: authState.user.userName,
             voornaam: authState.user.voornaam,
             achternaam: authState.user.achternaam,
             email: authState.user.email,
             telefoonnummer: authState.user.telefoonnummer,
             geboortedatum: authState.user.geboorteDatum,
             emailvoorkeur: authState.user.emailvoorkeur,
+            isEmailConfirmed: authState.user.emailConfirmed,
+            twoFactorEnabled: authState.user.twoFactorEnabled,
             geslacht: authState.user.geslacht.toLowerCase()
         })
     }
@@ -71,6 +78,8 @@ export class AccountInstellingen extends Component {
     veranderTelefoonnummer = (e) => { this.setState({ telefoonnummer: e.target.value }); }
     veranderGeboortedatum = (e) => { this.setState({ geboortedatum: e.target.value }); }
     veranderEmailvoorkeur = (e) => { this.setState({ emailvoorkeur: e.target.value }); }
+    //veranderIsEmailConfirmed = (e) => { this.setState({ isEmailConfirmed: e.target.value }) }
+    veranderTwoFactorEnabled = (e) => { if(this.state.isEmailConfirmed){ this.setState({ twoFactorEnabled: true }); } }
     veranderGeslacht = (e) => { this.setState({ geslacht: e.target.value }); }
 
     controleerDatum = (datum) => {
@@ -98,7 +107,7 @@ export class AccountInstellingen extends Component {
 
     controleer = async () => {
         if (!this.state.voornaam) {
-            this.setState({ 
+            this.setState({
                 resultaat: 'Voornaam is verplicht',
                 resultaatSuccess: false
             });
@@ -107,7 +116,7 @@ export class AccountInstellingen extends Component {
         }
 
         if (!this.state.achternaam) {
-            this.setState({ 
+            this.setState({
                 resultaat: 'Achternaam is verplicht',
                 resultaatSuccess: false
             });
@@ -116,7 +125,7 @@ export class AccountInstellingen extends Component {
         }
 
         if (!this.controleerDatum(this.state.geboortedatum)) {
-            this.setState({ 
+            this.setState({
                 resultaat: 'Geboortedatum is verplicht en moet in het formaat dd-mm-jjjj zijn',
                 resultaatSuccess: false
             });
@@ -125,7 +134,7 @@ export class AccountInstellingen extends Component {
         }
 
         if (!this.controleerEmail(this.state.email)) {
-            this.setState({ 
+            this.setState({
                 resultaat: 'Email is verplicht en moet in het formaat naam@domein.nl zijn',
                 resultaatSuccess: false
             });
@@ -139,7 +148,7 @@ export class AccountInstellingen extends Component {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + storage.token
+                'Authorization': 'Bearer ' + storage.token
             },
             body: JSON.stringify({
                 voornaam: this.state.voornaam,
@@ -148,11 +157,13 @@ export class AccountInstellingen extends Component {
                 telefoonnummer: this.state.telefoonnummer,
                 geboortedatum: this.state.geboortedatum,
                 emailvoorkeur: this.state.emailvoorkeur,
+                isEmailConfirmed: this.state.isEmailConfirmed,
+                TwoFactorEnabled: this.TwoFactorEnabled,
                 geslacht: this.state.geslacht
             })
         })
-        .then(res => res.json())
-        .catch(err => console.warn(`caught error: ${err}`));
+            .then(res => res.json())
+            .catch(err => console.warn(`caught error: ${err}`));
 
         if (res && res.bericht) {
             this.setState({
@@ -178,38 +189,50 @@ export class AccountInstellingen extends Component {
                 <br />
                 <br />
                 <br />
-                
+
                 <div className='row text-white'>
                     <div className='col-12 kop-text mb-4 d-block'>
                         Account instellingen
                     </div>
-                    
+
                     <div className='row mb-2'>
                         <div className='col-sm-2 mb-2'>
                             <div className='mb-2'>Voornaam*</div>
-                            <input onChange={this.veranderVoornaam} id="voornaam-invoer" className='form-control text-white' placeholder='Geef je voornaam op' value={this.state.voornaam}/>
+                            <input onChange={this.veranderVoornaam} id="voornaam-invoer" className='form-control text-white' placeholder='Geef je voornaam op' value={this.state.voornaam} />
                         </div>
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Achternaam*</div>
-                            <input onChange={this.veranderAchternaam} id="achternaam-invoer" className='form-control text-white' placeholder='Geef je achternaam op' value={this.state.achternaam}/>
+                            <input onChange={this.veranderAchternaam} id="achternaam-invoer" className='form-control text-white' placeholder='Geef je achternaam op' value={this.state.achternaam} />
                         </div>
 
                         <div className='col-sm-2 mb-2'>
                             <div className='mb-2'>Geboortedatum*</div>
-                            <input type="date" onChange={this.veranderGeboortedatum} id="geboortedatum-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum}/>
+                            <input type="date" onChange={this.veranderGeboortedatum} id="geboortedatum-invoer" className='form-control text-white' placeholder='Geef je geboortedatum op' value={this.state.geboortedatum} />
                         </div>
                     </div>
 
                     <div className='row mb-2'>
                         <div className='col-sm-4 mb-2'>
                             <div className='mb-2'>Emailadres*</div>
-                            <input onChange={this.veranderEmail} id="email-invoer" className='form-control text-white' placeholder='Geef je email-adress op' value={this.state.email}/>
+                            <input onChange={this.veranderEmail} id="email-invoer" className='form-control text-white' placeholder='Geef je email-adress op' value={this.state.email} />
                         </div>
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Telefoonnummer</div>
-                            <input onChange={this.veranderTelefoonnummer} id="tel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' value={this.state.telefoonnummer}/>
+                            <input onChange={this.veranderTelefoonnummer} id="tel-invoer" className='form-control text-white' placeholder='Geef je telefoonnummer op' value={this.state.telefoonnummer} />
+                        </div>
+                    </div>
+
+                    <div className='row mb-2'>
+                        <div className='col-sm-4 mb-2'>
+                            <div className='mb-2'>Is Emailadres bevestigd</div>
+                            <input onChange={this.veranderIsEmailConfirmed} id="is-email-bevestigd" className='form-control bg-dark' placeholder={this.state.isEmailConfirmed ? "bevestigd" : "niet bevestigd"} readOnly/>
+                        </div>
+
+                        <div className='col-sm-3 mb-2'>
+                            <div className='mb-2'>Bevestig uw Emailadres</div>
+                            <BevestigEmailModal username={this.state.username} isConfirmed={this.state.isEmailConfirmed}/>
                         </div>
                     </div>
 
@@ -240,10 +263,14 @@ export class AccountInstellingen extends Component {
                             <div className='d-inline ms-3'>
                                 <VeranderWachtwoordModal />
                             </div>
+
+                            <div className='d-inline ms-3'>
+                                <button className='btn btn-light' onClick={this.veranderTwoFactorEnabled}>Schakel 2FA in</button>
+                            </div>
                         </div>
 
                         <div className='col-sm-12 mt-3'>
-                            <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat=='' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
+                            <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat == '' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                 {this.state.resultaat}
                             </div>
                         </div>

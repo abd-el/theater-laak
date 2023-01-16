@@ -1,42 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { useRef } from "react";
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import { backendApi } from "../api";
+import { useLogin } from "../hooks/useLogin";
 
-export function TwoStepModal({ _2fa, set2FA, verify, username }) {
+export function BevestigEmailModal({ username, isConfirmed }) {
     const [modal, setModal] = useState(false);
+    const { verifyEmailToken, sendEmailToken } = useLogin();
     const [error, setError] = useState(' ');
-    const toggle = () => { set2FA(false) }
-    const inputRef = useRef();
+    const toggle = () => { setModal(!modal) }
+    
 
     useEffect(() => {
-        setModal(_2fa);
-    }, [_2fa]);
+        if (modal && isConfirmed) {
+            sendEmailToken(username);
+        }
+    }, [modal]);
 
     const ChangeHandler = async (e) => {
         const token = e.target.value;
         console.log(e.target.value);
 
         if (token.length == 12) {
-            const failed = await verify(token, username.current.value, false);
+            const failed = await verifyEmailToken(token, username, true);
             if (failed) setError('de token komt niet overeen ❌');
+            else setError('Uw Emailadres is bevestigd 📧✔️');
         }
+    }
+
+    const CloseHandler = () => {
+        toggle();
     }
 
     return (
         <>
-            <div className='exampleModal' style={{ display: 'none' }}>
+            <Button type="button" className="btn btn-primary" onClick={toggle}>
+                Bevestigen
+            </Button>
+
+            <div className='exampleModal' id='SchakelTweeFactorModal' style={{ display: 'none' }}>
                 <Button className='exampleModa' color="danger">
                     Click Me
                 </Button>
-                <Modal isOpen={modal} >
+                <Modal isOpen={modal} id='SchakelTweeFactorModalIn' >
                     <ModalHeader >Voer de token in die naar uw email-adres is verstuurd.</ModalHeader>
                     <ModalBody>
                         <Input type="text" onChange={ChangeHandler} />
                     </ModalBody>
                     <ModalFooter>
                         <p>{error}</p>
-                        <Button color="primary" onClick={toggle}>
+                        <Button color="primary" onClick={CloseHandler} >
                             klaar
                         </Button>{' '}
                     </ModalFooter>

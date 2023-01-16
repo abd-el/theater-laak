@@ -493,6 +493,8 @@ public class AccountController : ControllerBase
         user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
+        user.EmailConfirmed = accountInstellingenJsonGegevens.EmailConfirmed;
+        user.TwoFactorEnabled = accountInstellingenJsonGegevens.TwoFactorEnabled;
 
         if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("man")) {
             user.Geslacht = "Man";
