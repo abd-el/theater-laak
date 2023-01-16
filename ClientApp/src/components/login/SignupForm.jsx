@@ -49,7 +49,7 @@ async function emailCheck(email) {
 	const statusCode = resp.status;
 
 	if(statusCode == 400){
-		return responseMsg == 'disposable' ? "de opgegeven emailadres maakt deel uit van een temporary domain" : null;
+		return responseMsg == 'disposable' ? "Het opgegeven emailadres maakt deel uit van een temporary domain" : null;
 	}
 
 	return null;
@@ -368,7 +368,7 @@ export function SignupForm() {
 										</form>
 										<div className="col-md-12 ">
 											<div className="form-group">
-												<p className="text-center text-primary"><a href="/login" id="signin">Heb je al een account?</a></p>
+												<p className="text-center text-primary"><a href="/login" id="signin">Heeft u al een account?</a></p>
 											</div>
 										</div>
 

@@ -74,6 +74,42 @@ export function useLogin() {
         }
     }
 
+    async function verifyPwResetToken(token, username) {
 
-    return { login, logout, message, setMessage, _2fa, set2FA, verifyEmailToken };
+        const resp = await backendApi.post('/api/login/validateEmail', {
+            token: token,
+            userName: username
+        });
+        if (resp.status == 200) {
+            return resp.data;
+        }
+        else {
+            return null;
+        }
+    }
+
+    async function sendPwResetToken(username) {
+        const resp = await backendApi.post('/api/login/sendEmail', {
+            userName: username
+        });
+        if (resp.status == 200) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    return {
+        login,
+        logout,
+        message,
+        setMessage,
+        _2fa,
+        set2FA,
+        verifyEmailToken,
+        verifyPwResetToken,
+        sendPwResetToken
+    };
 }

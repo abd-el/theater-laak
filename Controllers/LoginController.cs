@@ -87,17 +87,9 @@ public class LoginController : ControllerBase
 
         if (user.EmailConfirmed && user.TwoFactorEnabled)
         {
-
-            var pwd = new Password(12);
-            var randomstring = pwd.Next();
-            var date = DateTime.Now;
-            var expire = date.AddMinutes(30);
-            user._2faExpDate = expire;
-            user._2faToken = randomstring;
-            await _usermanager.UpdateAsync(user);
-
+            var token = await Add2FaToken(user);
             EmailSender emailsender = new EmailSender();
-            await emailsender.SendEmail($"uw toegangs code is: {randomstring} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
+            await emailsender.SendEmail($"uw toegangs code is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
             return Ok("2fa");
         }
 
@@ -107,7 +99,20 @@ public class LoginController : ControllerBase
 
     }
 
-    public class _2faJson { public string token {get;set;} public string userName {get;set;} }
+    private async Task<string> Add2FaToken(ApplicationUser user)
+    {
+        var pwd = new Password(12);
+        var randomstring = pwd.Next();
+        var date = DateTime.Now;
+        var expire = date.AddMinutes(30);
+        user._2faExpDate = expire;
+        user._2faToken = randomstring;
+        await _usermanager.UpdateAsync(user);
+
+        return randomstring;
+    }
+
+    public class _2faJson { public string token { get; set; } public string userName { get; set; } }
     [HttpPost]
     [Route("validateEmail")]
     public async Task<ActionResult> validateEmail(_2faJson json)
@@ -124,6 +129,26 @@ public class LoginController : ControllerBase
         }
         return BadRequest("wrong");
     }
+
+public class usernameJson{ public string userName {get;set;} }
+    [HttpPost]
+    [Route("sendEmail")]
+    public async Task<ActionResult> sendEmail([FromBody]usernameJson json)
+    {
+        var user = await _usermanager.FindByNameAsync(json.userName);
+        if(user == null){
+            return BadRequest("noUser");
+        }
+        if(!user.EmailConfirmed){
+            return BadRequest("noEmail");
+        }
+        var email = user.Email;
+        var token = await Add2FaToken(user);
+
+        EmailSender sender = new EmailSender();
+        await sender.SendEmail($"uw toegangs code is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
+        return Ok();
+    }   
 
     private async Task<JwtSecurityToken> GenerateJwt(ApplicationUser user)
     {

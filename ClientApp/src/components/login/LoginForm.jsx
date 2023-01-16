@@ -7,13 +7,25 @@ import { keys } from "./reCaptcha_Keys";
 import { backendApi } from "../api";
 import { Route, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { TwoStepModal } from "../2StepModal";
+import { TwoStepModal } from "./2StepModal";
+import { ResetModal } from "./ResetPWModal";
 
 
 
 
 export function LoginForm() {
-    const { login, message, setMessage, _2fa, set2FA, verifyEmailToken } = useLogin();
+    const
+        {   login,
+            message,
+            setMessage,
+            _2fa,
+            set2FA,
+            verifyEmailToken,
+            verifyPwResetToken,
+            sendPwResetToken
+        } = useLogin();
+
+    const [forgotPass, SetPass] = useState(false);
     const { authState } = useAuthContext();
     const navigate = useNavigate();
 
@@ -47,6 +59,10 @@ export function LoginForm() {
         captcha.current.reset();
     }
 
+    const ClickHandler = (e) => {
+        SetPass(true);
+    }
+
     return (
         <>
             <div id="login" className="login">
@@ -72,13 +88,22 @@ export function LoginForm() {
                                         <label htmlFor="remember-me" className="text-white"><span>Blijf ingelogd </span> <span><input id="remember-me" name="remember-me" type="checkbox" /></span></label><br />
                                         <button type="submit" name="button" className="btn btn-primary btn-md" value="submit">Submit</button>
                                     </div>
-                                    <div id="register-link" className="text-right">
-                                        <a href="/registreer" className="text-info">Heb je nog geen account?</a>
-                                    </div>
-                                    <div className="errorMsg text-center text-white pt-5">
-                                        <h5>{message}</h5>
-                                    </div>
                                 </form>
+
+                                <div id="passwordReset-button" className="">
+                                    <button onClick={ClickHandler} style={{ border: 'none' }} className="text-info bg-black position-absolute">Wachtwoord vergeten?</button>
+                                </div>
+                                <div className="errorMsg text-center text-white pt-5">
+                                    <h5>{message}</h5>
+                                </div>
+
+                                <ResetModal
+                                    forgotPass={forgotPass}
+                                    setPass={SetPass}
+                                    verify={verifyPwResetToken}
+                                    sendMail={sendPwResetToken}
+                                />
+
                                 <TwoStepModal
                                     _2fa={_2fa}
                                     set2FA={set2FA}
