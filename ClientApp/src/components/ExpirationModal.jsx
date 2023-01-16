@@ -3,7 +3,7 @@ import '../custom.css';
 import { useRef } from 'react';
 import { useState } from 'react';
 import { useAuthContext } from './hooks/useAuthContext';
-import { useLogin } from './hooks/useLogin';
+import { useLogout } from './hooks/useLogout';
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import jwtDecode from 'jwt-decode';
 
@@ -12,7 +12,7 @@ import jwtDecode from 'jwt-decode';
 export function ExpirationModal() {
     const [modal, setModal] = useState(false);
     const { authState, } = useAuthContext();
-    const { logout } = useLogin();
+    const logout = useLogout();
     const toggle = () => setModal(!modal);
     let [counter, setCounter] = useState(new Date() / 1000);
     let [counterID, setCounterID] = useState();
