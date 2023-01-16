@@ -1,13 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using theater_laak.Data;
 using theater_laak.Models;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text;
 
 namespace theater_laak.Controllers;
 
