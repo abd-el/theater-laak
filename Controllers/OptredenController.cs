@@ -20,20 +20,20 @@ public class OptredenController : ControllerBase {
     }
 
     [HttpGet]
-    [Route("GetOptreden")]
-    public async Task<ActionResult> GetOptreden(OptredenJsonGegevens gegevens){
+    [Route("GetOptreden/{voorstellingId}")]
+    public async Task<ActionResult> GetOptreden(int voorstellingId) {
         var optreden = await _context.Optredens
             .Include(o => o.Artiest)
             .Include(o => o.ArtiestenGroep)
             .Include(o => o.Voorstelling)
             .Include(o => o.Zaal)
-            .Where(o => o.VoorstellingId == gegevens.voorstellingId)
+            .Where(o => o.VoorstellingId == voorstellingId)
             .FirstOrDefaultAsync();
 
         if (optreden == null) {
             return NotFound();
         }
-        
+
         return Ok(optreden);
     }
 }
