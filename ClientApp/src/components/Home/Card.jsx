@@ -17,7 +17,7 @@ export function Card(props) {
                 <div className="card-body">
                     <h3 className="card-title">{props.voorstellingen.titel}</h3>
                     <br/>
-                    <a href="/programmering" onClick={() => setTitel(props.voorstellingen.titel)} className="btn btn-danger ">ga naar voorstelling</a>
+                    <a href={`/programmering?titel=${getTitel}`} onClick={() => setTitel(props.voorstellingen.titel)} className="btn btn-danger ">Tijden en Tickets</a>
                 </div>
             </div>
         </>);

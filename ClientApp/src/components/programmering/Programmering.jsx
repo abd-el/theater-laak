@@ -69,6 +69,10 @@ export function Programmering() {
     }, []);
 
     useEffect(() => {
+
+        const query = new URLSearchParams(window.location.search);
+        setName(query.get('titel'));
+
         getOptredens();
         getVoorstellingen();
     }, [getVoorstellingen, getOptredens]);
