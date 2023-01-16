@@ -26,3 +26,7 @@ public class BoekingJsonGegevens {
     public int voorstellingId { get; set; }
     public double prijs { get; set; }
 }
+
+public class OptredenJsonGegevens {
+    public int voorstellingId { get; set; }
+}
