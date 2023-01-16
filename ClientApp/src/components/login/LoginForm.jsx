@@ -22,7 +22,7 @@ export function LoginForm() {
             set2FA,
             verifyEmailToken,
             verifyPwResetToken,
-            sendPwResetToken
+            sendEmailToken
         } = useLogin();
 
     const [forgotPass, SetPass] = useState(false);
@@ -101,7 +101,7 @@ export function LoginForm() {
                                     forgotPass={forgotPass}
                                     setPass={SetPass}
                                     verify={verifyPwResetToken}
-                                    sendMail={sendPwResetToken}
+                                    sendMail={sendEmailToken}
                                 />
 
                                 <TwoStepModal
