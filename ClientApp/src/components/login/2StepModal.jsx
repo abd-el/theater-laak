@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
-import { backendApi } from "./api";
+import { backendApi } from "../api";
 
 export function TwoStepModal({ _2fa, set2FA, verify, username }) {
     const [modal, setModal] = useState(false);
     const [error, setError] = useState(' ');
-    const toggle = () => { setModal(set2FA(false)) }
+    const toggle = () => { set2FA(false) }
     const inputRef = useRef();
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export function TwoStepModal({ _2fa, set2FA, verify, username }) {
         console.log(e.target.value);
 
         if (token.length == 12) {
-            const failed = await verify(token, username.current.value);
+            const failed = await verify(token, username.current.value, false);
             if (failed) setError('de token komt niet overeen ❌');
         }
     }

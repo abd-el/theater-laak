@@ -7,6 +7,7 @@ using theater_laak.Data;
 using theater_laak.Models;
 using System.Diagnostics;
 using System.Security.Claims;
+using static theater_laak.Models.VeranderWachtwoordJsonGegevens;
 
 namespace theater_laak.Controllers;
 
@@ -115,15 +116,16 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
-    public class Email { public string email {get;set;} }
+    public class Email { public string email { get; set; } }
     [HttpPost]
     [Route("EmailCheck")]
     public async Task<ActionResult> EmailCheck([FromBody] Email emailObj)
-    {   
+    {
         DisposableEmails disposableEmails = new DisposableEmails();
         var isDisposable = await disposableEmails.CheckEmail(emailObj.email);
 
-        if(isDisposable == true){
+        if (isDisposable == true)
+        {
             return BadRequest("disposable");
         }
 
@@ -401,17 +403,55 @@ public class AccountController : ControllerBase
             );
         }
 
+        var Actionresult = await PasswordChanger(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+
+        return Actionresult;
+
+    }
+
+
+    [HttpPut]
+    [Authorize]
+    [Route("UpdateVergetenWachtwoord")]
+    public async Task<IActionResult> UpdateVergetenWw(VeranderVergetenWachtwoordJson nieuwWachtwoordJson)
+    {
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
+        var user = await _userManager.FindByNameAsync(userName);
+
+        if (user == null)
+        {
+            return Unauthorized(
+                new
+                {
+                    success = false,
+                    resultaat = "Gebruiker niet gevonden"
+                }
+            );
+        }
+
+        var ActionResult = await PasswordChanger(user, nieuwWachtwoordJson.nieuwWachtwoord);
+        return ActionResult;
+    }
+
+
+    private async Task<IActionResult> PasswordChanger(ApplicationUser user, string nieuwWachtwoord)
+    {
         // change password with check for password strength
         var passwordValidator = new PasswordValidator<ApplicationUser>();
-        var passwordValidationResult = await passwordValidator.ValidateAsync(_userManager, user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+        var passwordValidationResult = await passwordValidator.ValidateAsync(_userManager, user, nieuwWachtwoord);
 
-        if (!passwordValidationResult.Succeeded) {
-            return StatusCode(400, new {
+        if (!passwordValidationResult.Succeeded)
+        {
+            return StatusCode(400, new
+            {
                 success = false,
                 resultaat = "Uw wachtwoord heeft minsters 1 hoofdletter, 1 kleine letter, 1 cijfer en 1 speciaal teken nodig en moet minstens 8 tekens lang zijn"
             });
-        } else {
-            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, veranderWachtwoordJsonGegevens.nieuwWachtwoord);
+        }
+        else
+        {
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, nieuwWachtwoord);
             await _userManager.UpdateAsync(user);
         }
 
@@ -423,6 +463,7 @@ public class AccountController : ControllerBase
             }
         );
     }
+
 
     [HttpPut]
     [Authorize]
@@ -452,6 +493,8 @@ public class AccountController : ControllerBase
         user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
+        user.EmailConfirmed = accountInstellingenJsonGegevens.EmailConfirmed;
+        user.TwoFactorEnabled = accountInstellingenJsonGegevens.TwoFactorEnabled;
 
         if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("man")) {
             user.Geslacht = "Man";
@@ -463,15 +506,20 @@ public class AccountController : ControllerBase
 
         var result = await _userManager.UpdateAsync(user);
 
-        if (!result.Succeeded) {
+        if (!result.Succeeded)
+        {
             string errors = result.Errors.Aggregate("", (current, error) => current + error.Description + "\n");
-            return StatusCode(400, new {
+            return StatusCode(400, new
+            {
                 success = false,
                 bericht = "Er is iets fout gegaan bij het updaten van uw gegevens " + errors
             });
-        } else {
+        }
+        else
+        {
             return Ok(
-                new {
+                new
+                {
                     success = true,
                     bericht = "Uw gegevens zijn succesvol gewijzigd"
                 }
