@@ -40,9 +40,12 @@ export class HuidigeBoekingen extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.huidigeBoekingen.map((boeking, index) => (
-                                <Rij key={index} titel={boeking.titel} zaal={boeking.zaal} bevestigd={boeking.bevestigd} datumTijdstip={boeking.datumTijdstip.replace('T', ' om ').slice(0, -3)} />
-                            ))}
+                            {this.props.huidigeBoekingen.map((boeking, index) => {
+                                if((new Date() - new Date(boeking.datumTijdstip)) / 1000 / 60 / 60 / 24 > 1){
+                                    return null;
+                                }
+                                return <Rij key={index} titel={boeking.titel} zaal={boeking.zaal} bevestigd={boeking.bevestigd} datumTijdstip={boeking.datumTijdstip.replace('T', ' om ').slice(0, -3)} />
+                            })}
                         </tbody>
                     </table>
                 </div>

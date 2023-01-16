@@ -493,6 +493,15 @@ public class AccountController : ControllerBase
         user.Telefoonnummer = accountInstellingenJsonGegevens.telefoonnummer;
         user.GeboorteDatum = accountInstellingenJsonGegevens.geboorteDatum;
         user.Emailvoorkeur = accountInstellingenJsonGegevens.emailvoorkeur;
+
+        if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("man")) {
+            user.Geslacht = "Man";
+        } else if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("vrouw")) {
+            user.Geslacht = "Vrouw";
+        } else {
+            user.Geslacht = "Anders";
+        }
+
         var result = await _userManager.UpdateAsync(user);
 
         if (!result.Succeeded)
