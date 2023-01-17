@@ -1,7 +1,7 @@
 namespace theater_laak.Models;
 public class Stoel
 {
-    public string Id { get; set; }
+    public int StoelId { get; set; }
     public int ZaalId { get; set; } //FK naar Zaal
     private int _rang;
     public int Rang

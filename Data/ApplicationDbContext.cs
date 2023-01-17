@@ -139,7 +139,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Class Ticket
         builder.Entity<Ticket>() //Table Name en Primary Key instellen
         .ToTable("Tickets")
-        .HasKey(t => t.TicketID);
+        .HasKey(t => t.TicketId);
 
         builder.Entity<Ticket>()
         .Property(ticket => ticket.QR)
@@ -165,7 +165,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Class Stoel
         builder.Entity<Stoel>()
         .ToTable("Stoelen")
-        .HasKey(s => s.Id);
+        .HasKey(s => s.StoelId);
 
         builder.Entity<Stoel>()
         .Property(s => s.Rang)
@@ -204,13 +204,13 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         builder.Entity<Ticket>()
         .HasOne<ApplicationUser>(t => t.ApplicationUser)
         .WithMany(au => au.Tickets)
-        .HasForeignKey(t => t.UserID)
+        .HasForeignKey(t => t.UserId)
         .HasConstraintName("FK_Ticket_ApplicationUser_1");
 
         builder.Entity<ApplicationUser>()
         .HasMany<Ticket>(au => au.Tickets)
         .WithOne(t => t.ApplicationUser)
-        .HasForeignKey(t => t.UserID)
+        .HasForeignKey(t => t.UserId)
         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
         // Ticket FK naar Optreden
