@@ -7,6 +7,8 @@ public class Stoel
     public int StoelId { get; set; }
     public int ZaalId { get; set; } //FK naar Zaal
     private int _rang;
+    internal Zaal Zaal;
+
     public int Rang
     {
         get

@@ -11,8 +11,8 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230117141703_stoel1")]
-    partial class stoel1
+    [Migration("20230117182900_stoel-fix-final-11")]
+    partial class stoelfixfinal11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -500,8 +500,9 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Stoel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("StoelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Rang")
                         .HasColumnType("INTEGER");
@@ -512,7 +513,7 @@ namespace theater_laak.Data.Migrations
                     b.Property<int>("ZaalId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("StoelId");
 
                     b.HasIndex("ZaalId");
 
@@ -521,7 +522,7 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Ticket", b =>
                 {
-                    b.Property<int>("TicketID")
+                    b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -532,20 +533,19 @@ namespace theater_laak.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("StoelId")
-                        .IsRequired()
+                    b.Property<int>("StoelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TicketID");
+                    b.HasKey("TicketId");
 
                     b.HasIndex("OptredenId");
 
                     b.HasIndex("StoelId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets", (string)null);
                 });
@@ -769,7 +769,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");

@@ -46,8 +46,10 @@ public class Zaal
             _Grootte = value;
         }
     }
-    public List<Stoel> Stoelen { get; set; }
+    
     public List<Optreden> Optredens { get; set; }
+
+    public List<Stoel> Stoelen { get; set; }
 
     public bool AddRij(int aantalStoelen, int rang, int rij)
     {
