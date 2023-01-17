@@ -253,16 +253,25 @@ public class ArtiestenportaalController : ControllerBase {
         )
         .ToListAsync();
 
+        var voorstelling = await _context.Voorstellingen.FindAsync(gegevens.voorstellingId);
+        if (voorstelling == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Deze voorstelling bestaat niet."
+            });
+        }
+
+        
+
         // parse XX:XX or X:XX to Time
         Int32.TryParse(gegevens.tijdstip.Substring(0, gegevens.tijdstip.IndexOf(':')), out int hour);
         Int32.TryParse(gegevens.tijdstip.Substring(gegevens.tijdstip.IndexOf(':') + 1), out int minute);
 
         var timeStart = new TimeOnly(hour, minute);
 
-        Int32.TryParse(gegevens.eindTijdstip.Substring(0, gegevens.tijdstip.IndexOf(':')), out int hourEnd);
-        Int32.TryParse(gegevens.tijdstip.Substring(gegevens.tijdstip.IndexOf(value: ':') + 1), out int minuteEnd);
+        var minuteEnd = voorstelling.TijdsduurInMinuten;
 
-        var timeEnd = new TimeOnly(hourEnd, minuteEnd);
+        var timeEnd = new TimeOnly(0, minuteEnd);
 
         if(timeStart.CompareTo(new TimeOnly(8, 0)) < 0 || timeStart.CompareTo(new TimeOnly(23, 0)) > 0 || timeEnd.CompareTo(new TimeOnly(8, 0)) < 0 || timeEnd.CompareTo(new TimeOnly(23, 0)) > 0){
             return StatusCode(400, new {
@@ -284,14 +293,6 @@ public class ArtiestenportaalController : ControllerBase {
                     bericht = "Er is al een optreden in deze zaal op dit tijdstip gepland."
                 });
             }
-        }
-
-        var voorstelling = await _context.Voorstellingen.FindAsync(gegevens.voorstellingId);
-        if (voorstelling == null) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Deze voorstelling bestaat niet."
-            });
         }
 
         var optreden = new Optreden {
@@ -367,4 +368,13 @@ public class ArtiestenportaalController : ControllerBase {
             optredens = optredens
         });
     }
+}
+
+public class BoekingJsonGegevens {
+    public string datum { get; set; }
+    public string tijdstip { get; set; }
+    public int? groep { get; set; }
+    public int zaalId { get; set; }
+    public int voorstellingId { get; set; }
+    public double prijs { get; set; }
 }

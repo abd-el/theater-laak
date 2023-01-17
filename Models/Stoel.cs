@@ -18,8 +18,7 @@ public class Stoel
             _rang = value;
         }
     }
-
-    public IEnumerable<Ticket> Tickets { get; set; }
-
+    public List<Ticket> Tickets { get; set; }
     public Zaal? Zaal { get; set; }
+    public int Rij { get; set; }
 }

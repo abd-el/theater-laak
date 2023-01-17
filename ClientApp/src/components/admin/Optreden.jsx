@@ -16,7 +16,6 @@ export function Optreden(props) {
     const [prijs, setPrijs] = useState('');
     const [datum, setDatum] = useState('');
     const [beginTijd, setBTijd] = useState('');
-    const [eindTijd, setETijd] = useState('');
     const [getId, setId] = useState(0);
     const [getText, setText] = useState('');
 
@@ -144,7 +143,6 @@ export function Optreden(props) {
             //prijs: prijs, //moet toegevoegd worden
             datum: datum,
             tijdstip: beginTijd,
-            eindTijdstip: eindTijd,
             voorstellingId: voorstellingId,
             groep: 1,
             zaalId: zaalId,

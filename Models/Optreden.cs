@@ -16,13 +16,3 @@ public class Optreden {
     public int ZaalId {get; set;}
     public Zaal? Zaal {get; set;}
 }
-
-public class BoekingJsonGegevens {
-    public string datum { get; set; }
-    public string tijdstip { get; set; }
-    public string eindTijdstip { get; set; }
-    public int? groep { get; set; }
-    public int zaalId { get; set; }
-    public int voorstellingId { get; set; }
-    public double prijs { get; set; }
-}

@@ -7,7 +7,6 @@ using theater_laak.Data;
 using theater_laak.Models;
 using System.Diagnostics;
 using System.Security.Claims;
-using static theater_laak.Models.VeranderWachtwoordJsonGegevens;
 
 namespace theater_laak.Controllers;
 
@@ -526,4 +525,45 @@ public class AccountController : ControllerBase
             );
         }
     }
+}
+
+public class AccountInstellingenJsonGegevens
+{
+    public string voornaam { get; set; }
+    public string achternaam { get; set; }
+    public string email { get; set; }
+    public string telefoonnummer { get; set; }
+    public string geboorteDatum { get; set; }
+    public string emailvoorkeur { get; set; }
+    public string geslacht { get; set; }
+
+    public bool EmailConfirmed {get;set;}
+    public bool TwoFactorEnabled {get;set;}
+
+    public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht)
+    {
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.email = email;
+        this.telefoonnummer = telefoonnummer;
+        this.geboorteDatum = geboorteDatum;
+        this.emailvoorkeur = emailvoorkeur;
+        this.geslacht = geslacht;
+    }
+}
+
+public class VeranderWachtwoordJsonGegevens
+{
+    public string huidigWachtwoord { get; set; }
+    public string nieuwWachtwoord { get; set; }
+
+    public VeranderWachtwoordJsonGegevens(string huidigWachtwoord, string nieuwWachtwoord)
+    {
+        this.huidigWachtwoord = huidigWachtwoord;
+        this.nieuwWachtwoord = nieuwWachtwoord;
+    }
+}
+public class VeranderVergetenWachtwoordJson
+{
+    public string nieuwWachtwoord { get; set; }
 }

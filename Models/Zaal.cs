@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+
 namespace theater_laak.Models;
 
 public class Zaal
@@ -44,7 +46,34 @@ public class Zaal
             _Grootte = value;
         }
     }
-    public IEnumerable<Stoel> Stoelen { get; set; }
-    public IEnumerable<Optreden> Optredens { get; set; }
+    public List<Stoel> Stoelen { get; set; }
+    public List<Optreden> Optredens { get; set; }
+
+    public bool AddRij(int aantalStoelen, int rang, int rij)
+    {
+        if (rang < 1 || rang > 3) {
+            return false;
+        } else {
+            for (int i = 0; i < aantalStoelen; i++) {
+                Stoelen.Add(new Stoel() { 
+                    Rang = rang,
+                    Rij = rij
+                });
+            }
+            return true;
+        }
+    }
+
+    public bool AddRang(int aantalStoelen, int aantalRijen, int rang)
+    {
+        if (rang < 1 || rang > 3) {
+            return false;
+        } else {
+            for (int i = 0; i < aantalRijen; i++) {
+                AddRij(aantalStoelen, rang, i);
+            }
+            return true;
+        }
+    }
 }
 

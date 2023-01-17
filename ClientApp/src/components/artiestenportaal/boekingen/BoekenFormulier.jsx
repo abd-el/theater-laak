@@ -16,7 +16,6 @@ export class BoekenFormulier extends Component {
             prijs: 0,
             datum: null,
             tijdstip: null,
-            eindTijdstip: null,
         };
     }
 
@@ -24,7 +23,6 @@ export class BoekenFormulier extends Component {
     veranderZaal = (e) => { this.setState({ zaal: e.target.value }); }
     veranderDatum = (e) => { this.setState({ datum: e.target.value }); }
     veranderTijdstip = (e) => { this.setState({ tijdstip: e.target.value }); }
-    veranderEindTijdstip = (e) => { this.setState({ eindTijdstip: e.target.value }); }
     veranderVoorstellingId = (e) => { this.setState({ voorstellingId: e.target.value }); }
     veranderPrijs = (e) => { this.setState({ prijs: e.target.value }); }
 
@@ -42,19 +40,6 @@ export class BoekenFormulier extends Component {
 
     valideerZaal = (zaal) => {
         return !(zaal === 0 || !zaal);
-    }
-
-    tijdstippenVerschilInMinuten = (tijdstip1, tijdstip2) => {
-        let tijdstip1Array = tijdstip1.split(':');
-        let tijdstip2Array = tijdstip2.split(':');
-
-        let tijdstip1Object = new Date(0, 0, 0, tijdstip1Array[0], tijdstip1Array[1], 0);
-        let tijdstip2Object = new Date(0, 0, 0, tijdstip2Array[0], tijdstip2Array[1], 0);
-
-        let verschil = tijdstip2Object - tijdstip1Object;
-        let minuten = Math.floor(verschil / 1000 / 60);
-
-        return minuten;
     }
 
     valideerTijdstip = (tijdstip) => {
@@ -114,23 +99,6 @@ export class BoekenFormulier extends Component {
             return false;
         }
 
-        if (!this.valideerTijdstip(this.state.eindTijdstip)) {
-            this.setState({
-                resultaat: 'Het eind-tijdstip is verplicht met het formaat XX:XX, tussen 08:00 en 23:00',
-                resultaatSuccess: false
-            });
-            return false;
-        }
-
-        let verschil = this.tijdstippenVerschilInMinuten(this.state.tijdstip, this.state.eindTijdstip);
-        if (verschil < 30) {
-            this.setState({
-                resultaat: 'Het einde van de voorstelling moet minstens 30 minuten na het begin zijn',
-                resultaatSuccess: false
-            });
-            return false;
-        }
-
         if (!this.valideerPrijs(this.state.prijs)) {
             this.setState({
                 resultaat: 'De prijs is verplicht en moet tussen 1 en 30 euro liggen met maximaal 2 decimalen',
@@ -151,7 +119,6 @@ export class BoekenFormulier extends Component {
                 zaalId: this.state.zaal,
                 datum: this.state.datum,
                 tijdstip: this.state.tijdstip,
-                eindTijdstip: this.state.eindTijdstip,
                 groep: this.state.groep,
                 prijs: this.state.prijs 
             })
@@ -217,19 +184,14 @@ export class BoekenFormulier extends Component {
                 </div>
 
                 <div>
-                    <div className='mb-2 d-inline-block w-45'>
+                    <div className='mb-2 d-inline-block w-60'>
                         <div>Datum*</div>
                         <input type="date" onChange={this.veranderDatum} id="datum-invoer" className='form-control text-white' placeholder='dd-mm-jjjj'></input>
                     </div>
 
-                    <div className='mb-2 d-inline-block ms-2 w-25'>
+                    <div className='mb-2 d-inline-block ms-2 w-38'>
                         <div>Tijdstip*</div>
                         <input type="time" onChange={this.veranderTijdstip} id="tijdstip-invoer" className='form-control text-white' placeholder='XX:XX'></input>
-                    </div>
-
-                    <div className='mb-2 d-inline-block ms-2 w-25'>
-                        <div>Tot*</div>
-                        <input type="time" onChange={this.veranderEindTijdstip} id="tot-invoer" className='form-control text-white' placeholder='XX:XX'></input>
                     </div>
                 </div>
 
