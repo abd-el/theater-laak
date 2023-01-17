@@ -40,10 +40,6 @@ export function Optreden(props) {
         setBTijd(e.target.value);
     }
 
-    function eindTijdHandler(e) {
-        setETijd(e.target.value);
-    }
-
     const getBevestigdeOptredens = useCallback(async function () {
         setError(null);
         try {
@@ -352,7 +348,7 @@ export function Optreden(props) {
                     <input placeholder='Datum' type='date' value={datum} onChange={datumHandler} required />
                     <br />
                     <br />
-                    <input placeholder='Begin' type='time' value={beginTijd} onChange={beginTijdHandler} required /> <input placeholder='Eind' type='time' value={eindTijd} onChange={eindTijdHandler} required />
+                    {/* <input placeholder='Begin' type='time' value={beginTijd} onChange={beginTijdHandler} required /> <input placeholder='Eind' type='time' value={eindTijd} onChange={eindTijdHandler} required /> */}
                     <br />
                     <br />
                     {/* <label>Begunstigers Exclusief</label>&nbsp; */}
