@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using theater_laak.Data;
 
@@ -10,9 +11,10 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230117160449_stoel5")]
+    partial class stoel5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
@@ -520,7 +522,7 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Ticket", b =>
                 {
-                    b.Property<int>("TicketId")
+                    b.Property<int>("TicketID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -534,16 +536,16 @@ namespace theater_laak.Data.Migrations
                     b.Property<int>("StoelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserID")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("TicketId");
+                    b.HasKey("TicketID");
 
                     b.HasIndex("OptredenId");
 
                     b.HasIndex("StoelId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Tickets", (string)null);
                 });
@@ -767,7 +769,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserID")
                         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");

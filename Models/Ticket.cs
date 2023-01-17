@@ -3,19 +3,19 @@ namespace theater_laak.Models;
 public class Ticket
 {
 
-    public int TicketID { get; set; }
+    public int TicketId { get; set; }
     public string QR { get; set; }
-    private string _UserID;
-    public string? UserID //FK naar APPLICATIONUSER(ASPNETUSER)
+    private string _UserId;
+    public string? UserId //FK naar APPLICATIONUSER(ASPNETUSER)
     {
         get
         {
-            return _UserID;
+            return _UserId;
         }
 
         set
         {
-            _UserID = ApplicationUser.Id;
+            _UserId = ApplicationUser.Id;
         }
     }
     public int OptredenId { get; set; } //FK naar OPTREDEN

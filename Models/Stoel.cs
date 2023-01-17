@@ -5,7 +5,8 @@ namespace theater_laak.Models;
 public class Stoel
 {
     public int StoelId { get; set; }
-    public int ZaalId { get; set; } //FK naar Zaal
+    public Zaal? Zaal { get; set; }
+    public int ZaalId { get; set; }
     private int _rang;
     public int Rang
     {
@@ -22,7 +23,6 @@ public class Stoel
         }
     }
     public List<Ticket> Tickets { get; set; }
-    public Zaal? Zaal { get; set; }
     public int Rij { get; set; }
 
     public bool IsBeschikbaar(int optredenId) {
