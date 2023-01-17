@@ -5,8 +5,7 @@ namespace theater_laak.Models;
 public class Stoel
 {
     public int StoelId { get; set; }
-    public Zaal? Zaal { get; set; }
-    public int ZaalId { get; set; }
+    public int ZaalId { get; set; } //FK naar Zaal
     private int _rang;
     public int Rang
     {
