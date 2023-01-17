@@ -14,5 +14,5 @@ public class Optreden {
     public List<Ticket> Tickets {get; set;}
     public Boolean? Bevestigd {get; set;}
     public int ZaalId {get; set;}
-    public Zaal? Zaal {get; set;}
+    public Zaal Zaal {get; set;}
 }
