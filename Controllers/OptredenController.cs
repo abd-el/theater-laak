@@ -25,7 +25,7 @@ public class OptredenController : ControllerBase {
 
     [HttpGet]
     [Route("GetOptreden")]
-    public async Task<ActionResult> GetOptreden([FromForm] OptredenJsonGegevens gegevens) {
+    public async Task<ActionResult> GetOptreden([FromQuery] OptredenJsonGegevens gegevens) {
         // tryparse optredenId
         int id;
         var success = int.TryParse(gegevens.optredenId, out id);
