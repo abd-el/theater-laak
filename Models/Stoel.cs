@@ -1,3 +1,6 @@
+using theater_laak.Data;
+using theater_laak.Data.Migrations;
+
 namespace theater_laak.Models;
 public class Stoel
 {
@@ -19,6 +22,9 @@ public class Stoel
         }
     }
     public List<Ticket> Tickets { get; set; }
-    public Zaal? Zaal { get; set; }
     public int Rij { get; set; }
+
+    public bool IsBeschikbaar(int optredenId) {
+        return this.Tickets.Any(t => t.OptredenId == optredenId);
+    }
 }
