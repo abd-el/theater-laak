@@ -165,7 +165,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         // Class Stoel
         builder.Entity<Stoel>()
         .ToTable("Stoelen")
-        .HasKey(s => s.Id);
+        .HasKey(s => s.StoelId);
 
         builder.Entity<Stoel>()
         .Property(s => s.Rang)

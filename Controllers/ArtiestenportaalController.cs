@@ -269,9 +269,7 @@ public class ArtiestenportaalController : ControllerBase {
 
         var timeStart = new TimeOnly(hour, minute);
 
-        var minuteEnd = voorstelling.TijdsduurInMinuten;
-
-        var timeEnd = new TimeOnly(0, minuteEnd);
+        var timeEnd = new TimeOnly(timeStart.Hour + (voorstelling.TijdsduurInMinuten / 60), (timeStart.Minute + voorstelling.TijdsduurInMinuten) % 60);
 
         if(timeStart.CompareTo(new TimeOnly(8, 0)) < 0 || timeStart.CompareTo(new TimeOnly(23, 0)) > 0 || timeEnd.CompareTo(new TimeOnly(8, 0)) < 0 || timeEnd.CompareTo(new TimeOnly(23, 0)) > 0){
             return StatusCode(400, new {

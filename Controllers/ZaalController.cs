@@ -59,7 +59,7 @@ public class ZaalController : ControllerBase {
     [HttpDelete]
     [Route("DeleteZaal")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult> DeleteZaal([FromBody] ZaalDeleteJson gegevens){
+    public async Task<ActionResult> DeleteZaal([FromBody] ZaalGegevensJson gegevens){
         var zaal = await _context.Zalen
             .Include(z => z.Stoelen)
             .FirstOrDefaultAsync(z => z.ZaalId == gegevens.zaalId);
@@ -89,6 +89,6 @@ public class ZaalCreatieJson {
     public int rangDrieAantalRijen { get; set; }
 }
 
-public class ZaalDeleteJson {
+public class ZaalGegevensJson {
     public int zaalId { get; set; }
 }
