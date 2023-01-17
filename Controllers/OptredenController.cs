@@ -55,7 +55,7 @@ public class OptredenController : ControllerBase {
 
     [HttpGet]
     [Route("GetStoelen")]
-    public async Task<ActionResult> GetStoelen([FromBody] OptredenQueryGegevens gegevens){
+    public async Task<ActionResult> GetStoelen([FromQuery] OptredenQueryGegevens gegevens){
         int optredenId;
         var success = int.TryParse(gegevens.optredenId, out optredenId);
         if(!success) {
