@@ -51,8 +51,9 @@ export function Voorstelling(props) {
                 {props.array.zaalId}
             </td>
             <td className="tijdstip">
-                <a href='' className="btn btn-danger" title='Tickets'>{props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}</a>
-                {/* <button id='tijdstipKnop'>{props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}</button> */}
+                <a href={`/ticketverkoop?optredenId=${props.array.optredenId}`} className="btn btn-danger" title='Tickets'>
+                    {props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}
+                </a>
             </td>
         </tr>
     );

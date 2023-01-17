@@ -11,7 +11,8 @@ import { Programmering } from "./components/programmering/Programmering";
 import { Artiestenportaal } from './components/artiestenportaal/layout/Artiestenportaal';
 import { AccountInstellingen } from './components/accountinstellingen/AccountInstellingen';
 import { Geautoriseerd } from './components/doneer/Geautoriseerd';
-import {AdminPanel} from './components/admin/AdminPanel';
+import { AdminPanel } from './components/admin/AdminPanel';
+import { Ticketverkoop } from './components/Ticketverkoop/Ticketverkoop';
 
 const AppRoutes = [
   {
@@ -31,8 +32,12 @@ const AppRoutes = [
     element: <Programmering />
   },
   {
+    path: '/ticketverkoop',
+    element: <Ticketverkoop />
+  },
+  {
     path: '/artiestenportaal',
-    element: <Artiestenportaal AllowedRoles={['Admin', 'Artiest', 'Medewerker']}/>
+    element: <Artiestenportaal AllowedRoles={['Admin', 'Artiest', 'Medewerker']} />
   },
   {
     path: '/accountinstellingen',

@@ -225,7 +225,7 @@ export function Programmering() {
         content = <tr><td>Loading...</td></tr>;
     }
 
-    console.log(enteredDatum);
+    console.log(AangepasteArray);
     //console.log(enteredName);
 
     return (
