@@ -9,6 +9,26 @@ export function InfoTab(props) {
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
+    const stoelen = [
+        {
+            stoelId: 1,
+            zaalId: optreden.zaalId,
+            rang: 1,
+            rij: 1
+        },
+        {
+            stoelId: 2,
+            zaalId: optreden.zaalId,
+            rang: 2,
+            rij: 2
+        },
+        {
+            stoelId: 3,
+            zaalId: optreden.zaalId,
+            rang: 3,
+            rij: 3
+        }
+    ];
 
     function einde(tijdStip, minuten) {
         let date = new Date(tijdStip);
@@ -39,7 +59,7 @@ export function InfoTab(props) {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`/api/Optreden/GetOptreden?optredenId=${props.optredenId}`)
+        fetch(`/api/optreden/GetOptreden?optredenId=${props.optredenId}`)
             .then(response => response.json())
             .then(data => {
                 setData(data);
@@ -58,39 +78,117 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
-    return (
-        <div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <div className="square bg-dark rounded position-relative start-50 translate-middle w-25 p-3">
-                <img className='rounded' src={optreden.voorstelling.afbeelding} height='145' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
-                <div>
-                    <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
-                    <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
-                    <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+    console.log(props.gekozenStoelen);
+
+    if (props.gekozenStoelen.length == 0) {
+
+        return (
+            <div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div className="square bg-dark rounded position-relative start-50 translate-middle w-25 p-3">
+                    <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
+                    &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
+                    <div>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                        <br />
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
+
+    else {
+        return (
+            <div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
+                    <label className='fs-4'>{props.gekozenStoelen.length == 1 && '1 Stoel'}{props.gekozenStoelen.length > 1 && props.gekozenStoelen.length + ' Stoelen'}</label>
+                    <br />
+                    <br />
+                    {props.gekozenStoelen.map((stoel) => (
+                        <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{'€ ' + optreden.prijs}&nbsp;</text><br /></text>
+                    ))}
+                    <hr class="hr hr-blurry" style={{ backgroundColor: "red" }} />
+                    <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
+                    &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
+                    <div>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
+                        <br />
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                        <br />
+                    </div>
+                </div>
+                <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
+                        <div className='square rounded p-2' >
+                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "300px"} }>TOTAAL </label>
+                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + optreden.prijs * props.gekozenStoelen.length}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button className='square rounded p-2 btn-danger'>NAAR BETALEN</button>
+                        <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem"}} />
+                        </div>
+                </div>
+            </div>
+        );
+    }
 }

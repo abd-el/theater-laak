@@ -277,22 +277,22 @@ export function Programmering() {
             <br />
             <br />
             <div>
-                <table className="table table-bordered table-striped table-dark">
+                <table className="table table-bordered table-striped table-dark" style={{  verticalAlign: "middle"} }>
                     <thead>
                         <tr>
-                            <th scope='col'>
+                            <th scope='col' className='w-25'>
                                 Afbeelding
                             </th>
-                            <th scope='col'>
+                            <th scope='col' className='w-25'>
                                 Titel
                             </th>
-                            <th scope='col'>
+                            <th scope='col' className='w-25'>
                                 Dag/Datum
                             </th>
-                            <th scope='col'>
+                            <th scope='col'className='w-0'>
                                 Zaal
                             </th>
-                            <th scope='col'>
+                            <th scope='col' className='w-25'>
                                 Tijdstip
                             </th>
                         </tr>
