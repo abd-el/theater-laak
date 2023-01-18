@@ -30,7 +30,7 @@ export function InfoTab(props) {
         }
     ];
 
-    let reference = optreden.datumTijdstip + '-' + optreden.optredenId+ '-' + optreden.zaalId + '-' + optreden.voorstellingId;
+    let reference = optreden.datumTijdstip + '-' + optreden.optredenId + '-' + optreden.zaalId + '-' + optreden.voorstellingId;
 
     let totaalPrijs = optreden.prijs * props.gekozenStoelen.length;
 
@@ -85,8 +85,8 @@ export function InfoTab(props) {
             reference: reference,
             url: "https://localhost:44461/programmering"
         };
-
-        fetch('https://fakepay.azurewebsites.net/', {
+        // https://fakepay.azurewebsites.net/?amount=10&reference=reference&url=https://localhost:44461/programmering
+        await fetch('https://fakepay.azurewebsites.net/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -94,10 +94,10 @@ export function InfoTab(props) {
             },
             body: body
         })
-        .then(r => r.json())
-        .then(d => {
-            console.log(d);
-        })
+            .then(r => r.json())
+            .then(d => {
+                console.log(d);
+            })
         // console.log(bestelling)
     }
 
@@ -212,12 +212,15 @@ export function InfoTab(props) {
                     </div>
                 </div>
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
-                        <div className='square rounded p-2' >
-                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "300px"} }>TOTAAL </label>
-                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div className='square rounded p-2' >
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={naarBetalen}>NAAR BETALEN</button>
-                        <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem"}} />
-                        </div>
+                        <form action="https://fakepay.azurewebsites.net/?amount=10&reference=abc123&url=https://localhost:44461/programmering" method="POST" encType="application/x-www-form-urlencoded">
+                            <button>Betaling</button>
+                        </form>
+                        <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem" }} />
+                    </div>
                 </div>
             </div>
         );
