@@ -9,7 +9,7 @@ export function InfoTab(props) {
 
     const BetalingKnopRef = useRef(null);
     const GaNaarBetaling = () => {
-        BetalingKnopRef.click();
+        BetalingKnopRef.submit();
      }
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
@@ -89,7 +89,7 @@ export function InfoTab(props) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState'))?.token
             },
             body: JSON.stringify({
                 optredenId: props.optredenId,
