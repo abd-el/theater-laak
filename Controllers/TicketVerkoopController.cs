@@ -21,6 +21,32 @@ public class TicketVerkoopController : ControllerBase
     }
 
     [HttpPost]
+    [Route("RondBestellingAf")]
+    public ActionResult RondBestellingAf([FromForm] RondBestellingAfGegevensForm gegevens)
+    {
+        if (!gegevens.success) {
+            var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
+
+            return new ContentResult {
+                Content = fouteHtml,
+                ContentType = "text/html"
+            };
+        }
+
+        // get ticket with gegevens.reference
+        // set ticket.Betaald = true
+
+        Response.Cookies.Append("LaatsteTicketReference", gegevens.reference);
+
+        var html = "<a href='/rondbestellingaf'>Klik hier om de betaling af te ronden.</a>";
+        
+        return new ContentResult {
+            Content = html,
+            ContentType = "text/html"
+        };
+    }
+    
+    [HttpPost]
     [Route("MaakTicket")]
     public async Task<ActionResult> MaakTicket([FromBody] TicketCreatieJson ticketVerkoop)
     {
@@ -63,7 +89,8 @@ public class TicketVerkoopController : ControllerBase
         var ticket = new Ticket {
             Optreden = optreden,
             Stoel = stoel,
-            ApplicationUser = user
+            ApplicationUser = user,
+            Betaald = false
         };
 
         await _context.Tickets.AddAsync(ticket);
@@ -71,6 +98,7 @@ public class TicketVerkoopController : ControllerBase
 
         return Ok(new {
             success = true,
+            id = ticket.TicketId,
             bericht = "Ticket is succesvol aangemaakt"
         });
     }
@@ -110,4 +138,10 @@ public class TicketVerkoopController : ControllerBase
 public class TicketCreatieJson {
     public int optredenId { get; set; }
     public int stoelId { get; set; }
+}
+
+public class RondBestellingAfGegevensForm {
+    public string account { get; set; }
+    public Boolean success { get; set; }
+    public string reference { get; set; }
 }

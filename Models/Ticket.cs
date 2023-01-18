@@ -23,4 +23,6 @@ public class Ticket
     public Stoel? Stoel { get; set; }
     public Optreden? Optreden { get; set; }
     public ApplicationUser? ApplicationUser { get; set; }
+    public bool Betaald { get; set; } = false;
+    public DateTime AangemaaktOp { get; set; } = DateTime.Now;
 }
