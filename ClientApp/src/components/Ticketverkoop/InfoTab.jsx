@@ -216,8 +216,11 @@ export function InfoTab(props) {
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={naarBetalen}>NAAR BETALEN</button>
-                        <form action="https://fakepay.azurewebsites.net/?amount=10&reference=abc123&url=https://localhost:44461/programmering" method="POST" encType="application/x-www-form-urlencoded">
-                            <button>Betaling</button>
+                        <form action="https://fakepay.azurewebsites.net" method="post" enctype="application/x-www-form-urlencoded">
+                            <input name="amount" value={10} className="d-none" />
+                            <input name="reference" value="abc" className="d-none" />
+                            <input name="url" value="https://localhost:44461/Programmering" className="d-none" />
+                            <input type="submit" value="Betaling" />
                         </form>
                         <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem" }} />
                     </div>
