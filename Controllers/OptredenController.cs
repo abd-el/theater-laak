@@ -40,6 +40,7 @@ public class OptredenController : ControllerBase {
             .Include(o => o.ArtiestenGroep)
             .Include(o => o.Voorstelling)
             .Include(o => o.Zaal)
+            .Include(o => o.Zaal.Stoelen)
             .Where(o => o.OptredenId == optredenId)
             .FirstOrDefaultAsync();
 
