@@ -10,7 +10,7 @@ namespace theater_laak.Models;
 
 public class EmailSender
 {
-    //Je antivirus of firewall kan hier een exceptie veroorzaken.
+    //Je antivirus of firewall kan hier een exception veroorzaken.
     public async Task SendEmail( string tekst, string userEmail )
     {
 

@@ -23,7 +23,8 @@ public class loginmodel
 public class LoginController : ControllerBase
 {
 
-    static HttpClient client = new HttpClient();
+    HttpClient client = new HttpClient();
+    EmailSender emailsender = new EmailSender();
     UserManager<ApplicationUser> _usermanager;
     ApplicationDbContext _context;
 
@@ -85,11 +86,9 @@ public class LoginController : ControllerBase
             await _usermanager.UpdateAsync(user);
         }
 
-        if (user.EmailConfirmed && user.TwoFactorEnabled)
+        if (user.TwoFactorEnabled)
         {
-            var token = await Add2FaToken(user);
-            EmailSender emailsender = new EmailSender();
-            await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com"); //user.Email
+            await SendTokenToEmail(user);
             return Ok("2fa");
         }
 
@@ -99,7 +98,7 @@ public class LoginController : ControllerBase
 
     }
 
-    private async Task<string> Add2FaToken(ApplicationUser user)
+    private async Task<string> Create2FaToken(ApplicationUser user)
     {
         var pwd = new Password(12);
         var randomstring = pwd.Next();
@@ -114,16 +113,16 @@ public class LoginController : ControllerBase
 
     public class _2faJson { public string token { get; set; } public string userName { get; set; } }
     [HttpPost]
-    [Route("validateEmail")]
-    public async Task<ActionResult> validateEmail(_2faJson json)
+    [Route("isTokenValid")]
+    public async Task<ActionResult> isTokenValid(_2faJson json)
     {
         var user = await _usermanager.FindByNameAsync(json.userName);
         if (json.token == user._2faToken)
         {
             if (DateTime.Compare(DateTime.Now, (DateTime)user._2faExpDate) <= 0)
             {
-                user.EmailConfirmed = true;
-                await _usermanager.UpdateAsync(user);
+                // user.EmailConfirmed = true;
+                // await _usermanager.UpdateAsync(user);
                 var tokenOptions = await GenerateJwt(user);
                 return Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(tokenOptions), user });
             }
@@ -132,25 +131,44 @@ public class LoginController : ControllerBase
         return BadRequest("wrong");
     }
 
-public class usernameJson{ public string userName {get;set;} }
+    public class usernameJson { public string userName { get; set; } }
     [HttpPost]
-    [Route("sendEmail")]
-    public async Task<ActionResult> sendEmail([FromBody]usernameJson json)
+    [Route("mailToConfirmedAddress")]
+    public async Task<ActionResult> MailToConfirmedAddress([FromBody] usernameJson json)
     {
         var user = await _usermanager.FindByNameAsync(json.userName);
-        if(user == null){
+        if (user == null)
+        {
             return BadRequest("noUser");
         }
-        if(!user.EmailConfirmed){
+        if (!user.EmailConfirmed)
+        {
             return BadRequest("noEmail");
         }
-        var email = user.Email;
-        var token = await Add2FaToken(user);
-
-        EmailSender sender = new EmailSender();
-        await sender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
+        await SendTokenToEmail(user);
         return Ok();
-    }   
+    }
+
+    [HttpPost]
+    [Route("mailToUnconfirmedAddress")]
+    public async Task<ActionResult> MailToUnconfirmedAddress([FromBody] usernameJson json)
+    {
+        var user = await _usermanager.FindByNameAsync(json.userName);
+        if (user == null)
+        {
+            return BadRequest("noUser");
+        }
+        await SendTokenToEmail(user);
+        return Ok();
+    }
+
+    private async Task SendTokenToEmail(ApplicationUser user)
+    {
+        var token = await Create2FaToken(user);
+        //await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
+        await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", user.Email);
+    }
+
 
     private async Task<JwtSecurityToken> GenerateJwt(ApplicationUser user)
     {
@@ -216,9 +234,9 @@ public class usernameJson{ public string userName {get;set;} }
     }
 
     [HttpGet]
-    [Route("validateToken")]
+    [Route("validateSwtToken")]
     [Authorize]
-    public ActionResult validateToken()
+    public ActionResult validateSwtToken()
     {
 
         return Ok();

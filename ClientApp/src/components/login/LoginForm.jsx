@@ -17,7 +17,7 @@ import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
 
 export function LoginForm() {
     const [ErrorMessage, SetErrMsg] = useState();
-    const [forgotPass, SetForgotPass] = useState(false);
+    const [isPwForgotten, SetIsPwForgotten] = useState(false);
     const { authState } = useAuthContext();
 
     const navigate = useNavigate();
@@ -66,7 +66,7 @@ export function LoginForm() {
     }
 
     const HandleClick = (e) => {
-        SetForgotPass(true);
+        SetIsPwForgotten(true);
     }
 
     return (
@@ -104,13 +104,13 @@ export function LoginForm() {
                                 </div>
 
                                 <ResetModal
-                                    forgotPass={forgotPass}
-                                    setPass={SetForgotPass}
+                                    isPwForgotten={isPwForgotten}
+                                    SetIsPwForgotten={SetIsPwForgotten}
                                 />
 
                                 <TwoStepModal
-                                    _2fa={login.isTweeFactorNodig}
-                                    set2FA={login.setTweeFactorNodig}
+                                    isTweeFactorNodig={login.isTweeFactorNodig}
+                                    setTweeFactorNodig={login.setTweeFactorNodig}
                                     username={username}
                                 />
                             </div>

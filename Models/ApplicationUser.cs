@@ -52,16 +52,16 @@ public class AccountInstellingenJsonGegevens
     public bool EmailConfirmed {get;set;}
     public bool TwoFactorEnabled {get;set;}
 
-    public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht)
-    {
-        this.voornaam = voornaam;
-        this.achternaam = achternaam;
-        this.email = email;
-        this.telefoonnummer = telefoonnummer;
-        this.geboorteDatum = geboorteDatum;
-        this.emailvoorkeur = emailvoorkeur;
-        this.geslacht = geslacht;
-    }
+    // public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht)
+    // {
+    //     this.voornaam = voornaam;
+    //     this.achternaam = achternaam;
+    //     this.email = email;
+    //     this.telefoonnummer = telefoonnummer;
+    //     this.geboorteDatum = geboorteDatum;
+    //     this.emailvoorkeur = emailvoorkeur;
+    //     this.geslacht = geslacht;
+    // }
 }
 
 public class VeranderWachtwoordJsonGegevens

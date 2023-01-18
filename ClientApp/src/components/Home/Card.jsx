@@ -8,7 +8,6 @@ import { useState } from 'react';
 
 export function Card(props) {
     const [getTitel, setTitel] = useState('');
-    console.log(getTitel);
     return (
         <>
             <div className="card text-white text-center bg-dark mb-3" style={{ width: '18rem' }}>

@@ -21,7 +21,7 @@ export function useLogin() {
 
 
         if (resp.data == '2fa') {
-            setMessage('wachten op 2FA...');
+            setMessage('wacht op 2FA...');
             setTweeFactorNodig(true);
         }
         else if (resp.status == 200) {

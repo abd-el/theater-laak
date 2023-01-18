@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { NavLink, NavItem } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -8,9 +8,12 @@ import { useLogout } from "../hooks/useLogout";
 export function LogoutMenu() {
     const logout = useLogout();
     const { authState } = useAuthContext();
-    
     let message;
-    authState == null ? (message = '') : (message = authState.user.voornaam)
+    
+    
+        authState == null ? (message = '') : (message = authState.user.voornaam)
+    
+
 
     return (
         <>

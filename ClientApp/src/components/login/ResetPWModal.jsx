@@ -4,13 +4,17 @@ import { Modal, Button, ModalHeader, ModalBody, ModalFooter, Input, InputGroup, 
 import { backendApi } from "../api";
 import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
 
-export function ResetModal({ forgotPass, setPass, confirm, sendMail }) {
+
+
+export function ResetModal({ isPwForgotten, SetIsPwForgotten }) {
     const { confirmToken, sendTokenToEmail, } = useEmailConfirmation();
     const [showModal, setShowModal] = useState(false);
+    
     const [hideToken, setHideToken] = useState(true);
     const [hidePw, setHidePw] = useState(true);
     const [hideStopBtn, setHideStop] = useState(true);
     const [hideKlaarBtn, setHideKlaar] = useState(false);
+
     const [mailError, setMailError] = useState(' ');
     const [tokenError, setTokenError] = useState(' ');
     const [PasswordError, setPasswordErr] = useState(' ');
@@ -20,7 +24,7 @@ export function ResetModal({ forgotPass, setPass, confirm, sendMail }) {
 
 
     const toggle = () => {
-        setPass(false);
+        SetIsPwForgotten(false);
         setHidePw(true);
         setHideToken(true);
         setMailError(' ');
@@ -32,32 +36,32 @@ export function ResetModal({ forgotPass, setPass, confirm, sendMail }) {
 
 
     const ClickHandler = async (e) => {
-        const username = usernameRef.current.value;
-        const isMailConfirmed = await sendTokenToEmail(username);
+        const userName = usernameRef.current.value;
+        const isMailConfirmed = await sendTokenToEmail(userName, true);
         if (!isMailConfirmed) {
-            setMailError('de bijbehorende email-adres is niet geverifieerd ❌, neem contact op met onze klantenservice');
+            setMailError('De bijbehorende emailadres is niet geverifieerd ❌, neem contact op met onze klantenservice.');
         }
         else {
-            setMailError('controleer uw email-adres 📧✔️');
+            setMailError('Controleer uw emailadres. 📧✔️');
             setHideToken(false);
         }
     }
 
 
     const ChangeHandler = async (e) => {
-        const username = usernameRef.current.value;
+        const userName = usernameRef.current.value;
         const token = e.target.value;
         console.log(e.target.value);
 
         if (token.length >= 12) {
-            const data = await confirmToken(token, username, false, true);
+            const data = await confirmToken(token, userName, false, true);
             if (data != null) {
                 setTokenError('✔️');
                 localStorage.setItem('swt', data.token);
                 setHidePw(false);
                 setHideStop(false);
             }
-            else setTokenError('de tokens komen niet overeen ❌');
+            else setTokenError('De tokens komen niet overeen. ❌');
         }
     }
 
@@ -75,14 +79,14 @@ export function ResetModal({ forgotPass, setPass, confirm, sendMail }) {
             localStorage.removeItem('swt');
         }
         else {
-            setPasswordErr('🔑 Het opgegeven wachtwoord is niet sterk genoeg ❌');
+            setPasswordErr('🔑 Het opgegeven wachtwoord is niet sterk genoeg. ❌');
         }
     }
 
 
     useEffect(() => {
-        setShowModal(forgotPass);
-    }, [forgotPass]);
+        setShowModal(isPwForgotten);
+    }, [isPwForgotten]);
 
 
     const CloseHandler = () => {

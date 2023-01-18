@@ -3,6 +3,7 @@ import '../../custom.css'
 import { VeranderWachtwoordModal } from './VeranderWachtwoordModal';
 import { BevestigEmailModal } from './BevestigEmailModal';
 import { AuthContext } from '../context/AuthContext';
+import { TwoFactorModal } from './set2FaModal';
 
 export class AccountInstellingen extends Component {
     static contextType = AuthContext;
@@ -10,20 +11,27 @@ export class AccountInstellingen extends Component {
     constructor(props) {
 
         super(props);
+        this.twoFactorBtn = React.createRef();
         this.state = {
             resultaat: '',
             resultaatSuccess: '',
+            ShowTwoFactorModal: false,
+            isTwoFactorBtnDisabled: true,
 
             // deze informatie halen we op uit de database
             username: '',
             voornaam: '',
             achternaam: '',
+            oldEmail: '',
             email: '',
             telefoonnummer: '',
             geboortedatum: '',
             emailvoorkeur: '', // 'geen' | 'belangrijk' | 'nieuws'
-            isEmailConfirmed: '',
-            twoFactorEnabled: '',
+            oldIsEmailBevestigd: false,
+            isEmailBevestigd: false,
+            isEmailNieuw: false,
+            oldTwoFactorEnabled: false,
+            twoFactorEnabled: false,
             geslacht: '' // 'man' | 'vrouw' | 'anders'
         };
     }
@@ -46,41 +54,97 @@ export class AccountInstellingen extends Component {
             return;
         }
 
+        const storage = JSON.parse(localStorage.getItem('authState'));
         localStorage.setItem('authState', JSON.stringify({
-            token: JSON.parse(localStorage.getItem('authState')).token,
+            token: storage.token,
             user: res.resultaat
         }));
+
+        const payload = {
+            token: storage.token,
+            user: res.resultaat
+        }
+
+        this.context.dispatch({
+            type: 'SET_STATE',
+            payload: payload,
+        });
+
+        this.setState({ isEmailNieuw: false });
+        this.setState({ oldEmail: this.state.email });
     }
 
     componentDidMount = () => {
         // hier halen we de gegevens op uit de database
         const { authState } = this.context;
 
-        console.log(authState.user);
-
         this.setState({
             username: authState.user.userName,
             voornaam: authState.user.voornaam,
-            achternaam: authState.user.achternaam,
             email: authState.user.email,
+            achternaam: authState.user.achternaam,
             telefoonnummer: authState.user.telefoonnummer,
             geboortedatum: authState.user.geboorteDatum,
             emailvoorkeur: authState.user.emailvoorkeur,
-            isEmailConfirmed: authState.user.emailConfirmed,
             twoFactorEnabled: authState.user.twoFactorEnabled,
-            geslacht: authState.user.geslacht?.toLowerCase() ?? 'anders'
+            isEmailBevestigd: authState.user.emailConfirmed,
+            geslacht: authState.user.geslacht?.toLowerCase() ?? 'anders',
+
+            oldEmail: authState.user.email,
+            oldIsEmailBevestigd: authState.user.emailConfirmed,
+            oldTwoFactorEnabled: authState.user.twoFactorEnabled,
         })
+
+        this.veranderIsEmailBevestigd(authState.user.emailConfirmed);
     }
 
     veranderVoornaam = (e) => { this.setState({ voornaam: e.target.value }); }
     veranderAchternaam = (e) => { this.setState({ achternaam: e.target.value }); }
-    veranderEmail = (e) => { this.setState({ email: e.target.value }); }
     veranderTelefoonnummer = (e) => { this.setState({ telefoonnummer: e.target.value }); }
     veranderGeboortedatum = (e) => { this.setState({ geboortedatum: e.target.value }); }
     veranderEmailvoorkeur = (e) => { this.setState({ emailvoorkeur: e.target.value }); }
-    //veranderIsEmailConfirmed = (e) => { this.setState({ isEmailConfirmed: e.target.value }) }
-    veranderTwoFactorEnabled = (e) => { if(this.state.isEmailConfirmed){ this.setState({ twoFactorEnabled: true }); } }
     veranderGeslacht = (e) => { this.setState({ geslacht: e.target.value }); }
+
+    veranderEmail = (e) => {
+        this.setState({ email: e.target.value }, this.toggleEmailBevestigd);
+    }
+
+    toggleEmailBevestigd = () => {
+        if (this.state.oldEmail != this.state.email) {
+            this.veranderIsEmailBevestigd(false);
+            this.setState({ twoFactorEnabled: false });
+            this.setState({ isEmailNieuw: true });
+        }
+        else {
+            if (this.state.oldIsEmailBevestigd) {
+                this.veranderIsEmailBevestigd(true);
+            }
+            if (this.state.oldTwoFactorEnabled) {
+                this.setState({ twoFactorEnabled: true });
+            }
+            this.setState({ isEmailNieuw: false });
+        }
+    }
+
+    veranderTwoFactorEnabled = (e) => {
+        if (this.state.isEmailBevestigd) {
+            this.setState({ twoFactorEnabled: true });
+            this.setState({ ShowTwoFactorModal: true });
+        }
+    }
+
+    veranderIsEmailBevestigd = (bool) => {
+        this.setState({ isEmailBevestigd: bool })
+        this.setState({ isTwoFactorBtnDisabled: !bool });
+        const twoFactorBtn = this.twoFactorBtn;
+
+        if (bool)
+            twoFactorBtn.current.style.opacity = 1;
+        else
+            twoFactorBtn.current.style.opacity = 0.5;
+
+    }
+
 
     controleerDatum = (datum) => {
         // controleer of datum in het juiste formaat is
@@ -157,8 +221,8 @@ export class AccountInstellingen extends Component {
                 telefoonnummer: this.state.telefoonnummer,
                 geboortedatum: this.state.geboortedatum,
                 emailvoorkeur: this.state.emailvoorkeur,
-                isEmailConfirmed: this.state.isEmailConfirmed,
-                TwoFactorEnabled: this.TwoFactorEnabled,
+                EmailConfirmed: this.state.isEmailBevestigd,
+                TwoFactorEnabled: this.state.twoFactorEnabled,
                 geslacht: this.state.geslacht
             })
         })
@@ -180,6 +244,10 @@ export class AccountInstellingen extends Component {
         if (res) {
             this.verversGegevens();
         }
+    }
+
+    set2FactorModal = (bool) => {
+        this.setState({ ShowTwoFactorModal: bool });
     }
 
     render() {
@@ -227,12 +295,12 @@ export class AccountInstellingen extends Component {
                     <div className='row mb-2'>
                         <div className='col-sm-4 mb-2'>
                             <div className='mb-2'>Is Emailadres bevestigd</div>
-                            <input onChange={this.veranderIsEmailConfirmed} id="is-email-bevestigd" className='form-control bg-dark' placeholder={this.state.isEmailConfirmed ? "bevestigd" : "niet bevestigd"} readOnly/>
+                            <input id="is-email-bevestigd" className='form-control bg-dark' placeholder={this.state.isEmailBevestigd ? "bevestigd" : "niet bevestigd"} readOnly={true} />
                         </div>
 
                         <div className='col-sm-3 mb-2'>
                             <div className='mb-2'>Bevestig uw Emailadres</div>
-                            <BevestigEmailModal username={this.state.username} isConfirmed={this.state.isEmailConfirmed}/>
+                            <BevestigEmailModal username={this.state.username} veranderEmailBevestigd={this.veranderIsEmailBevestigd} isEmailNieuw={this.state.isEmailNieuw} />
                         </div>
                     </div>
 
@@ -265,15 +333,21 @@ export class AccountInstellingen extends Component {
                             </div>
 
                             <div className='d-inline ms-3'>
-                                <button className='btn btn-light' onClick={this.veranderTwoFactorEnabled}>Schakel 2FA in</button>
+                                <button className='btn btn-light 2FA' onClick={this.veranderTwoFactorEnabled} style={{ opacity: 0.5 }} ref={this.twoFactorBtn} disabled={this.state.isTwoFactorBtnDisabled}>
+                                    Schakel 2FA in
+                                </button>
                             </div>
                         </div>
+
 
                         <div className='col-sm-12 mt-3'>
                             <div id="resultaat" className={`h6 mt-3 ${this.state.resultaat == '' ? `d-none` : ''} ${this.state.resultaatSuccess ? 'licht-groen' : 'licht-rood'}`}>
                                 {this.state.resultaat}
                             </div>
                         </div>
+
+                        <TwoFactorModal showModal={this.state.ShowTwoFactorModal} setShowModal={this.set2FactorModal} />
+
                     </div>
                 </div>
             </div>
