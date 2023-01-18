@@ -21,8 +21,8 @@ public class TicketVerkoopController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Create")]
-    public async Task<ActionResult> Create([FromBody] TicketCreatieJson ticketVerkoop)
+    [Route("MaakTicket")]
+    public async Task<ActionResult> MaakTicket([FromBody] TicketCreatieJson ticketVerkoop)
     {
         var optreden = await _context.Optredens
             .Include(o => o.Tickets)
@@ -72,6 +72,37 @@ public class TicketVerkoopController : ControllerBase
         return Ok(new {
             success = true,
             bericht = "Ticket is succesvol aangemaakt"
+        });
+    }
+
+    [HttpGet]
+    [Route("GetEigenTickets")]
+    [Authorize]
+    public async Task<ActionResult> GetEigenTickets()
+    {
+        var claimsIdentity = User.Identities.First();        
+        var userName = claimsIdentity.Name;
+        ApplicationUser? user = null;
+        if(userName != null){
+            user = await _userManager.FindByNameAsync(userName);
+        }
+
+        if (user == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Gebruiker niet gevonden"
+            });
+        }
+
+        var tickets = await _context.Tickets
+            .Include(t => t.Optreden)
+            .Include(t => t.Stoel)
+            .Where(t => t.UserId == user.Id)
+            .ToListAsync();
+
+        return Ok(new {
+            success = true,
+            data = tickets
         });
     }
 }

@@ -84,9 +84,6 @@ export function Zaal(props) {
                 <td className="ingeplandOptredens">
                     {list.optredens}
                 </td>
-                <td className='aantalStoelen'>
-                    {list.aantalStoelen}
-                </td>
             </tr>
         ));
     }
