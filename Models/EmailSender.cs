@@ -16,14 +16,14 @@ public class EmailSender
 
         var body = tekst;
         var email = new MimeMessage();
-        email.From.Add(MailboxAddress.Parse("theaterlaakamsterdam@gmail.com"));
+        email.From.Add(MailboxAddress.Parse("theaterlaakdenhaag@gmail.com"));
         email.To.Add(MailboxAddress.Parse(userEmail));
         email.Subject = "2-step tokenverificatie";
         email.Body = new TextPart(TextFormat.Plain) { Text = body };
     
         using var smtp = new SmtpClient();
         smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        smtp.Authenticate("theaterlaakamsterdam@gmail.com", "oflovxkjmnjmhlul");
+        smtp.Authenticate("theaterlaakdenhaag@gmail.com", "qkqzryjktzejppnq");
         smtp.Send(email);
         smtp.Disconnect(true);
     }
