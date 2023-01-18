@@ -43,6 +43,7 @@ const context =  [
   "/api/ticketverkoop/GetStoelen",
   "/api/ticketverkoop/GetEigenTickets",
   "/api/ticketverkoop/RondBestellingAf",
+  "/api/ticketverkoop/MaakTicketAan",
   "/api/Programmering/Voorstellingen",
   "/api/Programmering/Voorstelling",
   "/api/Programmering/Optredens",
