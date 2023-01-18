@@ -30,6 +30,10 @@ export function InfoTab(props) {
         }
     ];
 
+    let reference = optreden.datumTijdstip + '-' + optreden.optredenId+ '-' + optreden.zaalId + '-' + optreden.voorstellingId;
+
+    let totaalPrijs = optreden.prijs * props.gekozenStoelen.length;
+
     function einde(tijdStip, minuten) {
         let date = new Date(tijdStip);
         let temp = date.getTime() + minuten * 60000;
@@ -70,6 +74,33 @@ export function InfoTab(props) {
             });
     }, [props.optredenId]);
 
+    const body = new URLSearchParams();
+    body.append('amount', totaalPrijs);
+    body.append('reference', reference);
+    body.append('url', 'https://localhost:44461/programmering');
+
+    async function naarBetalen() {
+        let bestelling = {
+            amount: totaalPrijs,
+            reference: reference,
+            url: "https://localhost:44461/programmering"
+        };
+
+        fetch('https://fakepay.azurewebsites.net/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                //'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+            },
+            body: body
+        })
+        .then(r => r.json())
+        .then(d => {
+            console.log(d);
+        })
+        // console.log(bestelling)
+    }
+
     if (isLoading) {
         return <p>Loading...</p>;
     }
@@ -78,7 +109,7 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
-    console.log(props.gekozenStoelen);
+
 
     if (props.gekozenStoelen.length == 0) {
 
@@ -183,8 +214,8 @@ export function InfoTab(props) {
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
                         <div className='square rounded p-2' >
                         <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "300px"} }>TOTAAL </label>
-                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + optreden.prijs * props.gekozenStoelen.length}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button className='square rounded p-2 btn-danger'>NAAR BETALEN</button>
+                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button className='square rounded p-2 btn-danger' onClick={naarBetalen}>NAAR BETALEN</button>
                         <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem"}} />
                         </div>
                 </div>
