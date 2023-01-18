@@ -111,10 +111,10 @@ export function Optreden(props) {
                 id: getId
             })
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            });
+        .then(res => {
+            console.log(res);
+        });
+
         setText('Optreden met id: ' + getId + ' is bevestigd!');
     }
 
@@ -247,8 +247,8 @@ export function Optreden(props) {
     }
 
     if (props.getEntry == 'GetNBOptredens' && nietBevestigdeOptredens.length > 0) {
-        content = nietBevestigdeOptredens.map((list) => (
-            <tr>
+        content = nietBevestigdeOptredens.map((list, index) => (
+            <tr key={index}>
                 <td className="Id" onClick={() => setId(list.optredenId)}>
                     {list.optredenId}
                 </td>

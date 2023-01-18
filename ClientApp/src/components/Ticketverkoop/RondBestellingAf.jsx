@@ -17,7 +17,7 @@ export class RondBestellingAf extends Component {
         // get LastTicketReference from cookies
         const lastTicketReference = document.cookie.split(';').find(c => c.trim().startsWith('lastTicketReference=')).split('=')[1];
 
-        let res = await fetch('api/ticketverkoop/MaakTicket', {
+        let res = await fetch('api/TicketVerkoop/BevestigTicket', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

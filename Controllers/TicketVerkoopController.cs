@@ -33,9 +33,6 @@ public class TicketVerkoopController : ControllerBase
             };
         }
 
-        // get ticket with gegevens.reference
-        // set ticket.Betaald = true
-
         Response.Cookies.Append("LaatsteTicketReference", gegevens.reference);
 
         var html = "<a href='/rondbestellingaf'>Klik hier om de betaling af te ronden.</a>";
@@ -133,6 +130,31 @@ public class TicketVerkoopController : ControllerBase
             data = tickets
         });
     }
+
+    [HttpPost]
+    [Route("BevestigTicket")]
+    public async Task<ActionResult> BevestigTicket([FromBody] BevestigTicketJson gegevens)
+    {
+        var ticket = await _context.Tickets
+            .Include(t => t.Optreden)
+            .Include(t => t.Stoel)
+            .FirstOrDefaultAsync(t => t.TicketId == gegevens.reference);
+
+        if (ticket == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Ticket niet gevonden"
+            });
+        }
+
+        ticket.Betaald = true;
+        await _context.SaveChangesAsync();
+
+        return Ok(new {
+            success = true,
+            bericht = "Ticket is succesvol bevestigd"
+        });
+    }
 }
 
 public class TicketCreatieJson {
@@ -144,4 +166,8 @@ public class RondBestellingAfGegevensForm {
     public string account { get; set; }
     public Boolean success { get; set; }
     public string reference { get; set; }
+}
+
+public class BevestigTicketJson {
+    public int reference { get; set; }
 }

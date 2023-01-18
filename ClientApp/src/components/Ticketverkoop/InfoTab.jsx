@@ -9,6 +9,7 @@ export function InfoTab(props) {
 
     const BetalingKnopRef = useRef(null);
     const GaNaarBetaling = () => {
+        console.log(BetalingKnopRef)
         BetalingKnopRef.submit();
      }
 
@@ -85,7 +86,7 @@ export function InfoTab(props) {
     body.append('url', 'https://localhost:44461/programmering');
 
     async function MaakTicketAan() {
-        let res = await fetch('/api/ticketverkoop/MaakTicketAan', {
+        let res = await fetch('/api/TicketVerkoop/MaakTicket', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export function InfoTab(props) {
             },
             body: JSON.stringify({
                 optredenId: props.optredenId,
-                stoelId: props.gekozenStoelen[0],
+                stoelId: props.gekozenStoelen[0].stoelId,
             }),
         });
 
