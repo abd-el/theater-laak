@@ -165,9 +165,9 @@ export function InfoTab(props) {
                     <br />
                     <br />
                     {props.gekozenStoelen.map((stoel) => (
-                        <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{width: "3rem", fontSize: "9px"}}>{' Rang ' + stoel.rang}&nbsp;</text><br/></text>
+                        <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{'€ ' + optreden.prijs}&nbsp;</text><br /></text>
                     ))}
-                    <hr class="hr hr-blurry text-danger" />
+                    <hr class="hr hr-blurry" style={{ backgroundColor: "red" }} />
                     <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
                     &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
                     <div>
@@ -179,6 +179,14 @@ export function InfoTab(props) {
                         &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
                         <br />
                     </div>
+                </div>
+                <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
+                        <div className='square rounded p-2' >
+                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "300px"} }>TOTAAL </label>
+                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + optreden.prijs * props.gekozenStoelen.length}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button className='square rounded p-2 btn-danger'>NAAR BETALEN</button>
+                        <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem"}} />
+                        </div>
                 </div>
             </div>
         );

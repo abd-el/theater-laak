@@ -26,8 +26,14 @@ export function Ticketverkoop() {
                 stoelId: 2,
                 zaalId: 1,
                 rang: 2,
-                rij: 2
-            }
+                rij: 1
+            },
+            {
+                stoelId: 3,
+                zaalId: 1,
+                rang: 3,
+                rij: 1
+            },
             ]);
         }
         else {
