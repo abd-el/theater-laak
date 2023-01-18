@@ -11,8 +11,8 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230113002843_PasswordProperty")]
-    partial class PasswordProperty
+    [Migration("20230117182900_stoel-fix-final-11")]
+    partial class stoelfixfinal11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -353,9 +353,6 @@ namespace theater_laak.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -380,6 +377,12 @@ namespace theater_laak.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Voornaam")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("_2faExpDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("_2faToken")
                         .HasColumnType("TEXT");
 
                     b.Property<bool?>("lockout")
@@ -458,10 +461,7 @@ namespace theater_laak.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ArtiestId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ArtiestId1")
+                    b.Property<string>("ArtiestId")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ArtiestenGroepId")
@@ -470,7 +470,7 @@ namespace theater_laak.Data.Migrations
                     b.Property<bool>("BegunstigersExclusief")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Bevestigd")
+                    b.Property<bool?>("Bevestigd")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DatumTijdstip")
@@ -487,7 +487,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasKey("OptredenId");
 
-                    b.HasIndex("ArtiestId1");
+                    b.HasIndex("ArtiestId");
 
                     b.HasIndex("ArtiestenGroepId");
 
@@ -500,16 +500,20 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Stoel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("StoelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Rang")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rij")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ZaalId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("StoelId");
 
                     b.HasIndex("ZaalId");
 
@@ -518,7 +522,7 @@ namespace theater_laak.Data.Migrations
 
             modelBuilder.Entity("theater_laak.Models.Ticket", b =>
                 {
-                    b.Property<int>("TicketID")
+                    b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -529,20 +533,19 @@ namespace theater_laak.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("StoelId")
-                        .IsRequired()
+                    b.Property<int>("StoelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TicketID");
+                    b.HasKey("TicketId");
 
                     b.HasIndex("OptredenId");
 
                     b.HasIndex("StoelId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets", (string)null);
                 });
@@ -596,9 +599,6 @@ namespace theater_laak.Data.Migrations
             modelBuilder.Entity("theater_laak.Models.Artiest", b =>
                 {
                     b.HasBaseType("theater_laak.Models.ApplicationUser");
-
-                    b.Property<int>("ArtiestId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("ArtiestenGroepId")
                         .HasColumnType("INTEGER");
@@ -699,7 +699,6 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Donaties")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Donatie_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -708,12 +707,14 @@ namespace theater_laak.Data.Migrations
             modelBuilder.Entity("theater_laak.Models.Optreden", b =>
                 {
                     b.HasOne("theater_laak.Models.Artiest", "Artiest")
-                        .WithMany()
-                        .HasForeignKey("ArtiestId1");
+                        .WithMany("Optredens")
+                        .HasForeignKey("ArtiestId")
+                        .HasConstraintName("FK_Optreden_Artiest_2");
 
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
-                        .WithMany()
-                        .HasForeignKey("ArtiestenGroepId");
+                        .WithMany("Optredens")
+                        .HasForeignKey("ArtiestenGroepId")
+                        .HasConstraintName("FK_Optreden_Artiestengroep_2");
 
                     b.HasOne("theater_laak.Models.Voorstelling", "Voorstelling")
                         .WithMany("Optredens")
@@ -768,8 +769,7 @@ namespace theater_laak.Data.Migrations
 
                     b.HasOne("theater_laak.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Tickets")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UserId")
                         .HasConstraintName("FK_Ticket_ApplicationUser_2");
 
                     b.Navigation("ApplicationUser");
@@ -784,7 +784,6 @@ namespace theater_laak.Data.Migrations
                     b.HasOne("theater_laak.Models.ArtiestenGroep", "ArtiestenGroep")
                         .WithMany("Artiesten")
                         .HasForeignKey("ArtiestenGroepId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Artiest_ArtiestenGroep_2");
 
                     b.Navigation("ArtiestenGroep");
@@ -800,6 +799,8 @@ namespace theater_laak.Data.Migrations
             modelBuilder.Entity("theater_laak.Models.ArtiestenGroep", b =>
                 {
                     b.Navigation("Artiesten");
+
+                    b.Navigation("Optredens");
                 });
 
             modelBuilder.Entity("theater_laak.Models.Optreden", b =>
@@ -822,6 +823,11 @@ namespace theater_laak.Data.Migrations
                     b.Navigation("Optredens");
 
                     b.Navigation("Stoelen");
+                });
+
+            modelBuilder.Entity("theater_laak.Models.Artiest", b =>
+                {
+                    b.Navigation("Optredens");
                 });
 #pragma warning restore 612, 618
         }

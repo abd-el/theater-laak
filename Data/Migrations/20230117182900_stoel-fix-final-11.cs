@@ -4,7 +4,7 @@
 
 namespace theater_laak.Data.Migrations
 {
-    public partial class artiestenportaal21 : Migration
+    public partial class stoelfixfinal11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

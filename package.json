@@ -6,6 +6,7 @@
     "react-countdown": "^2.3.5",
     "react-google-recaptcha": "^2.1.0",
     "react-slick": "^0.29.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "proxy": "https://localhost:44461"
   }
 }

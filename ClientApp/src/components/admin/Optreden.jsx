@@ -16,7 +16,6 @@ export function Optreden(props) {
     const [prijs, setPrijs] = useState('');
     const [datum, setDatum] = useState('');
     const [beginTijd, setBTijd] = useState('');
-    const [eindTijd, setETijd] = useState('');
     const [getId, setId] = useState(0);
     const [getText, setText] = useState('');
 
@@ -39,10 +38,6 @@ export function Optreden(props) {
 
     function beginTijdHandler(e) {
         setBTijd(e.target.value);
-    }
-
-    function eindTijdHandler(e) {
-        setETijd(e.target.value);
     }
 
     const getBevestigdeOptredens = useCallback(async function () {
@@ -144,7 +139,6 @@ export function Optreden(props) {
             //prijs: prijs, //moet toegevoegd worden
             datum: datum,
             tijdstip: beginTijd,
-            eindTijdstip: eindTijd,
             voorstellingId: voorstellingId,
             groep: 1,
             zaalId: zaalId,
@@ -354,7 +348,7 @@ export function Optreden(props) {
                     <input placeholder='Datum' type='date' value={datum} onChange={datumHandler} required />
                     <br />
                     <br />
-                    <input placeholder='Begin' type='time' value={beginTijd} onChange={beginTijdHandler} required /> <input placeholder='Eind' type='time' value={eindTijd} onChange={eindTijdHandler} required />
+                    {/* <input placeholder='Begin' type='time' value={beginTijd} onChange={beginTijdHandler} required /> <input placeholder='Eind' type='time' value={eindTijd} onChange={eindTijdHandler} required /> */}
                     <br />
                     <br />
                     {/* <label>Begunstigers Exclusief</label>&nbsp; */}
