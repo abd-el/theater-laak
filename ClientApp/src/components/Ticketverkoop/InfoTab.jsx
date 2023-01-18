@@ -39,7 +39,7 @@ export function InfoTab(props) {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`/api/Optreden/GetOptreden?optredenId=${props.optredenId}`)
+        fetch(`/api/optreden/GetOptreden?optredenId=${props.optredenId}`)
             .then(response => response.json())
             .then(data => {
                 setData(data);
@@ -79,16 +79,26 @@ export function InfoTab(props) {
             <br />
             <br />
             <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <div className="square bg-dark rounded position-relative start-50 translate-middle w-25 p-3">
-                <img className='rounded' src={optreden.voorstelling.afbeelding} height='145' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
+                <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
+                &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
                 <div>
                     <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
+                    &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
                     <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
+                    &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
                     <br />
-                    <strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                    &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                    <br />              
                 </div>
             </div>
         </div>
