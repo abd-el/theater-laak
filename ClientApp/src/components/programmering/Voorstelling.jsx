@@ -32,29 +32,29 @@ export function Voorstelling(props) {
 
     return (
         <tr key={props.array.volgordeId}>
-            <td className="afbeelding"><img src={props.array.voorstelling[props.array.voorstellingId - 1].afbeelding}
+            <td className="afbeelding"><img className='rounded shadow' src={props.array.voorstelling[props.array.voorstellingId - 1].afbeelding}
                 alt='voorstellingsafbeelding'
                 width='150'
                 height='200'
             />
             </td>
-            <td className="titel">
+            <td className="titel fw-bold" style={{ } }>
                 {props.array.voorstelling[props.array.voorstellingId - 1].titel}
             </td>
-            <td className="dag-datum">
+            <td className="dag-datum fs-6 ">
                 {weekdays[new Date(props.array.datumTijdstip.split('T')[0]).getDay()]}
                 <br />
                 {new Date(props.array.datumTijdstip.split('T')[0]).getDate()}&nbsp;
                 {months[new Date(props.array.datumTijdstip.split('T')[0]).getMonth()]}
             </td>
-            <td className='zaalId'>
+            <td className='zaalId fs-6 fw-bold'>
                 {props.array.zaalId}
             </td>
             <td className="tijdstip">
-                {new Date() > new Date(props.array.datumTijdstip) && <button className="btn btn-dark" title='Ticketverkoop is gesloten' disabled>
+                {new Date() > new Date(props.array.datumTijdstip) && <button className="btn btn-dark fs-5" title='Ticketverkoop is gesloten' disabled>
                     Ticketverkoop gesloten
                 </button>}
-                {new Date() < new Date(props.array.datumTijdstip) && <a href={`/ticketverkoop?optredenId=${props.array.optredenId}`} className="btn btn-danger" title='Tickets'>
+                {new Date() < new Date(props.array.datumTijdstip) && <a href={`/ticketverkoop?optredenId=${props.array.optredenId}`} className="btn btn-danger fs-5 shadow" title='Tickets'>
                     {props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}
                 </a>}
             </td>
