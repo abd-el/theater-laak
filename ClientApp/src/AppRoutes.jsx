@@ -13,6 +13,7 @@ import { AccountInstellingen } from './components/accountinstellingen/AccountIns
 import { Geautoriseerd } from './components/doneer/Geautoriseerd';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { Ticketverkoop } from './components/Ticketverkoop/Ticketverkoop';
+import { Reservering } from './components/Ticketverkoop/Reservering/Reservering'
 
 const AppRoutes = [
   {
@@ -30,6 +31,10 @@ const AppRoutes = [
   {
     path: '/programmering',
     element: <Programmering />
+  },
+  {
+    path: '/reservering',
+    element: <Reservering />
   },
   {
     path: '/ticketverkoop',
