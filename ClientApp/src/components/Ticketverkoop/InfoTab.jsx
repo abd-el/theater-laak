@@ -5,15 +5,19 @@ export function InfoTab(props) {
     const [optreden, setOptreden] = useState([]);
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [opgeslagenRef, setRef] = useState('');
+    const [opgeslagenRef, setRef] = useState(0);
     const [totalePrijs, setTotalePrijs] = useState('');
+    const [ticketId, setId] = useState('onbekend');
     //const [voorstelling, setVoorstellingen] = useState([]);
 
+    let form = '';
+
     const BetalingKnopRef = useRef(null);
-    const GaNaarBetaling = () => {
-        console.log(BetalingKnopRef)
+    function GaNaarBetaling() {
         BetalingKnopRef.current.submit();
     }
+
+
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
@@ -46,17 +50,17 @@ export function InfoTab(props) {
     }
 
     function prijsBerekenen() {
-        let getal = 0; 
-        for(let i = 0; i< props.gekozenStoelen.length; i++){
-            if(props.gekozenStoelen[i].rang == 1){
+        let getal = 0;
+        for (let i = 0; i < props.gekozenStoelen.length; i++) {
+            if (props.gekozenStoelen[i].rang == 1) {
                 getal += 10;
             }
 
-            if(props.gekozenStoelen[i].rang == 2){
-                getal +=5;
+            if (props.gekozenStoelen[i].rang == 2) {
+                getal += 5;
             }
 
-            if(props.gekozenStoelen[i].rang == 3){
+            if (props.gekozenStoelen[i].rang == 3) {
                 getal += 1.50;
             }
         }
@@ -76,13 +80,9 @@ export function InfoTab(props) {
             });
     }, [props.optredenId, props.gekozenStoelen]);
 
-    // const body = new URLSearchParams();
-    // body.append('amount', totaalPrijs);
-    // body.append('reference', reference);
-    // body.append('url', 'https://localhost:44461/programmering');
-
     async function MaakTicketAan() {
-        let res = await fetch('/api/TicketVerkoop/MaakTicket', {
+        let id = 'onbekend';
+        await fetch('/api/TicketVerkoop/MaakTicket', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,17 +91,29 @@ export function InfoTab(props) {
             body: JSON.stringify({
                 optredenId: props.optredenId,
                 stoelId: props.gekozenStoelen[0].stoelId,
-            }),
-        });
-
-        if (res && res.success && res.ticketId) {
-            console.log(`reference = ${res.ticketId}`);
-            setRef(res.ticketId);
-            // yuriy sla deze reference ergens op a.u.b
-        }
-
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success)
+                    //setRef(data.id);
+                    //setId(data.id);
+                    id = data.id;
+            })
+        form = <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
+            <input name="amount" value={totalePrijs} className="d-none" />
+            <input name="reference" value={id} className="d-none" />
+            <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
+            <input id="naarBetaling" type="submit" value="Betaling" />
+        </form>
         GaNaarBetaling();
     }
+
+    // useEffect(() => {
+    //     if (opgeslagenRef == ticketId) {
+    //         BetalingKnopRef.current.submit();
+    //     }
+    // }, [opgeslagenRef, ticketId]);
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -111,7 +123,7 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
-    
+
 
 
     if (props.gekozenStoelen.length == 0) {
@@ -219,10 +231,10 @@ export function InfoTab(props) {
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={MaakTicketAan}>Betalen</button>
-
+                        {form}
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />
-                            <input name="reference" value='abc123' className="d-none" />
+                            <input name="reference" value={35} className="d-none" />
                             <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
                             <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
