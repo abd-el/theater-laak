@@ -18,19 +18,19 @@ export function Ticketverkoop() {
             setClick(true);
             setStoelen([{
                 stoelId: 1,
-                zaalId: 1,
+                zaalId: 3,
                 rang: 1,
                 rij: 1
             },
             {
                 stoelId: 2,
-                zaalId: 1,
+                zaalId: 3,
                 rang: 2,
                 rij: 1
             },
             {
                 stoelId: 3,
-                zaalId: 1,
+                zaalId: 3,
                 rang: 3,
                 rij: 1
             },
