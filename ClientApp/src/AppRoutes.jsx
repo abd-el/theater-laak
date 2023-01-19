@@ -14,6 +14,7 @@ import { Geautoriseerd } from './components/doneer/Geautoriseerd';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { Ticketverkoop } from './components/Ticketverkoop/Ticketverkoop';
 import { RondBestellingAf } from './components/Ticketverkoop/RondBestellingAf';
+import { Reservering } from './components/Ticketverkoop/Reservering/Reservering'
 
 const AppRoutes = [
   {
