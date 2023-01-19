@@ -5,40 +5,24 @@ export function InfoTab(props) {
     const [optreden, setOptreden] = useState([]);
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [opgeslagenRef, setRef] = useState(0);
+    const [totalePrijs, setTotalePrijs] = useState('');
+    const [ticketId, setId] = useState('onbekend');
     //const [voorstelling, setVoorstellingen] = useState([]);
 
+    let form = '';
+
     const BetalingKnopRef = useRef(null);
-    const GaNaarBetaling = () => {
-        console.log(BetalingKnopRef)
-        BetalingKnopRef.submit();
-     }
+    function GaNaarBetaling() {
+        BetalingKnopRef.current.submit();
+    }
+
+
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
-    const stoelen = [
-        {
-            stoelId: 1,
-            zaalId: optreden.zaalId,
-            rang: 1,
-            rij: 1
-        },
-        {
-            stoelId: 2,
-            zaalId: optreden.zaalId,
-            rang: 2,
-            rij: 2
-        },
-        {
-            stoelId: 3,
-            zaalId: optreden.zaalId,
-            rang: 3,
-            rij: 3
-        }
-    ];
 
     let reference = optreden.datumTijdstip + '-' + optreden.optredenId + '-' + optreden.zaalId + '-' + optreden.voorstellingId;
-
-    let totaalPrijs = optreden.prijs * props.gekozenStoelen.length;
 
     function einde(tijdStip, minuten) {
         let date = new Date(tijdStip);
@@ -65,7 +49,23 @@ export function InfoTab(props) {
         return date;
     }
 
-    let content = 'test';
+    function prijsBerekenen() {
+        let getal = 0;
+        for (let i = 0; i < props.gekozenStoelen.length; i++) {
+            if (props.gekozenStoelen[i].rang == 1) {
+                getal += 10;
+            }
+
+            if (props.gekozenStoelen[i].rang == 2) {
+                getal += 5;
+            }
+
+            if (props.gekozenStoelen[i].rang == 3) {
+                getal += 1.50;
+            }
+        }
+        setTotalePrijs((optreden.prijs * props.gekozenStoelen.length) + getal);
+    }
 
     useEffect(() => {
         setIsLoading(true);
@@ -76,17 +76,13 @@ export function InfoTab(props) {
                 setIsLoading(false);
                 console.log(data);
                 setOptreden(data);
-
+                prijsBerekenen();
             });
-    }, [props.optredenId]);
-
-    const body = new URLSearchParams();
-    body.append('amount', totaalPrijs);
-    body.append('reference', reference);
-    body.append('url', 'https://localhost:44461/programmering');
+    }, [props.optredenId, props.gekozenStoelen]);
 
     async function MaakTicketAan() {
-        let res = await fetch('/api/TicketVerkoop/MaakTicket', {
+        let id = 'onbekend';
+        await fetch('/api/TicketVerkoop/MaakTicket', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,17 +91,29 @@ export function InfoTab(props) {
             body: JSON.stringify({
                 optredenId: props.optredenId,
                 stoelId: props.gekozenStoelen[0].stoelId,
-            }),
-        });
-
-        if (res && res.success && res.ticketId) {
-            console.log(`reference = ${res.ticketId}`);
-
-            // yuriy sla deze reference ergens op a.u.b
-        }
-
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success)
+                    //setRef(data.id);
+                    //setId(data.id);
+                    id = data.id;
+            })
+        form = <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
+            <input name="amount" value={totalePrijs} className="d-none" />
+            <input name="reference" value={id} className="d-none" />
+            <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
+            <input id="naarBetaling" type="submit" value="Betaling" />
+        </form>
         GaNaarBetaling();
     }
+
+    // useEffect(() => {
+    //     if (opgeslagenRef == ticketId) {
+    //         BetalingKnopRef.current.submit();
+    //     }
+    // }, [opgeslagenRef, ticketId]);
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -114,6 +122,7 @@ export function InfoTab(props) {
     if (optreden.voorstelling == undefined) {
         return <p>Geen data ontvangen.</p>;
     }
+
 
 
 
@@ -202,7 +211,7 @@ export function InfoTab(props) {
                     <br />
                     <br />
                     {props.gekozenStoelen.map((stoel) => (
-                        <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{'€ ' + optreden.prijs}&nbsp;</text><br /></text>
+                        <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{stoel.rang == 1 ? `€ ${optreden.prijs + 10}` : stoel.rang == 2 ? `€ ${optreden.prijs + 5}` : `€ ${optreden.prijs + 1.50}`}&nbsp;</text><br /></text>
                     ))}
                     <hr className="hr hr-blurry" style={{ backgroundColor: "red" }} />
                     <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
@@ -220,14 +229,14 @@ export function InfoTab(props) {
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
                     <div className='square rounded p-2' >
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
-                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={MaakTicketAan}>Betalen</button>
-                        
-                        <form className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
-                            <input name="amount" value={10} className="d-none" />
-                            <input name="reference" value="abc" className="d-none" />
-                            <input name="url" value="https://localhost:44461/Programmering" className="d-none" />
-                            <input id="naarBetaling" type="submit" value="Betaling"/>
+                        {form}
+                        <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
+                            <input name="amount" value={totalePrijs} className="d-none" />
+                            <input name="reference" value={35} className="d-none" />
+                            <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
+                            <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
                         <hr className="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem" }} />
                     </div>
