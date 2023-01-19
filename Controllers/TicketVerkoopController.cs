@@ -22,7 +22,7 @@ public class TicketVerkoopController : ControllerBase
 
     [HttpPost]
     [Route("RondBestellingAf")]
-    public ActionResult RondBestellingAf([FromForm] RondBestellingAfGegevensForm gegevens)
+    public async Task<ActionResult> RondBestellingAf([FromForm] RondBestellingAfGegevensForm gegevens)
     {
         if (!gegevens.succes) {
             var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
@@ -33,7 +33,38 @@ public class TicketVerkoopController : ControllerBase
             };
         }
 
-        Response.Cookies.Append("LaatsteTicketReference", gegevens.reference);
+        int ticketId;
+
+        bool isParsable = Int32.TryParse(gegevens.reference, out ticketId);
+
+        if (isParsable) {
+            Console.WriteLine(ticketId);
+        } else {
+            Console.WriteLine("Could not be parsed.");
+        }
+
+        var ticket = _context.Tickets.FirstOrDefault(t => t.TicketId == ticketId);
+
+        if (ticket == null) {
+            var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
+
+            return new ContentResult {
+                Content = fouteHtml,
+                ContentType = "text/html"
+            };
+        }
+
+        if (ticket.Betaald) {
+            var fouteHtml = "<a href='/'>Betaling al gedaan. Klik hier om terug te gaan naar home.</a>";
+
+            return new ContentResult {
+                Content = fouteHtml,
+                ContentType = "text/html"
+            };
+        }
+
+        ticket.Betaald = true;
+        await _context.SaveChangesAsync();
 
         var html = "<a href='/rondbestellingaf'>Klik hier om de betaling af te ronden.</a>";
         
