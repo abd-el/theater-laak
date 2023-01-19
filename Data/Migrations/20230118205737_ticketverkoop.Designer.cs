@@ -11,8 +11,8 @@ using theater_laak.Data;
 namespace theater_laak.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230118160642_zaal")]
-    partial class zaal
+    [Migration("20230118205737_ticketverkoop")]
+    partial class ticketverkoop
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -524,6 +524,12 @@ namespace theater_laak.Data.Migrations
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AangemaaktOp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Betaald")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("OptredenId")

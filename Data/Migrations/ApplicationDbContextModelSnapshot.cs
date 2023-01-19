@@ -524,6 +524,12 @@ namespace theater_laak.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("AangemaaktOp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Betaald")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("OptredenId")
                         .HasColumnType("INTEGER");
 

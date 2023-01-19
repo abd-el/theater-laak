@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 export function InfoTab(props) {
 
     const [error, setError] = useState(null);
@@ -6,6 +6,12 @@ export function InfoTab(props) {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     //const [voorstelling, setVoorstellingen] = useState([]);
+
+    const BetalingKnopRef = useRef(null);
+    const GaNaarBetaling = () => {
+        console.log(BetalingKnopRef)
+        BetalingKnopRef.submit();
+     }
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
@@ -30,7 +36,7 @@ export function InfoTab(props) {
         }
     ];
 
-    let reference = optreden.datumTijdstip + '-' + optreden.optredenId+ '-' + optreden.zaalId + '-' + optreden.voorstellingId;
+    let reference = optreden.datumTijdstip + '-' + optreden.optredenId + '-' + optreden.zaalId + '-' + optreden.voorstellingId;
 
     let totaalPrijs = optreden.prijs * props.gekozenStoelen.length;
 
@@ -79,26 +85,26 @@ export function InfoTab(props) {
     body.append('reference', reference);
     body.append('url', 'https://localhost:44461/programmering');
 
-    async function naarBetalen() {
-        let bestelling = {
-            amount: totaalPrijs,
-            reference: reference,
-            url: "https://localhost:44461/programmering"
-        };
-
-        fetch('https://fakepay.azurewebsites.net/', {
+    async function MaakTicketAan() {
+        let res = await fetch('/api/TicketVerkoop/MaakTicket', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                //'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState')).token
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState'))?.token
             },
-            body: body
-        })
-        .then(r => r.json())
-        .then(d => {
-            console.log(d);
-        })
-        // console.log(bestelling)
+            body: JSON.stringify({
+                optredenId: props.optredenId,
+                stoelId: props.gekozenStoelen[0].stoelId,
+            }),
+        });
+
+        if (res && res.success && res.ticketId) {
+            console.log(`reference = ${res.ticketId}`);
+
+            // yuriy sla deze reference ergens op a.u.b
+        }
+
+        GaNaarBetaling();
     }
 
     if (isLoading) {
@@ -198,7 +204,7 @@ export function InfoTab(props) {
                     {props.gekozenStoelen.map((stoel) => (
                         <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{'€ ' + optreden.prijs}&nbsp;</text><br /></text>
                     ))}
-                    <hr class="hr hr-blurry" style={{ backgroundColor: "red" }} />
+                    <hr className="hr hr-blurry" style={{ backgroundColor: "red" }} />
                     <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
                     &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
                     <div>
@@ -212,12 +218,19 @@ export function InfoTab(props) {
                     </div>
                 </div>
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
-                        <div className='square rounded p-2' >
-                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "300px"} }>TOTAAL </label>
-                        <label className='fs-5 fw-bold p-2' style={{  blockSize: "3rem", width: "145px", textAlign: "right"} }>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button className='square rounded p-2 btn-danger' onClick={naarBetalen}>NAAR BETALEN</button>
-                        <hr class="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem"}} />
-                        </div>
+                    <div className='square rounded p-2' >
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totaalPrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button className='square rounded p-2 btn-danger' onClick={MaakTicketAan}>Betalen</button>
+                        
+                        <form className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
+                            <input name="amount" value={10} className="d-none" />
+                            <input name="reference" value="abc" className="d-none" />
+                            <input name="url" value="https://localhost:44461/Programmering" className="d-none" />
+                            <input id="naarBetaling" type="submit" value="Betaling"/>
+                        </form>
+                        <hr className="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem" }} />
+                    </div>
                 </div>
             </div>
         );
