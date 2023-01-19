@@ -24,7 +24,7 @@ public class TicketVerkoopController : ControllerBase
     [Route("RondBestellingAf")]
     public ActionResult RondBestellingAf([FromForm] RondBestellingAfGegevensForm gegevens)
     {
-        if (!gegevens.success) {
+        if (!gegevens.succes) {
             var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
 
             return new ContentResult {
@@ -171,7 +171,7 @@ public class TicketCreatieJson {
 
 public class RondBestellingAfGegevensForm {
     public string account { get; set; }
-    public Boolean success { get; set; }
+    public Boolean succes { get; set; }
     public string reference { get; set; }
 }
 
