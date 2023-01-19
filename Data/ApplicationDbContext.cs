@@ -143,7 +143,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
         builder.Entity<Ticket>()
         .Property(ticket => ticket.QR)
-        .IsRequired();
+        .IsRequired(false);
 
 
         // Class Donatie

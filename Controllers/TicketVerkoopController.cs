@@ -69,6 +69,13 @@ public class TicketVerkoopController : ControllerBase
             });
         }
 
+        if (stoel.ZaalId != optreden.ZaalId) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Stoel zit niet in dezelfde zaal als het optreden"
+            });
+        }
+
         if (!stoel.IsBeschikbaar(optreden.OptredenId)) {
             return StatusCode(400, new {
                 success = false,
