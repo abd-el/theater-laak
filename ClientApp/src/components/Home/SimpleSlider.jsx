@@ -79,12 +79,6 @@ export function SimpleSlider() {
       console.log(voorstellingen[3].afbeelding);
     }
   }, [voorstellingen]);
-
-  //const Movies = [{obj : 0},{obj : 1},{obj : 2}];
-  //Movies[];
-  //<Card {...Movies[0]}/>
-  //<Card {...Movies[1]}/>
-  //<Card {...Movies[2]}/>
   
 
   return (

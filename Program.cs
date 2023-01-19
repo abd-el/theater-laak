@@ -89,7 +89,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Theater API",
-        Description = "An ASP.NET Core Web API for managing Theater endpoints",
+        Description = "An ASP.NET Core Web API for managing items",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
