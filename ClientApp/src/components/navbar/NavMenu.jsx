@@ -23,7 +23,8 @@ export class NavMenu extends Component {
       "/doneer": "doneer",
       "/programmering": "programmering",
       "/artiestenportaal": "artiestenportaal",
-      "/accountinstellingen": "instellingen"
+      "/accountinstellingen": "instellingen",
+      "/dashboard": "dashboard",
     }
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -92,7 +93,7 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer" == this.state.geselecteerd} text="Doneer" to="/doneer" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering" == this.state.geselecteerd} text="Programmering" to="/programmering" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"Dashboard" == this.state.geselecteerd} text="Dashboard" to="/Dashboard" hidden={!this.state.ingelogd} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"dashboard" == this.state.geselecteerd} text="Dashboard" to="/dashboard" hidden={!this.state.ingelogd} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
               {this.ExpirationModal()}
               {this.loginMenu()}

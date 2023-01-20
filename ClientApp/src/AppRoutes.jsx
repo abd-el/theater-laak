@@ -66,7 +66,7 @@ const AppRoutes = [
     element: <RondBestellingAf />
   },
   {
-    path: '/Dashboard',
+    path: '/dashboard',
     element: <RequireAuth AllowedRoles={['Admin', 'Medewerker']}><AdminPanel /></RequireAuth>
   },
   ...ApiAuthorzationRoutes
