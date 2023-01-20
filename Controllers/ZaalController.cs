@@ -68,7 +68,7 @@ public class ZaalController : ControllerBase {
             .FirstOrDefaultAsync(z => z.ZaalId == gegevens.zaalId);
 
         if (zaal == null) {
-            return NotFound(new {
+            return StatusCode(400, new {
                 success = false,
                 bericht = "Zaal niet gevonden"
             });
@@ -79,6 +79,27 @@ public class ZaalController : ControllerBase {
         return Ok(new {
             success = true,
             bericht = "Zaal verwijderd"
+        });
+    }
+
+    [HttpGet]
+    [Route("GetZaal")]
+    public async Task<ActionResult> GetZaal([FromQuery] ZaalGegevensQuery gegevens){
+        var zaal = await _context.Zalen
+            .Include(z => z.Stoelen)
+            .FirstOrDefaultAsync(z => z.ZaalId == gegevens.zaalId);
+
+        if (zaal == null) {
+            return StatusCode(400, new {
+                success = false,
+                bericht = "Zaal niet gevonden"
+            });
+        }
+
+        return Ok(new {
+            success = true,
+            bericht = "Zaal gevonden",
+            zaal
         });
     }
 }
@@ -93,5 +114,9 @@ public class ZaalCreatieJson {
 }
 
 public class ZaalGegevensJson {
+    public int zaalId { get; set; }
+}
+
+public class ZaalGegevensQuery {
     public int zaalId { get; set; }
 }
