@@ -33,6 +33,11 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+          
+      - name: npm test:ci
+        run: npm run test:ci
+        env:
+           CI: false
 
   deploy:
     runs-on: windows-latest
@@ -41,7 +46,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
+    steps:   
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
