@@ -269,8 +269,8 @@ export function Optreden(props) {
                 }
                 {getId == list.optredenId &&
                     <td onClick={() => setId(list.optredenId)}>
-                        <button className='h6 mt-3 p-1 btn-success' onClick={bevestigBoeking} >Bevestigen</button>&nbsp;
-                        <button className='h6 mt-3 p-1 btn-danger' onClick={verwijderBoeking} >Verwijderen</button>
+                        <button className='btn h6 mt-3 p-1 btn-success' onClick={bevestigBoeking} >Bevestigen</button>&nbsp;
+                        <button className='btn h6 mt-3 p-1 btn-danger' onClick={verwijderBoeking} >Verwijderen</button>
                     </td>
                 }
             </tr>

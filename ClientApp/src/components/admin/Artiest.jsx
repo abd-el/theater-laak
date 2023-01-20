@@ -198,39 +198,77 @@ export function Artiest(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label>Artiest account aanmaken</label>
+                    <label className='fs-5 fw-bold text-info'>Groep account aanmaken</label>
                     <br />
                     <br />
-                    <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
-                    <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                    <label>Voornaam</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Voornaam*' value={voornaam} onChange={voornaamHandler} />
                     <br />
                     <br />
-                    <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
-                    <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                    <label>Achternaam*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Achternaam*' value={achternaam} onChange={achternaamHandler} />
                     <br />
                     <br />
-                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} />
+                    <label>Gebruikersnaam*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Gebruikersnaam*' value={username} onChange={usernameHandler} />
                     <br />
                     <br />
-                    <input placeholder='Email' value={email} onChange={emailHandler} required />
+                    <label>Wachtwoord*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Wachtwoord*' value={password} onChange={passwordHandler} />
                     <br />
                     <br />
-                    <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} />
+                    <label>Geslacht*</label>
+                    <br />
+                    <div className='btn-group'>
+                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
+                            <option id="groep-invoer" onClick={() => setGeslacht('Man')}>Man</option>
+                            <option id="groep-invoer" onClick={() => setGeslacht('Vrouw')}>Vrouw</option>
+                            <option id="groep-invoer" onClick={() => setGeslacht('Anders')}>Anders</option>
+                        </select>
+                    </div>
                     <br />
                     <br />
-                    <input placeholder='Adres' value={adres} onChange={adresHandler} />
+                    <label>Email*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Email*' type='email' value={email} onChange={emailHandler} />
                     <br />
                     <br />
-                    <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                    <label>Geboortedatum*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' type='date' placeholder='geboortedatum' max={'2005-01-20'} value={geboorteDatum} onChange={geboorteDHandler} />
                     <br />
                     <br />
-                    <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                    <label>Adres*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Adres' value={adres} onChange={adresHandler} />
                     <br />
                     <br />
-                    <input placeholder='GroepId' value={artiestenGroepId} onChange={artiestenGroepHandler}/>
+                    <label>Telelefoonnummer*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler} />
                     <br />
                     <br />
-                    <button onClick={voegArtiest}>Aanmaken</button>
+                    <label>Nieuwsbrief*</label>
+                    <br />
+                    <div className='btn-group'>
+                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
+                            <option id="groep-invoer" onClick={() => setemailVoorkeur('geen')}>Geen</option>
+                            <option id="groep-invoer" onClick={() => setemailVoorkeur('nieuws')}>Nieuws</option>
+                            <option id="groep-invoer" onClick={() => setemailVoorkeur('belangrijk')}>Belangrijk</option>
+                        </select>
+                    </div>
+                    <br />
+                    <br />
+                    <label>GroepId</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' type='input' value={artiestenGroepId} onChange={artiestenGroepHandler} />
+                    <br />
+                    <br />
+                    <button className='btn btn-secondary ' onClick={voegArtiest}>Aanmaken</button>
                 </form>
             </div>
         );

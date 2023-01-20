@@ -145,25 +145,33 @@ export function Voorstelling(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label>Voorstelling toevoegen</label>
+                    <label className='fs-5 fw-bold text-info'>Voorstelling toevoegen</label>
                     <br />
                     <br />
-                    <input placeholder='Titel' value={titel} onChange={titelHandler} required />
+                    <label>Titel*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark'  value={titel} onChange={titelHandler} required />
                     <br />
                     <br />
-                    <input placeholder='Beschrijving' value={beschrijving} onChange={beschrijvingHandler} required />
+                    <label>Beschrijving*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark'  value={beschrijving} onChange={beschrijvingHandler} required />
                     <br />
                     <br />
-                    <input placeholder='Tijdsduur (minuten)' type='number' min={1} value={tijdsduur} onChange={tijdsduurHandler} required />
+                    <label>Tijdsduur (minuten)*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' type='number' min={1} value={tijdsduur} onChange={tijdsduurHandler} required />
                     <br />
                     <br />
-                    <input placeholder='Afbeelding url' type='url' value={afbeelding} onChange={afbeeldingHandler} required />
+                    <label>Afbeelding url*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' type='url' value={afbeelding} onChange={afbeeldingHandler} required />
                     <br />
                     <br />
-                    <img src={afbeelding} alt='afbeelding voorbeeld' height={150} width={100} />
+                    <img className='rounded shadow' src={afbeelding} alt='afbeelding voorbeeld' height={150} width={100} />
                     <br />
                     <br />
-                    <button onClick={voegVoorstelling}>Aanmaken</button>
+                    <button className='btn btn-secondary' onClick={voegVoorstelling}>Aanmaken</button>
                 </form>
             </div>
         );

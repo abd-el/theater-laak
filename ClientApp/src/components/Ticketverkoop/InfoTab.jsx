@@ -12,6 +12,26 @@ export function InfoTab(props) {
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
 
+    let today = new Date();
+    let min = today.getMinutes();
+    let hours = today.getHours();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+
+    if (min < 10) {
+        min = '0' + min;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd + 'T' + hours + ':' + min;
+
     function einde(tijdStip, minuten) {
         let date = new Date(tijdStip);
         let temp = date.getTime() + minuten * 60000;
@@ -104,8 +124,16 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
-
-
+    if(optreden.datumTijdstip < today){
+        return(
+            <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
+                <label> Helaas is de ticketverkoop voor de gekozen optreden gesloten. </label>
+                <br />
+                <br/>
+                <a className=' btn btn-secondary' href='/programmering'>Terug naar Programmering</a>
+            </div>
+        );
+    }
 
     if (props.gekozenStoelen.length == 0) {
 
