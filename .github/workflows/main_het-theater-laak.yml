@@ -38,6 +38,11 @@ jobs:
         run: npm run test:ci
         env:
            CI: ""
+           
+      - name: Dump GitHub env object
+        env:
+          ENV_CONTEXT: ${{ toJson(env) }}
+        run: echo "$ENV_CONTEXT"
 
   deploy:
     runs-on: windows-latest
