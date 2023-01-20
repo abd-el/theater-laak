@@ -1,28 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 export function InfoTab(props) {
 
-    const [error, setError] = useState(null);
     const [optreden, setOptreden] = useState([]);
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [opgeslagenRef, setRef] = useState(0);
     const [totalePrijs, setTotalePrijs] = useState('');
     const [ticketId, setId] = useState('onbekend');
-    //const [voorstelling, setVoorstellingen] = useState([]);
-
-    let form = '';
-
     const BetalingKnopRef = useRef(null);
-    function GaNaarBetaling() {
-        BetalingKnopRef.current.submit();
-    }
-
-
 
     const weekdays = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
     const months = ['jan.', 'feb.', 'maart', 'april', 'mei', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'];
-
-    let reference = optreden.datumTijdstip + '-' + optreden.optredenId + '-' + optreden.zaalId + '-' + optreden.voorstellingId;
 
     function einde(tijdStip, minuten) {
         let date = new Date(tijdStip);
@@ -96,24 +84,17 @@ export function InfoTab(props) {
             .then(response => response.json())
             .then(data => {
                 if (data.success)
-                    //setRef(data.id);
-                    //setId(data.id);
+                    setRef(data.id);
+                    setId(data.id);
                     id = data.id;
             })
-        form = <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
-            <input name="amount" value={totalePrijs} className="d-none" />
-            <input name="reference" value={id} className="d-none" />
-            <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
-            <input id="naarBetaling" type="submit" value="Betaling" />
-        </form>
-        GaNaarBetaling();
     }
 
-    // useEffect(() => {
-    //     if (opgeslagenRef == ticketId) {
-    //         BetalingKnopRef.current.submit();
-    //     }
-    // }, [opgeslagenRef, ticketId]);
+    useEffect(() => {
+        if (opgeslagenRef == ticketId) {
+            BetalingKnopRef.current.submit();
+        }
+    }, [opgeslagenRef, ticketId]);
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -231,10 +212,9 @@ export function InfoTab(props) {
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={MaakTicketAan}>Betalen</button>
-                        {form}
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />
-                            <input name="reference" value={35} className="d-none" />
+                            <input name="reference" value={opgeslagenRef} className="d-none" />
                             <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
                             <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
