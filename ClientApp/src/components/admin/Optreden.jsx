@@ -17,7 +17,7 @@ export function Optreden(props) {
     const [datum, setDatum] = useState('');
     const [beginTijd, setBTijd] = useState('');
     const [getId, setId] = useState(0);
-    const [getText, setText] = useState('');
+    const [getText, setText] = useState(null);
 
     //input handlers
     function voorstellingHandler(e) {
@@ -89,17 +89,6 @@ export function Optreden(props) {
     }, []);
 
     async function bevestigBoeking() {
-        // let optreden = {
-        //     Prijs: 15,
-        //     DatumTijdstip: "2023-01-15T17:45:00.968Z",
-        //     ArtiestenGroepId: 2,
-        //     ArtiestId: "9e278cc1-cbc3-483f-a72a-1be56327219a",
-        //     VoorstellingId: 8,
-        //     BegunstigersExclusief: false,
-        //     Tickets: [],
-        //     Bevestigd: true,
-        //     ZaalId: 1
-        // };
 
         fetch('/api/Programmering/BevestigOptreden?id=' + getId, {
             method: 'PUT',
@@ -115,7 +104,7 @@ export function Optreden(props) {
             console.log(res);
         });
 
-        setText('Optreden met id: ' + getId + ' is bevestigd!');
+        setText(true);
     }
 
     async function verwijderBoeking() {
@@ -131,7 +120,7 @@ export function Optreden(props) {
             .then(data => {
                 console.log(data);
             });
-        setText('Optreden met id: ' + getId + ' is verwijderd!');
+        setText(false);
     }
 
     async function voegOptredens() {
@@ -160,7 +149,7 @@ export function Optreden(props) {
     useEffect(() => {
         getBevestigdeOptredens();
         getNietBevestigdeOptredens();
-    }, [getNietBevestigdeOptredens, getBevestigdeOptredens]);
+    }, [getNietBevestigdeOptredens, getBevestigdeOptredens, getText]);
 
     function update() {
         getBevestigdeOptredens();
@@ -249,7 +238,7 @@ export function Optreden(props) {
     if (props.getEntry == 'GetNBOptredens' && nietBevestigdeOptredens.length > 0) {
         content = nietBevestigdeOptredens.map((list, index) => (
             <tr key={index}>
-                <td className="Id" onClick={() => setId(list.optredenId)}>
+                <td className="Id" onClick={() => setId(list.optredenId)} style={{ blockSize: "3rem", width: "300px"}}>
                     {list.optredenId}
                 </td>
                 <td className="voorstelling" onClick={() => setId(list.optredenId)}>
@@ -280,8 +269,8 @@ export function Optreden(props) {
                 }
                 {getId == list.optredenId &&
                     <td onClick={() => setId(list.optredenId)}>
-                        <button onClick={bevestigBoeking} >Bevestigen</button>
-                        <button onClick={verwijderBoeking} >Verwijderen</button>
+                        <button className='h6 mt-3 p-1 btn-success' onClick={bevestigBoeking} >Bevestigen</button>&nbsp;
+                        <button className='h6 mt-3 p-1 btn-danger' onClick={verwijderBoeking} >Verwijderen</button>
                     </td>
                 }
             </tr>
@@ -291,6 +280,7 @@ export function Optreden(props) {
     if (props.getEntry == 'GetNBOptredens') {
         return (
             <div>
+                <label className='text-info'>*Druk op een van de verzoeken om het te selecteren</label>
                 <table className="table table-bordered table-striped table-dark">
                     <thead>
                         <tr>
@@ -323,7 +313,8 @@ export function Optreden(props) {
                         {content}
                     </tbody>
                 </table>
-                <label>{getText}</label>
+                {getText == true && <label className='text-success'>Optreden met id: { getId } is bevestigd!</label>}
+                {getText == false && <label className='text-danger'>Optreden met id: { getId } is verwijderd!</label>}
             </div>
         );
     }

@@ -202,36 +202,41 @@ export function Admin(props) {
                     <label>Admin account aanmaken</label>
                     <br />
                     <br />
-                    <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
-                    <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                    <input placeholder='Voornaam*' value={voornaam} onChange={voornaamHandler}  />
+                    <input placeholder='Achternaam*' value={achternaam} onChange={achternaamHandler}  />
                     <br />
                     <br />
-                    <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
-                    <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                    <input placeholder='Gebruikersnaam*' value={username} onChange={usernameHandler}  />
+                    <input placeholder='Wachtwoord*' value={password} onChange={passwordHandler}  />
                     <br />
                     <br />
-                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} required />
+                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} />
                     <br />
                     <br />
-                    <input placeholder='Email' type='email' value={email} onChange={emailHandler} required />
+                    <input placeholder='Email*' type='email' value={email} onChange={emailHandler}  />
                     <br />
                     <br />
-                    <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} required />
+                    <input type='date' placeholder='geboortedatum' max={'2005-01-20'} value={geboorteDatum} onChange={geboorteDHandler}  />
                     <br />
                     <br />
-                    <input placeholder='Adres' value={adres} onChange={adresHandler} required />
+                    <input placeholder='Adres' value={adres} onChange={adresHandler}  />
                     <br />
                     <br />
-                    <input placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                    <input placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler}  />
                     <br />
                     <br />
-                    <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                    <div className='btn-group'>
+                        <button className='btn btn-light dropdown-toggle'aria-expanded="false">Nieuwsbrief</button>
+                        <ul className='dropdown-menu'>
+                            <li><button onClick={() => setemailVoorkeur('geen')}>geen</button></li>
+                        </ul>
+                    </div>
                     <br />
                     <br />
-                    <input placeholder='ip' value={ip} onChange={ipHandler} required />
+                    <input placeholder='ip' value={ip} onChange={ipHandler}  />
                     <br />
                     <br />
-                    <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler} required />
+                    <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler}  />
                     <br />
                     <br />
                     <button onClick={voegAdmin}>Aanmaken</button>

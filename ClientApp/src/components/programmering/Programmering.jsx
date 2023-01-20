@@ -237,16 +237,14 @@ export function Programmering() {
             <br />
             <div className='inputs'>
                 <input id='searchbar' className='mb-2 btn btn-dark' placeholder='Voorstelling zoeken' value={enteredName} onChange={changeNameHandler} /> &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id='tomorrow' className='mb-2 btn btn-dark' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
+                <input className='mb-2 btn btn-dark' type='date' min={today} value={enteredDatum} onChange={changeDatumHandler} />
             </div>
             <br />
-
             {enteredDatum == today &&
                 <div className='buttons'>
                     <button className="btn btn-danger" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
                     <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
                     <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
-                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
                 </div>
             }
             {enteredDatum == tomorrow &&
@@ -254,7 +252,6 @@ export function Programmering() {
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
                     <button class="btn btn-danger" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
                     <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
-                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
                 </div>
             }
             {enteredDatum == overmorgen &&
@@ -262,7 +259,6 @@ export function Programmering() {
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
                     <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
                     <button class="btn btn-danger" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
-                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
                 </div>
             }
             {enteredDatum == '' &&
@@ -270,12 +266,11 @@ export function Programmering() {
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
                     <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
                     <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
-                    <button id='refresh' onClick={update}>Voorstellingen Ophalen</button>
                 </div>
             }
             <br />
             <br />
-            <br />
+
             <div>
                 <table className="table table-bordered table-striped table-dark" style={{  verticalAlign: "middle"} }>
                     <thead>
