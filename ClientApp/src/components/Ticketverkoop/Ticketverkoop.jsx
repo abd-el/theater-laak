@@ -60,13 +60,13 @@ export function Ticketverkoop() {
             <br />
             <br />
             <div >
-                <img
+                {/* <img
                     className="rounded position-absolute top-50 start-50 translate-middle p-5 "
                     src="https://thumbs.dreamstime.com/z/movie-seats-booking-interface-template-ticket-purchase-154897159.jpg"
                     height="900"
                     width="900"
                 >
-                </img>
+                </img> */}
                 <button onClick={clickButton}>R1 S1 (stoel testknop)</button>
                 <br />
                 <br />
