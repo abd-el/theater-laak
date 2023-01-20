@@ -16,6 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+          
+      - name: npm test:ci
+        run: npm run test:ci
+        env:
+           CI: ""
+           
+      - name: Dump GitHub env object
+        env:
+          ENV_CONTEXT: ${{ toJson(env) }}
+        run: echo "$ENV_CONTEXT"
+        
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -33,16 +44,6 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-          
-      - name: npm test:ci
-        run: npm run test:ci
-        env:
-           CI: ""
-           
-      - name: Dump GitHub env object
-        env:
-          ENV_CONTEXT: ${{ toJson(env) }}
-        run: echo "$ENV_CONTEXT"
 
   deploy:
     runs-on: windows-latest
