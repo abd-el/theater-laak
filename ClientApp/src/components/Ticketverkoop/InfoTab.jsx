@@ -26,6 +26,10 @@ export function InfoTab(props) {
         mm = '0' + mm;
     }
 
+    if (hours < 10) {
+        hours = '0' + hours;
+    }
+
     if (min < 10) {
         min = '0' + min;
     }
@@ -124,13 +128,15 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
+    console.log(optreden.datumTijdstip)
+    console.log(today)
     if(optreden.datumTijdstip < today){
         return(
             <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
                 <label> Helaas is de ticketverkoop voor de gekozen optreden gesloten. </label>
                 <br />
                 <br/>
-                <a className=' btn btn-secondary' href='/programmering'>Terug naar Programmering</a>
+                <a className=' btn btn-secondary' href='/programmering'>Terug naar de Programmering</a>
             </div>
         );
     }
@@ -139,34 +145,6 @@ export function InfoTab(props) {
 
         return (
             <div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-25 p-3">
                     <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
                     &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
@@ -187,34 +165,6 @@ export function InfoTab(props) {
     else {
         return (
             <div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
                 <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
                     <label className='fs-4'>{props.gekozenStoelen.length == 1 && '1 Stoel'}{props.gekozenStoelen.length > 1 && props.gekozenStoelen.length + ' Stoelen'}</label>
                     <br />
