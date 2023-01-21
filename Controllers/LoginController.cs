@@ -208,16 +208,14 @@ public class LoginController : ControllerBase
     }
 
 
-    //Deze methode controleert of een SWT Token niet verlopen is. En of een kwaardaardige persoon de token niet heeft aangepast.
     //De methode is beschikbaar onder de route "validateSwtToken" en is beveiligd met de Authorize-attribuut,
     //dit betekent dat alleen gebruikers met een geldige swt token kunnen toegang krijgen tot deze route.
-    //De methode retourneert een "Ok" HTTP-statuscode, dit betekent dat de aanvraag succesvol is afgerond en dat er geen informatie teruggegeven hoeft te worden.
+    //De methode retourneert een "Ok" HTTP-statuscode, dit betekent dat de aanvraag succesvol is afgerond.
     [HttpGet]
     [Route("validateSwtToken")]
     [Authorize]
     public ActionResult validateSwtToken()
     {
-
         return Ok();
     }
 
@@ -226,8 +224,8 @@ public class LoginController : ControllerBase
     private async Task SendTokenToEmail(ApplicationUser user)
     {
         var token = await Create2FaToken(user);
-        await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "drampersad740@gmail.com");
-        //await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", user.Email);
+        await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", user.Email);
+        await emailsender.SendEmail($"Uw toegangscode is: {token} De code verloopt na 30 minuten", "20216521@student.hhs.nl");
     }
 
 
