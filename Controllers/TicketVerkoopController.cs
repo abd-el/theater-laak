@@ -212,6 +212,9 @@ public class TicketVerkoopController : ControllerBase
 
         await _context.SaveChangesAsync();
 
+        // ⬇️ dit is een async functie, maar we willen niet wachten op de uitvoering
+        TicketControleur.ControleerNaMinuten(gegevens.ticketIds, 5, _context);
+
         return Ok(new {
             success = true,
             ticketIds = gegevens.ticketIds,
@@ -237,4 +240,24 @@ public class RondBestellingAfGegevensForm {
 
 public class BevestigTicketsJson {
     public List<int> ticketIds { get; set; }
+}
+
+public class TicketControleur {
+    public static async Task ControleerNaMinuten(List<int> ticketIds, int minuten, ApplicationDbContext _context) {
+        await Task.Delay(minuten * 60 * 1000);
+
+        var tickets = await _context.Tickets
+            .Include(t => t.Optreden)
+            .Include(t => t.Stoel)
+            .Where(t => ticketIds.Contains(t.TicketId))
+            .ToListAsync();
+
+        foreach (var ticket in tickets) {
+            if (!ticket.Betaald) {
+                _context.Tickets.Remove(ticket);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+    }
 }
