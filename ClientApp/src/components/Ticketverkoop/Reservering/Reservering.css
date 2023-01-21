@@ -1,34 +1,44 @@
-.cardBtn{
-    border-radius: 4px;
-    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
-      transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+.ReserveringContainer {
+    position:relative;
+    top: 50px;
+    color: white;
+    background: grey;
+    padding-bottom: 1px;
+    border-radius:  6px;
+}
+
+.cardBtn {
+  border-radius: 4px;
+  transition: .2s;
   padding: 14px 80px 18px 36px;
   cursor: pointer;
 }
 
-.cardBtn:hover{
-     transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+.cardBtn:hover {
+  transform: scale(1.05);
 }
 
-.cardBtn h3{
+.cardBtn h3 {
   font-weight: 600;
 }
 
-.table{
-  transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
-}
+.stoeltabel {
+  transition: .2s
+} 
 
-.table:hover{
+.stoeltabel:hover {
   transform: scale(1.01);
 }
 
-.datacell:hover{
+.datacell:hover {
   opacity: 50%;
+  cursor: pointer;
 }
 
-.datacell:active{
- 
-    background-color: #818181;
-    box-shadow: 0 0px #666;
+.datacell:active {
+  box-shadow: 0 0px #666;
+}
+
+.datacell:enabled {
+  color: #3e0000;
 }
