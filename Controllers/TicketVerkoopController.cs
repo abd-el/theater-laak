@@ -72,7 +72,7 @@ public class TicketVerkoopController : ControllerBase
 
             ticket.Betaald = true;
         }
-        
+
         await _context.SaveChangesAsync();
 
         var html = "<a href='/rondbestellingaf'>Klik hier om de betaling af te ronden.</a>";
@@ -122,7 +122,7 @@ public class TicketVerkoopController : ControllerBase
             if (stoel.ZaalId != optreden.ZaalId) {
                 return StatusCode(400, new {
                     success = false,
-                    bericht = $"Stoel zit niet in dezelfde zaal als het optreden, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId} voor de {hoeveelsteTicket}e ticket"
+                    bericht = $"Stoel zit niet in hetzelfde zaal als het optreden, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId} voor de {hoeveelsteTicket}e ticket"
                 });
             }
 
