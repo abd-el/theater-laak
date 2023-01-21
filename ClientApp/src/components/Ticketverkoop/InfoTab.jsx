@@ -128,8 +128,6 @@ export function InfoTab(props) {
         return <p>Geen data ontvangen.</p>;
     }
 
-    console.log(optreden.datumTijdstip)
-    console.log(today)
     if(optreden.datumTijdstip < today){
         return(
             <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">

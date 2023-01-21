@@ -203,7 +203,7 @@ export function Medewerker(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label className='fs-5 fw-bold text-info'>Admin account aanmaken</label>
+                    <label className='fs-5 fw-bold text-info'>Medewerker account aanmaken</label>
                     <br />
                     <br />
                     <label>Voornaam</label>
