@@ -34,10 +34,6 @@ const AppRoutes = [
     element: <Programmering />
   },
   {
-    path: '/reservering',
-    element: <Reservering />
-  },
-  {
     path: '/ticketverkoop',
     element: <Ticketverkoop />
   },

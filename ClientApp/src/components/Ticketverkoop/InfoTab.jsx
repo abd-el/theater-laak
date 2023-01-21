@@ -135,7 +135,7 @@ export function InfoTab(props) {
 
     if(optreden.datumTijdstip < today){
         return(
-            <div className="square bg-dark rounded position-relative start-50 translate-middle w-50 p-3">
+            <div className="square bg-dark rounded position-relative mx-auto w-50 p-3 mt-5">
                 <label> Helaas is de ticketverkoop voor de gekozen optreden gesloten. </label>
                 <br />
                 <br/>

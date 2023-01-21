@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, Button, CardTitle, CardText, Container, CardImg, CardImgOverlay, Table, TableProps } from 'reactstrap';
 import { Figure } from "./Figure";
+import { InfoTab } from "../InfoTab";
 import './Reservering.css'
+import { backendApi } from "../../api";
 
 
-export function Reservering() {
+export function Reservering({ optredenId }) {
     const [hideRangSelectie, setHideRangSelectie] = useState(false);
     const [hideStoelen, setHideStoelen] = useState(true);
     const [Stoelen, setStoelen] = useState();
@@ -15,7 +17,15 @@ export function Reservering() {
     useEffect(() => {
         const stoelen = addStoelen(200);
         setStoelen(stoelen);
-    }, []);
+
+        const getData = async () => {
+            const resp = await backendApi.get(`api/optreden/GetStoelen?optredenId=${optredenId}` );
+            console.log(resp.statusText);
+            console.log(resp.data);
+        }
+        getData();
+
+    }, [optredenId]);
 
 
     const addStoelen = (aantal) => {
@@ -27,20 +37,11 @@ export function Reservering() {
             else if (index < 150) rijNummer = 3;
             else rijNummer = 4;
 
-            
-            // <td
-            //     onClick={handleStoelClick}
-            //     className="datacell p-3 h5"
-            //     key={index}
-            //     stoelnr={index + 1}
-            //     rijnr={rijNummer}>
-            //     Stoel {index + 1}
-            // </td>
 
             rij.push({
-                stoelNr: index + 1,
-                rijNr: rijNummer,
-                stoel: index + 1,    
+                stoelid: index + 1,
+                rijid: rijNummer,
+
             });
         }
         return rij;
@@ -48,12 +49,12 @@ export function Reservering() {
 
 
     const handleStoelClick = (e) => {
-        const _rangId = document.getElementById('rang').innerText;
         const attr = e.target.attributes;
         const obj = {
-            rangId: rangId,
-            rijId: attr.rijnr.value,
-            stoelId: attr.stoelnr.value,
+            stoelId: attr.stoelid.value,
+            zaalId: 3,
+            rang: rangId,
+            rij: attr.rijid.value
         }
         if (!selectie) {
             setSelectie([obj]);
@@ -77,8 +78,8 @@ export function Reservering() {
 
 
     return (
-        <div className='ReserveringContainer'>
-            <Container fluid={true} className='col-md-10' hidden={hideRangSelectie}>
+        <div className='ReserveringContainer pb-2'>
+            <Container fluid={true} className='col-md-10 position-relative' hidden={hideRangSelectie}>
                 <Figure />
 
                 <Card className="cardBtn text-start mb-3 bg-dark h4" id={1} onClick={handleRangClick} >
@@ -95,26 +96,26 @@ export function Reservering() {
                 </Card>
             </Container>
 
-            <Container fluid={true} className='col-md-10' hidden={hideStoelen}>
+            <Container fluid={true} className='col-md-10 position-relative' hidden={hideStoelen}>
                 <Figure />
 
-                <table className="stoeltabel table table-responsive d-flex table-hover table-bordered table-dark bg-dark">
+                <table className="stoeltabel table table-responsive d-flex table-hover table-bordered table-dark bg-dark position-relative">
                     <tbody>
                         <tr>
                             <th scope="row">Rij 1</th>
                             {!Stoelen ? <td>Leeg</td> :
                                 Array.from(Stoelen)
-                                .slice(0, 50)
-                                .map((currentValue, index) => {
-                                    return (<td
-                                        onClick={handleStoelClick}
-                                        className="datacell p-3 h5"
-                                        key={index}
-                                        stoelnr={currentValue.stoelNr}
-                                        rijnr={currentValue.rijNr}>
-                                        Stoel {currentValue.stoelNr}
-                                    </td>)
-                                })
+                                    .slice(0, 50)
+                                    .map((currentValue, index) => {
+                                        return (<td
+                                            onClick={handleStoelClick}
+                                            className="datacell p-3 h5"
+                                            key={index}
+                                            stoelid={currentValue.stoelid}
+                                            rijid={currentValue.rijid}>
+                                            Stoel {currentValue.stoelid}
+                                        </td>)
+                                    })
                             }
                         </tr>
                         <tr>
@@ -126,9 +127,9 @@ export function Reservering() {
                                         onClick={handleStoelClick}
                                         className="datacell p-3 h5"
                                         key={index}
-                                        stoelnr={currentValue.stoelNr}
-                                        rijnr={currentValue.rijNr}>
-                                        Stoel {currentValue.stoelNr}
+                                        stoelid={currentValue.stoelid}
+                                        rijid={currentValue.rijid}>
+                                        Stoel {currentValue.stoelid}
                                     </td>)
                                 })
 
@@ -142,9 +143,9 @@ export function Reservering() {
                                         onClick={handleStoelClick}
                                         className="datacell p-3 h5"
                                         key={index}
-                                        stoelnr={currentValue.stoelNr}
-                                        rijnr={currentValue.rijNr}>
-                                        Stoel {currentValue.stoelNr}
+                                        stoelid={currentValue.stoelid}
+                                        rijid={currentValue.rijid}>
+                                        Stoel {currentValue.stoelid}
                                     </td>)
                                 })
                             }
@@ -158,19 +159,18 @@ export function Reservering() {
                                         onClick={handleStoelClick}
                                         className="datacell p-3 h5"
                                         key={index}
-                                        stoelnr={currentValue.stoelNr}
-                                        rijnr={currentValue.rijNr}>
-                                        Stoel {currentValue.stoelNr}
+                                        stoelid={currentValue.stoelid}
+                                        rijid={currentValue.rijid}>
+                                        Stoel {currentValue.stoelid}
                                     </td>)
                                 })
                             }
                         </tr>
                     </tbody>
                 </table>
-
+                <InfoTab optredenId={optredenId} gekozenStoelen={selectie} />
             </Container>
 
-            <h3 id="rang" hidden={true}>{rangId}</h3>
 
         </div>
     );
