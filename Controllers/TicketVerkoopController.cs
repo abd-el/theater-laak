@@ -33,37 +33,46 @@ public class TicketVerkoopController : ControllerBase
             };
         }
 
-        int ticketId;
+        var ticketIds = new List<int>();
+        // gegevens.reference is een string met de ticketIds gescheiden door een komma (bijvoorbeeld "1,2,3")
+        var ticketIdsString = gegevens.reference.Split(",");
+        foreach (var ticketIdString in ticketIdsString) {
+            int ticketId;
+            bool isParsable = Int32.TryParse(ticketIdString, out ticketId);
+            if (isParsable) {
+                ticketIds.Add(ticketId);
+            } else {
+                var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
 
-        bool isParsable = Int32.TryParse(gegevens.reference, out ticketId);
+                return new ContentResult {
+                    Content = fouteHtml,
+                    ContentType = "text/html"
+                };
+            }
 
-        if (isParsable) {
-            Console.WriteLine(ticketId);
-        } else {
-            Console.WriteLine("Could not be parsed.");
+            var ticket = _context.Tickets.FirstOrDefault(t => t.TicketId == ticketId);
+
+            if (ticket == null) {
+                var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
+
+                return new ContentResult {
+                    Content = fouteHtml,
+                    ContentType = "text/html"
+                };
+            }
+
+            if (ticket.Betaald) {
+                var fouteHtml = "<a href='/'>Betaling al gedaan voor een van de tickets. Klik hier om terug te gaan naar home.</a>";
+
+                return new ContentResult {
+                    Content = fouteHtml,
+                    ContentType = "text/html"
+                };
+            }
+
+            ticket.Betaald = true;
         }
-
-        var ticket = _context.Tickets.FirstOrDefault(t => t.TicketId == ticketId);
-
-        if (ticket == null) {
-            var fouteHtml = "<a href='/'>Betaling mislukt. Klik hier om terug te gaan naar home.</a>";
-
-            return new ContentResult {
-                Content = fouteHtml,
-                ContentType = "text/html"
-            };
-        }
-
-        if (ticket.Betaald) {
-            var fouteHtml = "<a href='/'>Betaling al gedaan. Klik hier om terug te gaan naar home.</a>";
-
-            return new ContentResult {
-                Content = fouteHtml,
-                ContentType = "text/html"
-            };
-        }
-
-        ticket.Betaald = true;
+        
         await _context.SaveChangesAsync();
 
         var html = "<a href='/rondbestellingaf'>Klik hier om de betaling af te ronden.</a>";
@@ -75,45 +84,9 @@ public class TicketVerkoopController : ControllerBase
     }
     
     [HttpPost]
-    [Route("MaakTicket")]
-    public async Task<ActionResult> MaakTicket([FromBody] TicketCreatieJson ticketVerkoop)
+    [Route("MaakTickets")]
+    public async Task<ActionResult> MaakTickets([FromBody] TicketsCreatieJson tickets)
     {
-        var optreden = await _context.Optredens
-            .Include(o => o.Tickets)
-            .FirstOrDefaultAsync(o => o.OptredenId == ticketVerkoop.optredenId);
-
-        if (optreden == null) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Optreden niet gevonden"
-            });
-        }
-
-        var stoel = await _context.Stoelen
-            .Include(s => s.Tickets)
-            .FirstOrDefaultAsync(s => s.StoelId == ticketVerkoop.stoelId);
-
-        if (stoel == null) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Stoel niet gevonden"
-            });
-        }
-
-        if (stoel.ZaalId != optreden.ZaalId) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Stoel zit niet in dezelfde zaal als het optreden"
-            });
-        }
-
-        if (!stoel.IsBeschikbaar(optreden.OptredenId)) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Stoel is al gereserveerd"
-            });
-        }
-
         var claimsIdentity = User.Identities.First();        
         var userName = claimsIdentity.Name;
         ApplicationUser? user = null;
@@ -121,20 +94,61 @@ public class TicketVerkoopController : ControllerBase
             user = await _userManager.FindByNameAsync(userName);
         }
 
-        var ticket = new Ticket {
-            Optreden = optreden,
-            Stoel = stoel,
-            ApplicationUser = user,
-            Betaald = false
-        };
+        int hoeveelsteTicket = 0;
+        foreach (var ticket in tickets.tickets) {
+            hoeveelsteTicket++;
+            var optreden = await _context.Optredens
+                .Include(o => o.Tickets)
+                .FirstOrDefaultAsync(o => o.OptredenId == ticket.optredenId);
 
-        await _context.Tickets.AddAsync(ticket);
+            if (optreden == null) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Optreden niet gevonden, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId}, voor de {hoeveelsteTicket}e ticket"
+                });
+            }
+
+            var stoel = await _context.Stoelen
+                .Include(s => s.Tickets)
+                .FirstOrDefaultAsync(s => s.StoelId == ticket.stoelId);
+
+            if (stoel == null) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Stoel niet gevonden, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId} voor de {hoeveelsteTicket}e ticket"
+                });
+            }
+
+            if (stoel.ZaalId != optreden.ZaalId) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Stoel zit niet in dezelfde zaal als het optreden, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId} voor de {hoeveelsteTicket}e ticket"
+                });
+            }
+
+            if (!stoel.IsBeschikbaar(optreden.OptredenId)) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Stoel is al gereserveerd, voor optredenId = {ticket.optredenId}, stoelId = {ticket.stoelId} voor de {hoeveelsteTicket}e ticket"
+                });
+            }
+
+            var ticketModel = new Ticket {
+                Optreden = optreden,
+                Stoel = stoel,
+                ApplicationUser = user,
+                Betaald = false
+            };
+
+            await _context.Tickets.AddAsync(ticketModel);
+        }
+
         await _context.SaveChangesAsync();
 
         return Ok(new {
             success = true,
-            id = ticket.TicketId,
-            bericht = "Ticket is succesvol aangemaakt"
+            tickets = tickets.tickets,
+            bericht = "Alle tickets zijn succesvol aangemaakt"
         });
     }
 
@@ -169,28 +183,39 @@ public class TicketVerkoopController : ControllerBase
         });
     }
 
-    [HttpPost]
-    [Route("BevestigTicket")]
-    public async Task<ActionResult> BevestigTicket([FromBody] BevestigTicketJson gegevens)
+    [HttpPut]
+    [Route("BevestigTickets")]
+    public async Task<ActionResult> BevestigTickets([FromBody] BevestigTicketsJson gegevens)
     {
-        var ticket = await _context.Tickets
-            .Include(t => t.Optreden)
-            .Include(t => t.Stoel)
-            .FirstOrDefaultAsync(t => t.TicketId == gegevens.reference);
+        foreach (var ticketId in gegevens.ticketIds) {
+            var ticketModel = await _context.Tickets
+                .Include(t => t.Optreden)
+                .Include(t => t.Stoel)
+                .FirstOrDefaultAsync(t => t.TicketId == ticketId);
 
-        if (ticket == null) {
-            return StatusCode(400, new {
-                success = false,
-                bericht = "Ticket niet gevonden"
-            });
+            if (ticketModel == null) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Ticket niet gevonden, voor ticketId = {ticketId}"
+                });
+            }
+
+            if (ticketModel.Betaald) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = $"Ticket is al betaald, voor ticketId = {ticketId}"
+                });
+            }
+
+            ticketModel.Betaald = true;
         }
 
-        ticket.Betaald = true;
         await _context.SaveChangesAsync();
 
         return Ok(new {
             success = true,
-            bericht = "Ticket is succesvol bevestigd"
+            ticketIds = gegevens.ticketIds,
+            bericht = "Tickets zijn succesvol bevestigd"
         });
     }
 }
@@ -200,12 +225,16 @@ public class TicketCreatieJson {
     public int stoelId { get; set; }
 }
 
+public class TicketsCreatieJson {
+    public List<TicketCreatieJson> tickets { get; set; }
+}
+
 public class RondBestellingAfGegevensForm {
     public string account { get; set; }
     public Boolean succes { get; set; }
     public string reference { get; set; }
 }
 
-public class BevestigTicketJson {
-    public int reference { get; set; }
+public class BevestigTicketsJson {
+    public List<int> ticketIds { get; set; }
 }

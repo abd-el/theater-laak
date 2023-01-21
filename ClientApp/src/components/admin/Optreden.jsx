@@ -135,7 +135,7 @@ export function Optreden(props) {
             //bevestigd: true
         };
 
-        fetch('https://localhost:44461/api/artiestenportaal/MaakBoeking', {
+        fetch('/api/artiestenportaal/MaakBoeking', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

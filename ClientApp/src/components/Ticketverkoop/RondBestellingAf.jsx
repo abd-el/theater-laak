@@ -17,14 +17,17 @@ export class RondBestellingAf extends Component {
         // get LastTicketReference from cookies
         const lastTicketReference = document.cookie.split(';').find(c => c.trim().startsWith('lastTicketReference=')).split('=')[1];
 
-        let res = await fetch('api/TicketVerkoop/BevestigTicket', {
+        // turn lastTicketReference into an array split by the comma
+        const lastTicketReferenceArray = lastTicketReference.split(',');
+
+        let res = await fetch('api/TicketVerkoop/BevestigTickets', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
-                reference: lastTicketReference
+                ticketIds: lastTicketReferenceArray
             })
         });
     }

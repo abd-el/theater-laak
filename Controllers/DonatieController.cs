@@ -48,7 +48,7 @@ public class DonatieController : ControllerBase {
     {
         Response.Cookies.Append("IkDoneerToken", token);
 
-        var html = "<a href='https://localhost:44461/ikdoneergeautoriseerd'>Klik hier de IkDoneer autorisatie af te ronden.</a>";
+        var html = "<a href='/ikdoneergeautoriseerd'>Klik hier de IkDoneer autorisatie af te ronden.</a>";
         return new ContentResult
         {
             Content = html,

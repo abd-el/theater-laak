@@ -92,26 +92,31 @@ export function InfoTab(props) {
             });
     }, [props.optredenId, props.gekozenStoelen]);
 
-    async function MaakTicketAan() {
+    async function MaakTicketsAan() {
         let id = 'onbekend';
-        await fetch('/api/TicketVerkoop/MaakTicket', {
+        let tickets = [];
+        for (let i = 0; i < props.gekozenStoelen.length; i++) {
+            tickets.push({
+                stoelId: props.gekozenStoelen[i].stoelId,
+                optredenId: props.optredenId
+            });
+        }
+        await fetch('/api/TicketVerkoop/MaakTickets', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('authState'))?.token
             },
-            body: JSON.stringify({
-                optredenId: props.optredenId,
-                stoelId: props.gekozenStoelen[0].stoelId,
-            })
+            body: JSON.stringify({tickets})
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success)
-                    setRef(data.id);
-                    setId(data.id);
-                    id = data.id;
-            })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success){
+                setRef(data.id);
+                setId(data.id);
+                id = data.id;
+            }
+        })
     }
 
     useEffect(() => {
@@ -187,11 +192,11 @@ export function InfoTab(props) {
                     <div className='square rounded p-2' >
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button className='square rounded p-2 btn-danger' onClick={MaakTicketAan}>Betalen</button>
+                        <button className='square rounded p-2 btn-danger' onClick={MaakTicketsAan}>Betalen</button>
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />
                             <input name="reference" value={opgeslagenRef} className="d-none" />
-                            <input name="url" value="https://localhost:44461/api/TicketVerkoop/RondBestellingAf" className="d-none" />
+                            <input name="url" value="/api/TicketVerkoop/RondBestellingAf" className="d-none" />
                             <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
                         <hr className="hr hr-blurry" style={{ backgroundColor: "red", width: "445px", margin: "0rem" }} />
