@@ -20,6 +20,7 @@ const context =  [
   "/api/login/mailToUnconfirmedAddress",
   "/api/account/UpdateInstellingen",
   "/api/account/RegistreerKlant",
+  "/api/account/RegistreerMedewerker",
   "/api/account/UserNameCheck",
   "/api/account/WachtwoordCheck",
   "/api/account/EmailCheck",

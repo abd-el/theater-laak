@@ -165,7 +165,7 @@ public class AccountController : ControllerBase
 
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("RegistreerAdmin")]
     public async Task<ActionResult> RegistreerAdmin(Admin adminDTO)
     {
@@ -178,6 +178,25 @@ public class AccountController : ControllerBase
         }
 
         var responseCode = await assignRole(adminDTO.UserName, "Admin");
+
+        return responseCode;
+
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [Route("RegistreerMedewerker")]
+    public async Task<ActionResult> RegistreerMedewerker(Admin adminDTO)
+    {
+        var result = await _medewerkerManager
+        .CreateAsync(adminDTO, adminDTO.Password);
+
+        if (!result.Succeeded)
+        {
+            return new BadRequestObjectResult(result);
+        }
+
+        var responseCode = await assignRole(adminDTO.UserName, "Medewerker");
 
         return responseCode;
 
@@ -490,11 +509,16 @@ public class AccountController : ControllerBase
         user.EmailConfirmed = accountInstellingenJsonGegevens.EmailConfirmed;
         user.TwoFactorEnabled = accountInstellingenJsonGegevens.TwoFactorEnabled;
 
-        if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("man")) {
+        if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("man"))
+        {
             user.Geslacht = "Man";
-        } else if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("vrouw")) {
+        }
+        else if (accountInstellingenJsonGegevens.geslacht.ToLower().Equals("vrouw"))
+        {
             user.Geslacht = "Vrouw";
-        } else {
+        }
+        else
+        {
             user.Geslacht = "Anders";
         }
 
@@ -532,10 +556,10 @@ public class AccountInstellingenJsonGegevens
     public string emailvoorkeur { get; set; }
     public string geslacht { get; set; }
 
-    public bool EmailConfirmed {get;set;}
-    public bool TwoFactorEnabled {get;set;}
+    public bool EmailConfirmed { get; set; }
+    public bool TwoFactorEnabled { get; set; }
 
-    public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht, bool EmailConfirmed, bool TwoFactorEnabled )
+    public AccountInstellingenJsonGegevens(string voornaam, string achternaam, string email, string telefoonnummer, string geboorteDatum, string emailvoorkeur, string geslacht, bool EmailConfirmed, bool TwoFactorEnabled)
     {
         this.voornaam = voornaam;
         this.achternaam = achternaam;

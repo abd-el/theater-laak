@@ -13,14 +13,16 @@ export function Medewerker(props) {
     const [achternaam, setAchternaam] = useState('');
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const [geslacht, setGeslacht] = useState('');
+    const [geslacht, setGeslacht] = useState('anders');
     const [email, setEmail] = useState('');
     const [geboorteDatum, setGeboorteDatum] = useState('');
     const [adres, setAdres] = useState('');
     const [telefoonnummer, setTelefoonnummer] = useState('');
-    const [emailVoorkeur, setemailVoorkeur] = useState('');
+    const [emailVoorkeur, setemailVoorkeur] = useState('geen');
     const [ip, setIp] = useState('');
     const [bankGegevens, setbankGegevens] = useState('');
+
+    const [res, setRes] = useState(null);
 
     //input handlers
     function voornaamHandler(e) {
@@ -74,7 +76,7 @@ export function Medewerker(props) {
     const getMedewerkers = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Account/GetMedewerkers', {
+            const response = await fetch('/api/Account/GetMedewerkers', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,13 +109,13 @@ export function Medewerker(props) {
             adres: adres,
             telefoonnummer: telefoonnummer,
             emailVoorkeur: emailVoorkeur,
-            ip: ip,
+            ip: 'geheim',
             bankGegevens: bankGegevens,
             tickets: [],
             donaties: []
         };
 
-        fetch('https://localhost:44461/api/Account/RegistreerMedewerker', {
+        const response = await fetch('/api/account/RegistreerMedewerker', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,12 +123,16 @@ export function Medewerker(props) {
             },
             body: JSON.stringify(medewerker)
         });
-        console.log(medewerker)
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
     }
 
     useEffect(() => {
         getMedewerkers();
-    }, [getMedewerkers]);
+    }, [getMedewerkers, res]);
 
     function submitHandler(event) {
         event.preventDefault();
@@ -134,12 +140,10 @@ export function Medewerker(props) {
         setpassword('');
         setVoornaam('');
         setAchternaam('');
-        setGeslacht('');
         setEmail('');
         setGeboorteDatum('');
         setAdres('');
         setTelefoonnummer('');
-        setemailVoorkeur('');
         setIp('');
         setbankGegevens('');
     }
@@ -199,42 +203,80 @@ export function Medewerker(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label>Medewerker account aanmaken</label>
+                    <label className='fs-5 fw-bold text-info'>Admin account aanmaken</label>
                     <br />
                     <br />
-                    <input placeholder='Voornaam' value={voornaam} onChange={voornaamHandler} required />
-                    <input placeholder='Achternaam' value={achternaam} onChange={achternaamHandler} required />
+                    <label>Voornaam</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Voornaam*' value={voornaam} onChange={voornaamHandler} />
                     <br />
                     <br />
-                    <input placeholder='Gebruikersnaam' value={username} onChange={usernameHandler} required />
-                    <input placeholder='Wachtwoord' value={password} onChange={passwordHandler} required />
+                    <label>Achternaam*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Achternaam*' value={achternaam} onChange={achternaamHandler} />
                     <br />
                     <br />
-                    <input placeholder='Geslacht' value={geslacht} onChange={geslachtHandler} required />
+                    <label>Gebruikersnaam*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Gebruikersnaam*' value={username} onChange={usernameHandler} />
                     <br />
                     <br />
-                    <input placeholder='Email' value={email} onChange={emailHandler} required />
+                    <label>Wachtwoord*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Wachtwoord*' value={password} onChange={passwordHandler} />
                     <br />
                     <br />
-                    <input type='date' placeholder='geboortedatum' value={geboorteDatum} onChange={geboorteDHandler} required />
+                    <label>Geslacht*</label>
+                    <br />
+                    <div className='btn-group'>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={geslacht} onChange={(e) => setGeslacht(e.target.value)} required>
+                            <option value={'Man'}>Man</option>
+                            <option value={'Vrouw'} >Vrouw</option>
+                            <option value={'Anders'} >Anders/zeg ik liever niet</option>
+                        </select>
+                    </div>
                     <br />
                     <br />
-                    <input placeholder='Adres' value={adres} onChange={adresHandler} required />
+                    <label>Email*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Email*' type='email' value={email} onChange={emailHandler} />
                     <br />
                     <br />
-                    <input placeholder='Telefoonnummer' value={telefoonnummer} onChange={telefoonnummerHandler} required />
+                    <label>Geboortedatum*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' type='date' placeholder='geboortedatum' max={'2005-01-20'} value={geboorteDatum} onChange={geboorteDHandler} />
                     <br />
                     <br />
-                    <input placeholder='Nieuwsbrief' value={emailVoorkeur} onChange={emailvoorkeurHandler} required />
+                    <label>Adres*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='Adres' value={adres} onChange={adresHandler} />
                     <br />
                     <br />
-                    <input placeholder='ip' value={ip} onChange={ipHandler} required />
+                    <label>Telelefoonnummer*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler} />
                     <br />
                     <br />
-                    <input placeholder='bankgegevens' value={bankGegevens} onChange={bankgegevensHandler} required />
+                    <label>Nieuwsbrief*</label>
+                    <br />
+                    <div className='btn-group'>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={emailVoorkeur} onChange={(e) => setemailVoorkeur(e.target.value)} required>
+                            <option value={'geen'}>Geen</option>
+                            <option value={'nieuwsbrief'} >Nieuws</option>
+                            <option value={'belangrijke informatie'} >Belangrijk</option>
+                        </select>
+                    </div>
                     <br />
                     <br />
-                    <button onClick={voegMedewerker}>Aanmaken</button>
+                    <label>Bankrekening*</label>
+                    <br />
+                    <input className='btn bg-light border-dark text-dark' value={bankGegevens} onChange={bankgegevensHandler} />
+                    <br />
+                    <br />
+                    <button className='btn btn-secondary ' onClick={voegMedewerker}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Medewerker account is succesvol aangemaakt!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

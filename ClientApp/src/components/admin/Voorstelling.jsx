@@ -14,6 +14,8 @@ export function Voorstelling(props) {
     const [tijdsduur, setTijdsDuur] = useState('');
     const [afbeelding, setAfbeelding] = useState('');
 
+    const [res, setRes] = useState(null);
+
     //input handlers
     function titelHandler(e) {
         setTitel(e.target.value);
@@ -34,7 +36,7 @@ export function Voorstelling(props) {
     const getVoorstellingen = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Programmering/Voorstellingen', {
+            const response = await fetch('/api/Programmering/Voorstellingen', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ export function Voorstelling(props) {
             optredens: []
         };
 
-        fetch('https://localhost:44461/api/Programmering/Voorstelling', {
+        const response = await fetch('/api/Programmering/Voorstelling', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,12 +73,16 @@ export function Voorstelling(props) {
             },
             body: JSON.stringify(voorstelling)
         });
-        console.log(voorstelling)
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
     }
 
     useEffect(() => {
         getVoorstellingen();
-    }, [getVoorstellingen]);
+    }, [getVoorstellingen, res]);
 
     function submitHandler(event) {
         event.preventDefault();
@@ -92,7 +98,7 @@ export function Voorstelling(props) {
                 <td className="Id">
                     {list.voorstellingId}
                 </td>
-                <td className="poster">
+                <td className="rounded shadow">
                     <img src={list.afbeelding} alt='voorstellingsafbeelding' width='100' height='140'></img>
                 </td>
                 <td className="titel">
@@ -150,17 +156,17 @@ export function Voorstelling(props) {
                     <br />
                     <label>Titel*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark'  value={titel} onChange={titelHandler} required />
+                    <input maxLength={45}  className='btn bg-light border-dark text-dark'  value={titel} onChange={titelHandler} required />
                     <br />
                     <br />
                     <label>Beschrijving*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark'  value={beschrijving} onChange={beschrijvingHandler} required />
+                    <input maxLength={250} className='btn bg-light border-dark text-dark'  value={beschrijving} onChange={beschrijvingHandler} required />
                     <br />
                     <br />
                     <label>Tijdsduur (minuten)*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' type='number' min={1} value={tijdsduur} onChange={tijdsduurHandler} required />
+                    <input className='btn bg-light border-dark text-dark' type='number' min={1} max={180} value={tijdsduur} onChange={tijdsduurHandler} required />
                     <br />
                     <br />
                     <label>Afbeelding url*</label>
@@ -172,6 +178,9 @@ export function Voorstelling(props) {
                     <br />
                     <br />
                     <button className='btn btn-secondary' onClick={voegVoorstelling}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Voorstelling is succesvol toegevoegd!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

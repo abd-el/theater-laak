@@ -13,14 +13,16 @@ export function Admin(props) {
     const [achternaam, setAchternaam] = useState('');
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const [geslacht, setGeslacht] = useState('');
+    const [geslacht, setGeslacht] = useState('anders');
     const [email, setEmail] = useState('');
     const [geboorteDatum, setGeboorteDatum] = useState('');
     const [adres, setAdres] = useState('');
     const [telefoonnummer, setTelefoonnummer] = useState('');
-    const [emailVoorkeur, setemailVoorkeur] = useState('');
+    const [emailVoorkeur, setemailVoorkeur] = useState('geen');
     const [ip, setIp] = useState('');
     const [bankGegevens, setbankGegevens] = useState('');
+
+    const [res, setRes] = useState(null);
 
     //input handlers
     function voornaamHandler(e) {
@@ -74,7 +76,7 @@ export function Admin(props) {
     const getAdmins = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Account/GetAdmins', {
+            const response = await fetch('/api/Account/GetAdmins', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,7 +115,7 @@ export function Admin(props) {
             donaties: []
         };
 
-        fetch('https://localhost:44461/api/Account/RegistreerAdmin', {
+        const response = await fetch('/api/Account/RegistreerAdmin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,12 +123,17 @@ export function Admin(props) {
             },
             body: JSON.stringify(admin)
         });
-        console.log(admin)
+
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
     }
 
     useEffect(() => {
         getAdmins();
-    }, [getAdmins]);
+    }, [getAdmins, res]);
 
     function submitHandler(event) {
         event.preventDefault();
@@ -134,12 +141,10 @@ export function Admin(props) {
         setpassword('');
         setVoornaam('');
         setAchternaam('');
-        setGeslacht('');
         setEmail('');
         setGeboorteDatum('');
         setAdres('');
         setTelefoonnummer('');
-        setemailVoorkeur('');
         setIp('');
         setbankGegevens('');
     }
@@ -225,10 +230,10 @@ export function Admin(props) {
                     <label>Geslacht*</label>
                     <br />
                     <div className='btn-group'>
-                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Man')}>Man</option>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Vrouw')}>Vrouw</option>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Anders')}>Anders</option>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={geslacht} onChange={(e) => setGeslacht(e.target.value)} required>
+                            <option value={'Man'}>Man</option>
+                            <option value={'Vrouw'} >Vrouw</option>
+                            <option value={'Anders'} >Anders/zeg ik liever niet</option>
                         </select>
                     </div>
                     <br />
@@ -256,10 +261,10 @@ export function Admin(props) {
                     <label>Nieuwsbrief*</label>
                     <br />
                     <div className='btn-group'>
-                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('geen')}>Geen</option>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('nieuws')}>Nieuws</option>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('belangrijk')}>Belangrijk</option>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={emailVoorkeur} onChange={(e) => setemailVoorkeur(e.target.value)} required>
+                            <option value={'geen'}>Geen</option>
+                            <option value={'nieuwsbrief'} >Nieuws</option>
+                            <option value={'belangrijke informatie'} >Belangrijk</option>
                         </select>
                     </div>
                     <br />
@@ -270,6 +275,9 @@ export function Admin(props) {
                     <br />
                     <br />
                     <button className='btn btn-secondary ' onClick={voegAdmin}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Admin account is succesvol aangemaakt!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

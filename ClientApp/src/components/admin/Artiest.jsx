@@ -13,15 +13,15 @@ export function Artiest(props) {
     const [achternaam, setAchternaam] = useState('');
     const [username, setUsername] = useState('');
     const [password, setpassword] = useState('');
-    const [geslacht, setGeslacht] = useState('');
+    const [geslacht, setGeslacht] = useState('anders');
     const [email, setEmail] = useState('');
     const [geboorteDatum, setGeboorteDatum] = useState('');
     const [adres, setAdres] = useState('');
     const [telefoonnummer, setTelefoonnummer] = useState('');
-    const [emailVoorkeur, setemailVoorkeur] = useState('');
-    const [ip, setIp] = useState('');
-    const [bankGegevens, setbankGegevens] = useState('');
-    const [artiestenGroepId, setArtiestenGroepId] = useState('');
+    const [emailVoorkeur, setemailVoorkeur] = useState('geen');
+    const [artiestenGroepId, setArtiestenGroepId] = useState(null);
+
+    const [res, setRes] = useState(null);
 
     //input handlers
     function voornaamHandler(e) {
@@ -61,6 +61,12 @@ export function Artiest(props) {
     }
 
     function emailvoorkeurHandler(e) {
+        console.log(1);
+        if(e.target.value == '' || e.target.value == null){
+            console.log(2);
+            setemailVoorkeur('geen');
+        }
+        console.log(3);
         setemailVoorkeur(e.target.value);
     }
 
@@ -71,7 +77,7 @@ export function Artiest(props) {
     const getArtiesten = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Account/GetArtiesten', {
+            const response = await fetch('/api/Account/GetArtiesten', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +115,7 @@ export function Artiest(props) {
             optredens: []
         };
 
-        fetch('https://localhost:44461/api/Account/RegistreerArtiest', {
+        const response = await fetch('/api/Account/RegistreerArtiest', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,11 +123,17 @@ export function Artiest(props) {
             },
             body: JSON.stringify(artiest)
         });
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
         console.log(artiest)
     }
 
     useEffect(() => {
         getArtiesten();
+        setemailVoorkeur('geen');
     }, [getArtiesten]);
 
     function submitHandler(event) {
@@ -130,14 +142,14 @@ export function Artiest(props) {
         setpassword('');
         setVoornaam('');
         setAchternaam('');
-        setGeslacht('');
         setEmail('');
         setGeboorteDatum('');
         setAdres('');
         setTelefoonnummer('');
-        setemailVoorkeur('');
-        setArtiestenGroepId('');
+        setArtiestenGroepId(null);
     }
+
+    console.log(emailVoorkeur);
 
     if (props.getEntry == 'GetArtiesten' && artiesten.length > 0) {
         content = artiesten.map((list) => (
@@ -198,7 +210,7 @@ export function Artiest(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label className='fs-5 fw-bold text-info'>Groep account aanmaken</label>
+                    <label className='fs-5 fw-bold text-info'>Artiest account aanmaken</label>
                     <br />
                     <br />
                     <label>Voornaam</label>
@@ -224,10 +236,10 @@ export function Artiest(props) {
                     <label>Geslacht*</label>
                     <br />
                     <div className='btn-group'>
-                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Man')}>Man</option>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Vrouw')}>Vrouw</option>
-                            <option id="groep-invoer" onClick={() => setGeslacht('Anders')}>Anders</option>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' onChange={(e) => setGeslacht(e.target.value)} required>
+                            <option value={'Man'}>Man</option>
+                            <option value={'Vrouw'} >Vrouw</option>
+                            <option value={'Anders'} >Anders/zeg ik liever niet</option>
                         </select>
                     </div>
                     <br />
@@ -255,10 +267,10 @@ export function Artiest(props) {
                     <label>Nieuwsbrief*</label>
                     <br />
                     <div className='btn-group'>
-                        <select className='form-select dropdown-icon-dark bg-light border-dark text-dark' placeholder='Kies een groep' required>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('geen')}>Geen</option>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('nieuws')}>Nieuws</option>
-                            <option id="groep-invoer" onClick={() => setemailVoorkeur('belangrijk')}>Belangrijk</option>
+                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={emailVoorkeur} onChange={emailvoorkeurHandler}>
+                            <option value={'geen'}>Geen</option>
+                            <option value={'nieuwsbrief'} >Nieuws</option>
+                            <option value={'belangrijke informatie'} >Belangrijk</option>
                         </select>
                     </div>
                     <br />
@@ -269,6 +281,9 @@ export function Artiest(props) {
                     <br />
                     <br />
                     <button className='btn btn-secondary ' onClick={voegArtiest}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Artiest account is succesvol aangemaakt!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

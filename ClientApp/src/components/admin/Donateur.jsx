@@ -11,7 +11,7 @@ export function Donateur(props) {
     const getDonateurs = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/Account/GetDonateurs', {
+            const response = await fetch('/api/Account/GetDonateurs', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

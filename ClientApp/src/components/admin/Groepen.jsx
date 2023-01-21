@@ -12,6 +12,8 @@ export function Groep(props) {
     const [groepsNaam, setGroepsNaam] = useState('');
     const [email, setEmail] = useState('');
 
+    const [res, setRes] = useState(null);
+
     //input handlers
     function groepsNaamHandler(e) {
         setGroepsNaam(e.target.value);
@@ -24,7 +26,7 @@ export function Groep(props) {
     const getGroepen = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/artiestenportaal/GetGroepen', {
+            const response = await fetch('/api/artiestenportaal/GetGroepen', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ export function Groep(props) {
             optredens: []
         };
 
-        fetch('https://localhost:44461/api/Account/RegistreerGroep', {
+        const response = await fetch('/api/Account/RegistreerGroep', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,12 +62,16 @@ export function Groep(props) {
             },
             body: JSON.stringify(groep)
         });
-        console.log(groep)
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
     }
 
     useEffect(() => {
         getGroepen();
-    }, [getGroepen]);
+    }, [getGroepen, res]);
 
     function submitHandler(event) {
         event.preventDefault();
@@ -141,6 +147,9 @@ export function Groep(props) {
                     <br />
                     <br />
                     <button className='btn btn-secondary' onClick={voegGroep}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Groep is succesvol aangemaakt!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

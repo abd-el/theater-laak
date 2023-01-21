@@ -4,27 +4,25 @@ export function Zaal(props) {
 
     const [error, setError] = useState(null);
     let content = 'nothing';
+    let reactie = '';
 
     //get states
     const [zalen, setZaal] = useState([]);
 
     //post states
-    const [groepsNaam, setGroepsNaam] = useState('');
-    const [email, setEmail] = useState('');
+    const [aantalR1stoelen, setR1stoelen] = useState('');
+    const [aantalR2stoelen, setR2stoelen] = useState('');
+    const [aantalR3stoelen, setR3stoelen] = useState('');
+    const [aantalR1rijen, setR1rijen] = useState('');
+    const [aantalR2rijen, setR2rijen] = useState('');
+    const [aantalR3rijen, setR3rijen] = useState('');
 
-    //input handlers
-    function groepsNaamHandler(e) {
-        setGroepsNaam(e.target.value);
-    }
-
-    function emailHandler(e) {
-        setEmail(e.target.value);
-    }
+    const [res, setRes] = useState(null);
 
     const getZalen = useCallback(async function () {
         setError(null);
         try {
-            const response = await fetch('https://localhost:44461/api/zaal/GetZalen', {
+            const response = await fetch('/api/zaal/GetZalen', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,12 +44,15 @@ export function Zaal(props) {
 
     async function voegZaal() {
         let zaal = {
-            groepsNaam: groepsNaam,
-            groepsEmail: email,
-            artiesten: []
+            rangEenAantalStoelen: aantalR1stoelen,
+            rangEenAantalRijen: aantalR1rijen,
+            rangTweeAantalStoelen: aantalR2stoelen,
+            rangTweeAantalRijen: aantalR2rijen,
+            rangDrieAantalStoelen: aantalR2stoelen,
+            rangDrieAantalRijen: aantalR3rijen
         };
 
-        fetch('https://localhost:44461/api/zaal/MaakZaal', {
+        const response = await fetch('/api/zaal/AddZaal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,17 +60,29 @@ export function Zaal(props) {
             },
             body: JSON.stringify(zaal)
         });
-        console.log(zaal)
+
+        if (!response.ok) {
+            setRes(false);
+            throw new Error('Er is iets fout gegaan!');
+        }
+        setRes(true);
+        console.log(response);
     }
 
     useEffect(() => {
         getZalen();
-    }, [getZalen]);
+    }, [getZalen, res]);
+
+    console.log(zalen);
 
     function submitHandler(event) {
         event.preventDefault();
-        setGroepsNaam('');
-        setEmail('');
+        setR1stoelen('');
+        setR2stoelen('');
+        setR3stoelen('');
+        setR1rijen('');
+        setR2rijen('');
+        setR3rijen('');
     }
 
     if (props.getEntry == 'GetZalen' && zalen.length > 0) {
@@ -78,11 +91,8 @@ export function Zaal(props) {
                 <td className="Id">
                     {list.zaalId}
                 </td>
-                <td className="type">
-                    {list.grootte}
-                </td>
                 <td className="ingeplandOptredens">
-                    {list.optredens}
+                    {list.stoelen.length}
                 </td>
             </tr>
         ));
@@ -96,12 +106,6 @@ export function Zaal(props) {
                         <tr>
                             <th scope='col'>
                                 ID
-                            </th>
-                            <th scope='col'>
-                                Type
-                            </th>
-                            <th scope='col'>
-                                Geboekte Optredens
                             </th>
                             <th scope='col'>
                                 Aantal Stoelen
@@ -122,13 +126,43 @@ export function Zaal(props) {
             <div>
                 <form onSubmit={submitHandler}>
                     <br />
-                    <label>Zaal aanmaken</label>
+                    <label className='fs-5 fw-bold text-info'>Zaal aanmaken</label>
                     <br />
                     <br />
-                    <input placeholder='Grootte' type='number' min={30} max={400} required />
+                    <label>Aantal Rang 1 stoelen (max. 200)*</label>
+                    <br />
+                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR1stoelen} onChange={(e) => setR1stoelen(e.target.value)} required />
                     <br />
                     <br />
-                    <button onClick={voegZaal}>Aanmaken</button>
+                    <label>Aantal Rang 2 stoelen (max. 200)*</label>
+                    <br />
+                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR2stoelen} onChange={(e) => setR2stoelen(e.target.value)} required />
+                    <br />
+                    <br />
+                    <label>Aantal Rang 3 stoelen (max. 200)*</label>
+                    <br />
+                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR3stoelen} onChange={(e) => setR3stoelen(e.target.value)} required />
+                    <br />
+                    <br />
+                    <label>Aantal Rang 1 rijen (max. 10)*</label>
+                    <br />
+                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR1rijen} onChange={(e) => setR1rijen(e.target.value)} required />
+                    <br />
+                    <br />
+                    <label>Aantal Rang 2 rijen (max. 10)*</label>
+                    <br />
+                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR2rijen} onChange={(e) => setR2rijen(e.target.value)} required />
+                    <br />
+                    <br />
+                    <label>Aantal Rang 3 rijen (max. 10)*</label>
+                    <br />
+                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR3rijen} onChange={(e) => setR3rijen(e.target.value)} required />
+                    <br />
+                    <br />
+                    <button className='btn btn-secondary' onClick={voegZaal}>Aanmaken</button>
+                    <br />
+                    {res == true && <label className='text-success'>Zaal is succesvol aangemaakt!</label>}
+                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );

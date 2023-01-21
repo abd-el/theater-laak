@@ -14,10 +14,6 @@ export function AdminPanel() {
     const [getter, setGetter] = useState('');
     const [setter, setSetter] = useState('');
 
-    useEffect(() => {
-
-    }, [<Optreden />])
-
     return (
         <div>
             <div className='text-white display-5 mb-4 d-block fw-bold'>
@@ -52,20 +48,19 @@ export function AdminPanel() {
                     <label className='text-white display-6 mb-1 d-block'>Setters(Aanmaken)</label>
                     <br />
                     <button className="btn btn-dark" onClick={() => setSetter('PostAdmin')}>Admin</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostMedewerker')} disabled>Medewerker</button>&nbsp;
+                    <button className="btn btn-dark" onClick={() => setSetter('PostMedewerker')}>Medewerker</button>&nbsp;
                     <button className="btn btn-dark" onClick={() => setSetter('PostArtiest')}>Artiest</button>&nbsp;
                     <button className="btn btn-dark" onClick={() => setSetter('PostGroep')}>Groep</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostZaal')} disabled>Zaal</button>&nbsp;
+                    <button className="btn btn-dark" onClick={() => setSetter('PostZaal')} >Zaal</button>&nbsp;
                     <button className="btn btn-dark" onClick={() => setSetter('PostVoorstelling')}>Voorstelling</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostOptreden')} disabled>Optreden</button>&nbsp;
                 </div>
                 <br />
                 <Admin postEntry={setter} />
                 <Medewerker postEntry={setter} />
                 <Artiest postEntry={setter} />
                 <Groep postEntry={setter} />
+                <Zaal postEntry={setter} />
                 <Voorstelling postEntry={setter} />
-                <Optreden postEntry={setter} />
             </div>
         </div>
     );
