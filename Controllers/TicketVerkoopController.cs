@@ -153,7 +153,7 @@ public class TicketVerkoopController : ControllerBase
 
         return Ok(new {
             success = true,
-            tickets = tickets.tickets,
+            ticketIds = ticketIds,
             bericht = "Alle tickets zijn succesvol aangemaakt"
         });
     }
