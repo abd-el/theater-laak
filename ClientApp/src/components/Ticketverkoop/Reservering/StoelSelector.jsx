@@ -4,29 +4,8 @@ import { Figure } from "./Figure";
 import { Container } from "reactstrap";
 import { InfoTab } from "../InfoTab";
 
-export function StoelSelector({ Stoelen, rangId, optredenId }) {
+export function StoelSelector({ Stoelen, optredenId, handleStoelClick, selectie }) {
 
-    const [selectie, setSelectie] = useState([]);
-
-    const handleStoelClick = (e) => {
-        const attr = e.target.attributes;
-        const obj = {
-            stoelId: attr.stoelid.value,
-            zaalId: 0,
-            rang: rangId,
-            rij: attr.rijid.value
-        }
-        if (!selectie) {
-            setSelectie([obj]);
-        }
-        else if (selectie.length == 5) {
-            console.log("max aantal stoelen bereikt");
-            return
-        }
-        else {
-            setSelectie([...selectie, obj]);
-        }
-    }
 
     return (
         <Container fluid={true} className='col-md-10 position-relative'>
