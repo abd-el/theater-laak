@@ -27,9 +27,4 @@ public class Ticket
     public ApplicationUser? ApplicationUser { get; set; }
     public bool Betaald { get; set; } = false;
     public DateTime AangemaaktOp { get; set; } = DateTime.Now;
-
-    public Ticket(ApplicationDbContext _context)
-    {
-        TicketId = _context.Tickets.Count() + 1;
-    }
 }

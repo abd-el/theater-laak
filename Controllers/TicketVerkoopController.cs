@@ -134,16 +134,16 @@ public class TicketVerkoopController : ControllerBase
                 });
             }
 
-            var ticketModel = new Ticket (_context) {
+            var ticketModel = new Ticket {
                 Optreden = optreden,
                 Stoel = stoel,
                 ApplicationUser = user,
                 Betaald = false
             };
 
-            ticketIds.Add(ticketModel.TicketId);
-
             await _context.Tickets.AddAsync(ticketModel);
+
+            ticketIds.Add(ticketModel.TicketId);
         }
 
         await _context.SaveChangesAsync();
