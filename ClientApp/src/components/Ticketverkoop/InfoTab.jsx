@@ -196,7 +196,7 @@ export function InfoTab(props) {
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />
                             <input name="reference" value={opgeslagenRef} className="d-none" />
-                            <input name="url" value={`${document.location.href}/api/TicketVerkoop/RondBestellingAf`} className="d-none" />
+                            <input name="url" value={`${document.location.origin}/api/TicketVerkoop/RondBestellingAf`} className="d-none" />
                             <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
                         <hr className="hr hr-blurry mt-1" style={{ backgroundColor: "red", width: "100%", margin: "0rem" }} />
