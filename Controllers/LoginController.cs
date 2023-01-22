@@ -11,11 +11,35 @@ using Newtonsoft.Json;
 using theater_laak.Data;
 using PasswordGenerator;
 
-public class loginmodel
+public class loginJsonObject
 {
     public string username { get; set; }
     public string password { get; set; }
 }
+
+public class _2faJsonObject
+{
+    public string token { get; set; }
+    public string userName { get; set; }
+}
+
+public class usernameJsonObject
+{
+    public string userName { get; set; }
+}
+
+public class captchaJsonObject
+{
+    public string responseToken { get; set; }
+}
+
+public class GoogleApiResponse
+{
+    public bool success { get; set; }
+    public string challenge_ts { get; set; }
+    public string hostname { get; set; }
+}
+
 
 
 [Route("api/[controller]")]
@@ -43,13 +67,17 @@ public class LoginController : ControllerBase
     //Als alles succesvol is afgerond wordt er een Swt-Token gegenereerd en teruggestuurd als antwoord.
 
     [HttpPost]
-    public async Task<ActionResult> login([FromBody] loginmodel credentials)
+    public async Task<ActionResult> login([FromBody] loginJsonObject credentials)
     {
 
         var user = await _usermanager.FindByNameAsync(credentials.username);
+        if (user == null)
+        {
+            return BadRequest("User Not Found");
+        }
         var result = await _usermanager.CheckPasswordAsync(user, credentials.password);
 
-        if (user.lockout == true)
+        if (user.lockout == true && result)
         {
             if (DateTime.Compare((DateTime)user.unlockDate, DateTime.Now) < 0)
             {
@@ -106,10 +134,9 @@ public class LoginController : ControllerBase
 
 
 
-    public class TweeFactorAuthJsonObject { public string token { get; set; } public string userName { get; set; } }
     [HttpPost]
     [Route("isTokenValid")]
-    public async Task<ActionResult> isTokenValid(TweeFactorAuthJsonObject json)
+    public async Task<ActionResult> isTokenValid(_2faJsonObject json)
     {
         var user = await _usermanager.FindByNameAsync(json.userName);
         if (json.token == user._2faToken)
@@ -126,8 +153,6 @@ public class LoginController : ControllerBase
 
 
 
-
-    public class usernameJsonObject { public string userName { get; set; } }
     [HttpPost]
     [Route("mailToConfirmedAddress")]
     public async Task<ActionResult> MailToConfirmedAddress([FromBody] usernameJsonObject json)
@@ -147,7 +172,6 @@ public class LoginController : ControllerBase
 
 
 
-
     [HttpPost]
     [Route("mailToUnconfirmedAddress")]
     public async Task<ActionResult> MailToUnconfirmedAddress([FromBody] usernameJsonObject json)
@@ -163,20 +187,9 @@ public class LoginController : ControllerBase
 
 
 
-    public class captchaResponseJsonObject { public string responseToken { get; set; } }
-    public class ApiResponse
-    {
-        public bool success { get; set; }
-        public string challenge_ts { get; set; }
-        public string hostname { get; set; }
-    }
-
-
-
-
     [HttpPost]
     [Route("ReCaptcha")]
-    public async Task<ActionResult> test([FromBody] captchaResponseJsonObject _captchaResponse)
+    public async Task<ActionResult> test([FromBody] captchaJsonObject _captchaResponse)
     {
         bool IsHuman = false;
 
@@ -192,7 +205,7 @@ public class LoginController : ControllerBase
 
             if (resp.IsSuccessStatusCode)
             {
-                var json = await resp.Content.ReadFromJsonAsync<ApiResponse>();
+                var json = await resp.Content.ReadFromJsonAsync<GoogleApiResponse>();
                 Console.WriteLine(json.success);
                 IsHuman = json.success;
             }
