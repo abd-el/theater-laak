@@ -1,0 +1,7 @@
+@startuml
+class Woordenboek {
+    + Woorden : HashSet<string> <<get>> <<set>>
+    + stringBevatWoord(zoekWoord:string, lengte:int) : bool
+    + Woordenboek()
+}
+@enduml

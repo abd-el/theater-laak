@@ -1,0 +1,5 @@
+@startuml
+class Admin {
+}
+Medewerker <|-- Admin
+@enduml

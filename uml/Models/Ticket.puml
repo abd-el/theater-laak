@@ -1,0 +1,15 @@
+@startuml
+class Ticket {
+    + TicketId : int <<get>> <<set>>
+    + QR : string <<get>> <<set>>
+    - _UserId : string
+    + UserId : string? <<get>> <<set>>
+    + OptredenId : int <<get>> <<set>>
+    + StoelId : int <<get>> <<set>>
+    + Stoel : Stoel? <<get>> <<set>>
+    + Optreden : Optreden? <<get>> <<set>>
+    + ApplicationUser : ApplicationUser? <<get>> <<set>>
+    + Betaald : bool <<get>> <<set>> = false
+    + AangemaaktOp : DateTime <<get>> <<set>>
+}
+@enduml

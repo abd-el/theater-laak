@@ -1,0 +1,18 @@
+@startuml
+class Optreden {
+    + OptredenId : int <<get>> <<set>>
+    + Prijs : double <<get>> <<set>>
+    + DatumTijdstip : DateTime <<get>> <<set>>
+    + ArtiestenGroepId : int? <<get>> <<set>>
+    + ArtiestId : string? <<get>> <<set>>
+    + Artiest : Artiest? <<get>> <<set>>
+    + ArtiestenGroep : ArtiestenGroep? <<get>> <<set>>
+    + VoorstellingId : int <<get>> <<set>>
+    + Voorstelling : Voorstelling? <<get>> <<set>>
+    + BegunstigersExclusief : Boolean <<get>> <<set>>
+    + Tickets : List<Ticket> <<get>> <<set>>
+    + Bevestigd : Boolean? <<get>> <<set>>
+    + ZaalId : int <<get>> <<set>>
+    + Zaal : Zaal <<get>> <<set>>
+}
+@enduml

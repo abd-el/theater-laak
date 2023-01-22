@@ -1,0 +1,69 @@
+@startuml
+class AccountController {
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    - <<readonly>> _adminManager : UserManager<Admin>
+    - <<readonly>> _medewerkerManager : UserManager<Medewerker>
+    - <<readonly>> _artiestManager : UserManager<Artiest>
+    - <<readonly>> _klantManager : UserManager<Klant>
+    - <<readonly>> _signInManager : SignInManager<ApplicationUser>
+    - <<readonly>> _roleManager : RoleManager<IdentityRole>
+    - <<readonly>> _context : ApplicationDbContext
+    - <<readonly>> _logger : ILogger<AccountController>
+    + AccountController(appuser:UserManager<ApplicationUser>, medewerker:UserManager<Medewerker>, artiest:UserManager<Artiest>, admin:UserManager<Admin>, klant:UserManager<Klant>, signIn:SignInManager<ApplicationUser>, role:RoleManager<IdentityRole>, context:ApplicationDbContext, logger:ILogger<AccountController>)
+    + <<async>> assignRole(username:string, role:string) : Task<ActionResult>
+    + <<async>> RegistreerKlant(klant:Klant) : Task<ActionResult>
+    + <<async>> UserNameCheck(username:test) : Task<ActionResult>
+    + <<async>> WachtwoordCheck(wachtwoord:test2) : Task<ActionResult>
+    + <<async>> EmailCheck(emailObj:Email) : Task<ActionResult>
+    + <<async>> RegistreerMedewerker(medewerker:Medewerker) : Task<ActionResult>
+    + <<async>> RegistreerArtiest(artiest:Artiest) : Task<ActionResult>
+    + <<async>> RegistreerAdmin(adminDTO:Admin) : Task<ActionResult>
+    + <<async>> RegistreerMedewerker(adminDTO:Admin) : Task<ActionResult>
+    + <<async>> RegistreerGroep(artiestengroep:ArtiestenGroep) : Task<ActionResult>
+    + <<async>> GetUser() : Task<ActionResult<ApplicationUser>>
+    + <<async>> GetMedewerkers() : Task<ActionResult<IEnumerable<Medewerker>>>
+    + <<async>> GetArtiest() : Task<ActionResult<IEnumerable<Artiest>>>
+    + <<async>> GetAdmins() : Task<ActionResult<IEnumerable<Admin>>>
+    + <<async>> GetGroepen() : Task<ActionResult<IEnumerable<ArtiestenGroep>>>
+    + <<async>> GetDonateurs() : Task<ActionResult<IEnumerable<ApplicationUser>>>
+    + <<async>> DeleteUser(userName:string) : Task<IActionResult>
+    + <<async>> DeleteGroep(groepsnaam:string) : Task<IActionResult>
+    + <<async>> UpdateWachtwoord(veranderWachtwoordJsonGegevens:VeranderWachtwoordJsonGegevens) : Task<IActionResult>
+    + <<async>> UpdateVergetenWw(nieuwWachtwoordJson:VeranderVergetenWachtwoordJson) : Task<IActionResult>
+    - <<async>> PasswordChanger(user:ApplicationUser, nieuwWachtwoord:string) : Task<IActionResult>
+    + <<async>> UpdateInstellingen(accountInstellingenJsonGegevens:AccountInstellingenJsonGegevens) : Task<IActionResult>
+}
+class AccountInstellingenJsonGegevens {
+    + voornaam : string <<get>> <<set>>
+    + achternaam : string <<get>> <<set>>
+    + email : string <<get>> <<set>>
+    + telefoonnummer : string <<get>> <<set>>
+    + geboorteDatum : string <<get>> <<set>>
+    + emailvoorkeur : string <<get>> <<set>>
+    + geslacht : string <<get>> <<set>>
+    + EmailConfirmed : bool <<get>> <<set>>
+    + TwoFactorEnabled : bool <<get>> <<set>>
+    + AccountInstellingenJsonGegevens(voornaam:string, achternaam:string, email:string, telefoonnummer:string, geboorteDatum:string, emailvoorkeur:string, geslacht:string, EmailConfirmed:bool, TwoFactorEnabled:bool)
+}
+class VeranderWachtwoordJsonGegevens {
+    + huidigWachtwoord : string <<get>> <<set>>
+    + nieuwWachtwoord : string <<get>> <<set>>
+    + VeranderWachtwoordJsonGegevens(huidigWachtwoord:string, nieuwWachtwoord:string)
+}
+class VeranderVergetenWachtwoordJson {
+    + nieuwWachtwoord : string <<get>> <<set>>
+}
+class test {
+    + username : string <<get>> <<set>>
+}
+class test2 {
+    + wachtwoord : string <<get>> <<set>>
+}
+class Email {
+    + email : string <<get>> <<set>>
+}
+ControllerBase <|-- AccountController
+AccountController +-- test
+AccountController +-- test2
+AccountController +-- Email
+@enduml

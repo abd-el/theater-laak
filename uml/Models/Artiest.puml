@@ -1,0 +1,8 @@
+@startuml
+class Artiest {
+    + ArtiestenGroepId : int? <<get>> <<set>>
+    + ArtiestenGroep : ArtiestenGroep? <<get>> <<set>>
+    + Optredens : List<Optreden> <<get>> <<set>>
+}
+ApplicationUser <|-- Artiest
+@enduml

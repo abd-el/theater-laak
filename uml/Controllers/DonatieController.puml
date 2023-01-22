@@ -1,0 +1,30 @@
+@startuml
+class DonatieController {
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    - <<readonly>> _context : ApplicationDbContext
+    + DonatieController(p:UserManager<ApplicationUser>, c:ApplicationDbContext)
+    + <<async>> RondAutorisatieAf(gegevens:DonatieAutorisatieJsonGegevens) : Task<ActionResult>
+    + Autoriseer(token:string) : ActionResult
+    + <<async>> MaakDonatie(gegevens:DonatieCreatieJsonGegevens) : Task<ActionResult>
+    + <<async>> GetDonaties() : Task<ActionResult>
+}
+class DonatieCreatieJsonGegevens {
+    + hoeveelheid : string <<get>> <<set>>
+    + bericht : string <<get>> <<set>>
+    + anoniem : Boolean <<get>> <<set>>
+    + DonatieCreatieJsonGegevens(hoeveelheid:string, bericht:string, anoniem:Boolean)
+}
+class DonatieAutorisatieJsonGegevens {
+    + ikDoneerToken : string <<get>> <<set>>
+    + DonatieAutorisatieJsonGegevens(ikDoneerToken:string)
+}
+class DonatieJsonGegevens {
+    + donatieId : int <<get>> <<set>>
+    + datum : DateTime <<get>> <<set>>
+    + bedrag : double <<get>> <<set>>
+    + userId : string? <<get>> <<set>>
+    + bericht : string? <<get>> <<set>>
+    + DonatieJsonGegevens(donatieId:int, datum:DateTime, bedrag:double, userId:string?, bericht:string?)
+}
+ControllerBase <|-- DonatieController
+@enduml

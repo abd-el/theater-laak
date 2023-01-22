@@ -1,0 +1,25 @@
+@startuml
+class ProgrammeringController {
+    - <<readonly>> _context : ApplicationDbContext
+    + ProgrammeringController(c:ApplicationDbContext)
+    + <<async>> GetVoorstellingen() : Task<ActionResult<IEnumerable<Voorstelling>>>
+    + <<async>> VoegVoorstelling(voorstelling:VoorstellingJsonGegevens) : Task<ActionResult>
+    + <<async>> VeranderVoorstelling(id:int, v:Voorstelling) : Task<IActionResult>
+    + <<async>> VerwijderVoorstelling(VoorstellingId:int) : Task<ActionResult>
+    + <<async>> GetOptredens() : Task<ActionResult<IEnumerable<Optreden>>>
+    + <<async>> GetBevestigdeOptredens() : Task<ActionResult<IEnumerable<Optreden>>>
+    + <<async>> GetNietBevestigdeOptredens() : Task<ActionResult<IEnumerable<Optreden>>>
+    + <<async>> VoegOptreden(optreden:Optreden) : Task<ActionResult>
+    + <<async>> BevestigOptreden(id:int) : Task<IActionResult>
+    + <<async>> veranderOptreden(id:int, o:Optreden) : Task<IActionResult>
+    + <<async>> VerwijderOptreden(OptredenId:int) : Task<ActionResult>
+}
+class VoorstellingJsonGegevens {
+    + titel : string <<get>> <<set>>
+    + tijdsduurInMinuten : int <<get>> <<set>>
+    + beschrijving : string <<get>> <<set>>
+    + afbeelding : string <<get>> <<set>>
+    + VoorstellingJsonGegevens(titel:string, tijdsduurInMinuten:int, beschrijving:string, afbeelding:string)
+}
+ControllerBase <|-- ProgrammeringController
+@enduml

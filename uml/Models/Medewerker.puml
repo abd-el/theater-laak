@@ -1,0 +1,9 @@
+@startuml
+class Medewerker {
+    + IP : string <<get>> <<set>>
+    + BankGegevens : string <<get>> <<set>>
+    + DienstDatum : DateTime <<get>> <<set>>
+    + Loon : Double <<get>> <<set>>
+}
+ApplicationUser <|-- Medewerker
+@enduml

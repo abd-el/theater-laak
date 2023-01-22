@@ -1,0 +1,11 @@
+@startuml
+class Voorstelling {
+    + VoorstellingId : int <<get>> <<set>>
+    + Afbeelding : string <<get>> <<set>>
+    + Titel : string <<get>> <<set>>
+    + Beschrijving : string <<get>> <<set>>
+    + TijdsduurInMinuten : int <<get>> <<set>>
+    + Optredens : List<Optreden> <<get>> <<set>>
+    + Voorstelling(Afbeelding:string, Titel:string, Beschrijving:string, TijdsduurInMinuten:int)
+}
+@enduml

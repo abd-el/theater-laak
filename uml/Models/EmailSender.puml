@@ -1,0 +1,5 @@
+@startuml
+class EmailSender {
+    + <<async>> SendEmail(tekst:string, userEmail:string) : Task
+}
+@enduml

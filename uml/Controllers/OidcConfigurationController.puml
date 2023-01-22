@@ -1,0 +1,9 @@
+@startuml
+class OidcConfigurationController {
+    - <<readonly>> _logger : ILogger<OidcConfigurationController>
+    + OidcConfigurationController(clientRequestParametersProvider:IClientRequestParametersProvider, logger:ILogger<OidcConfigurationController>)
+    + ClientRequestParametersProvider : IClientRequestParametersProvider <<get>>
+    + GetClientRequestParameters(clientId:string) : IActionResult
+}
+Controller <|-- OidcConfigurationController
+@enduml

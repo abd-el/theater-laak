@@ -1,0 +1,9 @@
+@startuml
+class Zaal {
+    + ZaalId : int <<get>> <<set>>
+    + Optredens : List<Optreden> <<get>> <<set>>
+    + Stoelen : List<Stoel> <<get>> <<set>>
+    + AddRij(aantalStoelen:int, rang:int, rij:int) : bool
+    + AddRang(aantalStoelen:int, aantalRijen:int, rang:int) : bool
+}
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class WeatherForecastController {
+    - {static} <<readonly>> Summaries : string[]
+    - <<readonly>> _logger : ILogger<WeatherForecastController>
+    + WeatherForecastController(logger:ILogger<WeatherForecastController>)
+    + Get() : IEnumerable<WeatherForecast>
+}
+ControllerBase <|-- WeatherForecastController
+@enduml

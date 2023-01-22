@@ -1,0 +1,12 @@
+@startuml
+class Stoel {
+    + StoelId : int <<get>> <<set>>
+    + ZaalId : int <<get>> <<set>>
+    - _rang : int
+    <<internal>> Zaal : Zaal
+    + Rang : int <<get>> <<set>>
+    + Tickets : List<Ticket> <<get>> <<set>>
+    + Rij : int <<get>> <<set>>
+    + IsBeschikbaar(optredenId:int) : bool
+}
+@enduml
