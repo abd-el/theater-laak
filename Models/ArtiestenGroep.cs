@@ -14,19 +14,3 @@ public class ArtiestenGroep {
         this.Artiesten = new List<Artiest>();
     }
 }
-
-public class ArtiestenGroepJsonGegevens {
-    public string groepsNaam {get; set;}
-    public string? groepsEmail {get; set;}
-    public ArtiestenGroepJsonGegevens(string groepsNaam, string? groepsEmail) {
-        this.groepsNaam = groepsNaam;
-        this.groepsEmail = groepsEmail;
-    }
-}
-
-public class GroepIdJson {
-    public int groepsId {get; set;}
-    public GroepIdJson(int groepsId) {
-        this.groepsId = groepsId;
-    }
-}
