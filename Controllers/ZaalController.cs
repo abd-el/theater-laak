@@ -38,9 +38,10 @@ public class ZaalController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> AddZaal([FromBody] ZaalCreatieJson gegevens){
         var zaal = new Zaal();
-        zaal.AddRang(gegevens.rangEenAantalStoelen, gegevens.rangEenAantalRijen, 1);
-        zaal.AddRang(gegevens.rangTweeAantalStoelen, gegevens.rangTweeAantalRijen, 2);
-        zaal.AddRang(gegevens.rangDrieAantalStoelen, gegevens.rangDrieAantalRijen, 3);
+        
+        for (int i = 1; i < 3; i++) {
+            zaal.AddRang(gegevens.rangEenAantalStoelen, gegevens.rangEenAantalRijen, i);
+        }
 
         var success = await _context.Zalen.AddAsync(zaal);
         if (success == null) {
