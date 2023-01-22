@@ -1,0 +1,36 @@
+@startuml
+class AutoriseerArtiestenOfHoger {
+    + AutoriseerArtiestenOfHoger()
+}
+class ArtiestenportaalController {
+    - <<readonly>> _context : ApplicationDbContext
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    - <<readonly>> _artiestenManager : UserManager<Artiest>
+    + ArtiestenportaalController(c:ApplicationDbContext, p:UserManager<ApplicationUser>, a:UserManager<Artiest>)
+    + <<async>> GetGroepen() : Task<ActionResult>
+    + <<async>> MaakGroep(gegevens:ArtiestenGroepJsonGegevens) : Task<ActionResult>
+    + <<async>> SluitAan(gegevens:GroepIdJson) : Task<ActionResult>
+    + <<async>> Vertrek(gegevens:GroepIdJson) : Task<ActionResult>
+    + <<async>> MaakBoeking(gegevens:BoekingJsonGegevens) : Task<ActionResult>
+    + <<async>> EigenOptredens() : Task<ActionResult>
+}
+class BoekingJsonGegevens {
+    + datum : string <<get>> <<set>>
+    + tijdstip : string <<get>> <<set>>
+    + groep : int? <<get>> <<set>>
+    + zaalId : int <<get>> <<set>>
+    + voorstellingId : int <<get>> <<set>>
+    + prijs : double <<get>> <<set>>
+}
+class ArtiestenGroepJsonGegevens {
+    + groepsNaam : string <<get>> <<set>>
+    + groepsEmail : string? <<get>> <<set>>
+    + ArtiestenGroepJsonGegevens(groepsNaam:string, groepsEmail:string?)
+}
+class GroepIdJson {
+    + groepsId : int <<get>> <<set>>
+    + GroepIdJson(groepsId:int)
+}
+AuthorizeAttribute <|-- AutoriseerArtiestenOfHoger
+ControllerBase <|-- ArtiestenportaalController
+@enduml

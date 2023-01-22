@@ -95,7 +95,6 @@ public class TicketVerkoopController : ControllerBase
         }
 
         var hoeveelsteTicket = 0;
-        var ticketIds = new List<int>();
         foreach (var ticket in tickets.tickets) {
             hoeveelsteTicket++;
             var optreden = await _context.Optredens
@@ -141,19 +140,34 @@ public class TicketVerkoopController : ControllerBase
                 Betaald = false
             };
 
-            ticketIds.Add(ticketModel.TicketId);
-
             await _context.Tickets.AddAsync(ticketModel);
         }
 
         await _context.SaveChangesAsync();
+        
+        var ticketIds = new List<int>();
+        foreach (var ticket in tickets.tickets) {
+            var ticketModel = await _context.Tickets
+                .Include(t => t.Optreden)
+                .Include(t => t.Stoel)
+                .Include(t => t.ApplicationUser)
+                .FirstOrDefaultAsync(t => t.Optreden.OptredenId == ticket.optredenId && t.Stoel.StoelId == ticket.stoelId);
+            if (ticketModel == null) {
+                return StatusCode(400, new {
+                    success = false,
+                    bericht = "Ticket niet gevonden"
+                });
+            }
+
+            ticketIds.Add(ticketModel.TicketId);
+        }
 
         // ⬇️ dit is een async functie, maar we willen niet wachten op de uitvoering
         TicketControleur.ControleerNaMinuten(ticketIds, 5, _context);
 
         return Ok(new {
             success = true,
-            tickets = tickets.tickets,
+            ticketIds = ticketIds,
             bericht = "Alle tickets zijn succesvol aangemaakt"
         });
     }

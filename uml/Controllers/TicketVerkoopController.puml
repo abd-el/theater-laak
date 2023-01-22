@@ -1,0 +1,30 @@
+@startuml
+class TicketVerkoopController {
+    - <<readonly>> _context : ApplicationDbContext
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    + TicketVerkoopController(context:ApplicationDbContext, userManager:UserManager<ApplicationUser>)
+    + <<async>> RondBestellingAf(gegevens:RondBestellingAfGegevensForm) : Task<ActionResult>
+    + <<async>> MaakTickets(tickets:TicketsCreatieJson) : Task<ActionResult>
+    + <<async>> GetEigenTickets() : Task<ActionResult>
+    + <<async>> BevestigTickets(gegevens:BevestigTicketsJson) : Task<ActionResult>
+}
+class TicketCreatieJson {
+    + optredenId : int <<get>> <<set>>
+    + stoelId : int <<get>> <<set>>
+}
+class TicketsCreatieJson {
+    + tickets : List<TicketCreatieJson> <<get>> <<set>>
+}
+class RondBestellingAfGegevensForm {
+    + account : string <<get>> <<set>>
+    + succes : Boolean <<get>> <<set>>
+    + reference : string <<get>> <<set>>
+}
+class BevestigTicketsJson {
+    + ticketIds : List<int> <<get>> <<set>>
+}
+class TicketControleur {
+    + {static} <<async>> ControleerNaMinuten(ticketIds:List<int>, minuten:int, _context:ApplicationDbContext) : Task
+}
+ControllerBase <|-- TicketVerkoopController
+@enduml

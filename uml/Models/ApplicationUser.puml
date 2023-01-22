@@ -1,0 +1,23 @@
+@startuml
+class ApplicationUser {
+    + Voornaam : string? <<get>> <<set>>
+    + Achternaam : string <<get>> <<set>>
+    + GeboorteDatum : string? <<get>> <<set>>
+    + Adres : string? <<get>> <<set>>
+    + Geslacht : string? <<get>> <<set>>
+    + Telefoonnummer : string? <<get>> <<set>>
+    + Password : string? <<get>> <<set>>
+    + _2faToken : string? <<get>> <<set>>
+    + _2faExpDate : DateTime? <<get>> <<set>>
+    - _Emailvoorkeur : string
+    + Emailvoorkeur : string <<get>> <<set>>
+    + Tickets : IEnumerable<Ticket> <<get>> <<set>>
+    + <<override>> Id : string <<get>> <<set>>
+    + Donaties : IEnumerable<Donatie> <<get>> <<set>>
+    + IkDoneerToken : string? <<get>> <<set>>
+    + FailedAttempts : int? <<get>> <<set>>
+    + lockout : bool? <<get>> <<set>>
+    + unlockDate : DateTime? <<get>> <<set>>
+}
+IdentityUser <|-- ApplicationUser
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+class loginJsonObject {
+    + username : string <<get>> <<set>>
+    + password : string <<get>> <<set>>
+}
+class _2faJsonObject {
+    + token : string <<get>> <<set>>
+    + userName : string <<get>> <<set>>
+}
+class usernameJsonObject {
+    + userName : string <<get>> <<set>>
+}
+class captchaJsonObject {
+    + responseToken : string <<get>> <<set>>
+}
+class GoogleApiResponse {
+    + success : bool <<get>> <<set>>
+    + challenge_ts : string <<get>> <<set>>
+    + hostname : string <<get>> <<set>>
+}
+class LoginController {
+    client : HttpClient
+    emailsender : EmailSender
+    _usermanager : UserManager<ApplicationUser>
+    _context : ApplicationDbContext
+    + LoginController(u:UserManager<ApplicationUser>, context:ApplicationDbContext)
+    + <<async>> login(credentials:loginJsonObject) : Task<ActionResult>
+    + <<async>> isTokenValid(json:_2faJsonObject) : Task<ActionResult>
+    + <<async>> MailToConfirmedAddress(json:usernameJsonObject) : Task<ActionResult>
+    + <<async>> MailToUnconfirmedAddress(json:usernameJsonObject) : Task<ActionResult>
+    + <<async>> test(_captchaResponse:captchaJsonObject) : Task<ActionResult>
+    + validateSwtToken() : ActionResult
+    - <<async>> SendTokenToEmail(user:ApplicationUser) : Task
+    - <<async>> Create2FaToken(user:ApplicationUser) : Task<string>
+    - <<async>> GenerateJwt(user:ApplicationUser) : Task<JwtSecurityToken>
+}
+ControllerBase <|-- LoginController
+@enduml

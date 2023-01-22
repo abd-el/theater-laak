@@ -1,0 +1,10 @@
+@startuml
+class Donatie {
+    + DonatieId : int <<get>> <<set>>
+    + Datum : DateTime <<get>> <<set>>
+    + TotaalBedrag : double <<get>> <<set>>
+    + ApplicationUser : ApplicationUser? <<get>> <<set>>
+    + UserId : string? <<get>> <<set>>
+    + Bericht : string? <<get>> <<set>>
+}
+@enduml

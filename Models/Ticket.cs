@@ -1,3 +1,5 @@
+using theater_laak.Data;
+
 namespace theater_laak.Models;
 
 public class Ticket

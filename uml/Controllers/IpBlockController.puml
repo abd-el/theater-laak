@@ -1,0 +1,7 @@
+@startuml
+class IpBlockController {
+    + Unblocked() : string
+    + Blocked() : string
+}
+ControllerBase <|-- IpBlockController
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class OptredenQueryGegevens {
+    + optredenId : string <<get>> <<set>>
+}
+class OptredenController {
+    - <<readonly>> _context : ApplicationDbContext
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    + OptredenController(c:ApplicationDbContext, p:UserManager<ApplicationUser>, a:UserManager<Artiest>)
+    + <<async>> GetOptreden(gegevens:OptredenQueryGegevens) : Task<ActionResult>
+    + <<async>> GetStoelen(gegevens:OptredenQueryGegevens) : Task<ActionResult>
+}
+ControllerBase <|-- OptredenController
+@enduml

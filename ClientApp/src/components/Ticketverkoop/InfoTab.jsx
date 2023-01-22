@@ -3,7 +3,7 @@ export function InfoTab(props) {
 
     const [optreden, setOptreden] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [opgeslagenRef, setRef] = useState(0);
+    const [opgeslagenRef, setRef] = useState(null);
     const [totalePrijs, setTotalePrijs] = useState('');
     const [ticketId, setId] = useState('onbekend');
     const BetalingKnopRef = useRef(null);
@@ -88,7 +88,7 @@ export function InfoTab(props) {
                 setOptreden(data);
                 prijsBerekenen();
             });
-    }, [props.optredenId, props.gekozenStoelen,totalePrijs]);
+    }, [props.optredenId, props.gekozenStoelen, totalePrijs]);
 
     async function MaakTicketsAan() {
         let id = 'onbekend';
@@ -110,16 +110,17 @@ export function InfoTab(props) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    setRef(data.id);
-                    setId(data.id);
-                    id = data.id;
+                    id = data.ticketIds.toString();
+                    setRef(id);
+                    setId(id);
+                    console.log(id);
                 }
             })
     }
 
     useEffect(() => {
         if (opgeslagenRef == ticketId) {
-            BetalingKnopRef.current.submit();
+             BetalingKnopRef.current.submit();
         }
     }, [opgeslagenRef, ticketId]);
 
@@ -151,11 +152,11 @@ export function InfoTab(props) {
                     &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
                     <div>
                         <br />
-                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><span>{optreden.zaalId}</span>
                         <br />
-                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><span>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</span>
                         <br />
-                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                        &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><span>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</span>
                         <br />
                     </div>
                 </div>
@@ -172,18 +173,18 @@ export function InfoTab(props) {
                         <br />
                         <br />
                         {props.gekozenStoelen.map((stoel) => (
-                            <text className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<text className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</text>&nbsp;&nbsp;<text className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{stoel.rang == 1 ? `€ ${optreden.prijs + 10}` : stoel.rang == 2 ? `€ ${optreden.prijs + 5}` : `€ ${optreden.prijs + 1.50}`}&nbsp;</text><br /></text>
+                            <span className='text-secondary'>{'Rij ' + stoel.rij + ' stoel ' + stoel.stoelId}&nbsp;&nbsp;<span className='badge bg-secondary text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{' Rang ' + stoel.rang}&nbsp;</span>&nbsp;&nbsp;<span className='badge bg-danger text-wrap' style={{ width: "3rem", fontSize: "9px" }}>{stoel.rang == 1 ? `€ ${optreden.prijs + 10}` : stoel.rang == 2 ? `€ ${optreden.prijs + 5}` : `€ ${optreden.prijs + 1.50}`}&nbsp;</span><br /></span>
                         ))}
                         <hr className="hr hr-blurry" style={{ backgroundColor: "red" }} />
                         <img className='rounded shadow-4 float-sm-start' src={optreden.voorstelling.afbeelding} height='135' />
                         &nbsp;&nbsp;&nbsp;<label className='fs-4 fw-bold'>{optreden.voorstelling.titel}</label>
                         <div>
                             <br />
-                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><text>{optreden.zaalId}</text>
+                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Zaal: </strong><span>{optreden.zaalId}</span>
                             <br />
-                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><text>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</text>
+                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Datum: </strong><span>{weekdays[new Date(optreden.datumTijdstip.split('T')[0]).getDay()] + ' ' + new Date(optreden.datumTijdstip.split('T')[0]).getDate() + ' ' + months[new Date(optreden.datumTijdstip.split('T')[0]).getMonth()]}</span>
                             <br />
-                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><text>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</text>
+                            &nbsp;&nbsp;<strong className='text-danger'>•</strong><strong>&nbsp;Tijdstip: </strong><span>{optreden.datumTijdstip.split('T')[1].substring(0, 5) + ' tot ' + einde(optreden.datumTijdstip, optreden.voorstelling.tijdsduurInMinuten).split('T')[1].substring(0, 5)}</span>
                             <br />
                         </div>
                     </div>
@@ -196,7 +197,7 @@ export function InfoTab(props) {
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />
                             <input name="reference" value={opgeslagenRef} className="d-none" />
-                            <input name="url" value={`${document.location.href}/api/TicketVerkoop/RondBestellingAf`} className="d-none" />
+                            <input name="url" value={`${document.location.origin}/api/TicketVerkoop/RondBestellingAf`} className="d-none" />
                             <input id="naarBetaling" type="submit" value="Betaling" />
                         </form>
                         <hr className="hr hr-blurry mt-1" style={{ backgroundColor: "red", width: "100%", margin: "0rem" }} />

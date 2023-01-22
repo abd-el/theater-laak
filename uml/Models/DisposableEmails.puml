@@ -1,0 +1,9 @@
+@startuml
+class ApiResponse {
+    + disposable : bool <<get>> <<set>>
+}
+class DisposableEmails {
+    - {static} <<readonly>> client : HttpClient
+    + <<async>> CheckEmail(email:string) : Task<bool>
+}
+@enduml

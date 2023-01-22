@@ -1,0 +1,10 @@
+@startuml
+class ArtiestenGroep {
+    + ArtiestenGroepId : int <<get>> <<set>>
+    + GroepsNaam : string <<get>> <<set>>
+    + GroepsEmail : string? <<get>> <<set>>
+    + Artiesten : List<Artiest> <<get>> <<set>>
+    + Optredens : List<Optreden> <<get>> <<set>>
+    + ArtiestenGroep(groepsNaam:string)
+}
+@enduml

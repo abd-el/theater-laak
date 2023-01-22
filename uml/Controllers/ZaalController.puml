@@ -1,0 +1,26 @@
+@startuml
+class ZaalController {
+    - <<readonly>> _context : ApplicationDbContext
+    - <<readonly>> _userManager : UserManager<ApplicationUser>
+    + ZaalController(c:ApplicationDbContext, p:UserManager<ApplicationUser>)
+    + <<async>> GetZalen() : Task<ActionResult>
+    + <<async>> AddZaal(gegevens:ZaalCreatieJson) : Task<ActionResult>
+    + <<async>> DeleteZaal(gegevens:ZaalGegevensJson) : Task<ActionResult>
+    + <<async>> GetZaal(gegevens:ZaalGegevensQuery) : Task<ActionResult>
+}
+class ZaalCreatieJson {
+    + rangEenAantalStoelen : int <<get>> <<set>>
+    + rangEenAantalRijen : int <<get>> <<set>>
+    + rangTweeAantalStoelen : int <<get>> <<set>>
+    + rangTweeAantalRijen : int <<get>> <<set>>
+    + rangDrieAantalStoelen : int <<get>> <<set>>
+    + rangDrieAantalRijen : int <<get>> <<set>>
+}
+class ZaalGegevensJson {
+    + zaalId : int <<get>> <<set>>
+}
+class ZaalGegevensQuery {
+    + zaalId : int <<get>> <<set>>
+}
+ControllerBase <|-- ZaalController
+@enduml
