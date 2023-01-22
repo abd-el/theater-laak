@@ -27,6 +27,10 @@ public class Stoel
     public int Rij { get; set; }
 
     public bool IsBeschikbaar(int optredenId) {
+        if (this.Tickets == null) {
+            return true;
+        }
+
         return !this.Tickets.Any(t => t.OptredenId == optredenId);
     }
 }
