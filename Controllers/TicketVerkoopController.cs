@@ -94,7 +94,8 @@ public class TicketVerkoopController : ControllerBase
             user = await _userManager.FindByNameAsync(userName);
         }
 
-        int hoeveelsteTicket = 0;
+        var hoeveelsteTicket = 0;
+        var ticketIds = new List<int>();
         foreach (var ticket in tickets.tickets) {
             hoeveelsteTicket++;
             var optreden = await _context.Optredens
@@ -140,10 +141,15 @@ public class TicketVerkoopController : ControllerBase
                 Betaald = false
             };
 
+            ticketIds.Add(ticketModel.TicketId);
+
             await _context.Tickets.AddAsync(ticketModel);
         }
 
         await _context.SaveChangesAsync();
+
+        // ⬇️ dit is een async functie, maar we willen niet wachten op de uitvoering
+        TicketControleur.ControleerNaMinuten(ticketIds, 5, _context);
 
         return Ok(new {
             success = true,
@@ -211,9 +217,6 @@ public class TicketVerkoopController : ControllerBase
         }
 
         await _context.SaveChangesAsync();
-
-        // ⬇️ dit is een async functie, maar we willen niet wachten op de uitvoering
-        TicketControleur.ControleerNaMinuten(gegevens.ticketIds, 5, _context);
 
         return Ok(new {
             success = true,
