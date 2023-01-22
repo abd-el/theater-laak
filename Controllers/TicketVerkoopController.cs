@@ -134,7 +134,7 @@ public class TicketVerkoopController : ControllerBase
                 });
             }
 
-            var ticketModel = new Ticket {
+            var ticketModel = new Ticket (_context) {
                 Optreden = optreden,
                 Stoel = stoel,
                 ApplicationUser = user,
