@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 export function InfoTab(props) {
 
     const [optreden, setOptreden] = useState([]);
-    const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [opgeslagenRef, setRef] = useState(0);
     const [totalePrijs, setTotalePrijs] = useState('');
@@ -84,13 +83,12 @@ export function InfoTab(props) {
         fetch(`/api/optreden/GetOptreden?optredenId=${props.optredenId}`)
             .then(response => response.json())
             .then(data => {
-                setData(data);
                 setIsLoading(false);
                 console.log(data);
                 setOptreden(data);
                 prijsBerekenen();
             });
-    }, [props.optredenId, props.gekozenStoelen]);
+    }, [props.optredenId, props.gekozenStoelen,totalePrijs]);
 
     async function MaakTicketsAan() {
         let id = 'onbekend';
@@ -193,7 +191,7 @@ export function InfoTab(props) {
                 <div className="square bg-dark rounded position-relative mx-auto mt-3 w-50 p-3">
                     <div className='square rounded p-2' >
                         <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "300px" }}>TOTAAL </label>
-                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label className='fs-5 fw-bold p-2' style={{ blockSize: "3rem", width: "145px", textAlign: "right" }}>{'€ ' + totalePrijs.toFixed(2)}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <button className='square rounded p-2 btn-danger' onClick={MaakTicketsAan}>Betalen</button>
                         <form ref={BetalingKnopRef} className='d-none' action="https://fakepay.azurewebsites.net" method="post" encType="application/x-www-form-urlencoded">
                             <input name="amount" value={totalePrijs} className="d-none" />

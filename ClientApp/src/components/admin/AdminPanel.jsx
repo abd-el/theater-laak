@@ -24,15 +24,15 @@ export function AdminPanel() {
             <div>
                 <label className='text-white display-6 mb-1 d-block'>Getters(Ophalen)</label>
                 <br />
-                <button className="btn btn-dark" onClick={() => setGetter('GetAdmins')}>Admins</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetMedewerkers')}>Medewerkers</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetArtiesten')}>Artiesten</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetGroepen')}>Groepen</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetDonateurs')}>Donateurs</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetZalen')}>Zalen</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetVoorstellingen')}>Voorstellingen</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetOptredens')}>Optredens</button>&nbsp;
-                <button className="btn btn-dark" onClick={() => setGetter('GetNBOptredens')}>Verzoeken</button>&nbsp;
+                <button name='getAdmins' className="btn btn-dark" onClick={() => setGetter('GetAdmins')}>Admins</button>&nbsp;
+                <button name='getMedewerkers' className="btn btn-dark" onClick={() => setGetter('GetMedewerkers')}>Medewerkers</button>&nbsp;
+                <button name='getArtiesten' className="btn btn-dark" onClick={() => setGetter('GetArtiesten')}>Artiesten</button>&nbsp;
+                <button name='getGroepen' className="btn btn-dark" onClick={() => setGetter('GetGroepen')}>Groepen</button>&nbsp;
+                <button name='getDonateurs' className="btn btn-dark" onClick={() => setGetter('GetDonateurs')}>Donateurs</button>&nbsp;
+                <button name='getZalen' className="btn btn-dark" onClick={() => setGetter('GetZalen')}>Zalen</button>&nbsp;
+                <button name='getVoorstellingen' className="btn btn-dark" onClick={() => setGetter('GetVoorstellingen')}>Voorstellingen</button>&nbsp;
+                <button name='getOptredens' className="btn btn-dark" onClick={() => setGetter('GetOptredens')}>Optredens</button>&nbsp;
+                <button name='getVerzoeken' className="btn btn-dark" onClick={() => setGetter('GetNBOptredens')}>Verzoeken</button>&nbsp;
             </div>
             <br />
             <div>
@@ -47,12 +47,12 @@ export function AdminPanel() {
                 <div>
                     <label className='text-white display-6 mb-1 d-block'>Setters(Aanmaken)</label>
                     <br />
-                    <button className="btn btn-dark" onClick={() => setSetter('PostAdmin')}>Admin</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostMedewerker')}>Medewerker</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostArtiest')}>Artiest</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostGroep')}>Groep</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostZaal')} >Zaal</button>&nbsp;
-                    <button className="btn btn-dark" onClick={() => setSetter('PostVoorstelling')}>Voorstelling</button>&nbsp;
+                    <button name='setAdmin' className="btn btn-dark" onClick={() => setSetter('PostAdmin')}>Admin</button>&nbsp;
+                    <button name='setMedewerker' className="btn btn-dark" onClick={() => setSetter('PostMedewerker')}>Medewerker</button>&nbsp;
+                    <button name='setArtiest' className="btn btn-dark" onClick={() => setSetter('PostArtiest')}>Artiest</button>&nbsp;
+                    <button name='setGroep' className="btn btn-dark" onClick={() => setSetter('PostGroep')}>Groep</button>&nbsp;
+                    <button name='setZaal' className="btn btn-dark" onClick={() => setSetter('PostZaal')} >Zaal</button>&nbsp;
+                    <button name='setVoorstelling' className="btn btn-dark" onClick={() => setSetter('PostVoorstelling')}>Voorstelling</button>&nbsp;
                 </div>
                 <br />
                 <Admin postEntry={setter} />

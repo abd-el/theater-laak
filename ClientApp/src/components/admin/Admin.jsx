@@ -209,75 +209,75 @@ export function Admin(props) {
                     <br />
                     <label>Voornaam</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Voornaam*' value={voornaam} onChange={voornaamHandler} />
+                    <input name='voornaam' className='btn bg-light border-dark text-dark' placeholder='Voornaam*' value={voornaam} onChange={voornaamHandler} />
                     <br />
                     <br />
                     <label>Achternaam*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Achternaam*' value={achternaam} onChange={achternaamHandler} />
+                    <input name='achternaam' className='btn bg-light border-dark text-dark' placeholder='Achternaam*' value={achternaam} onChange={achternaamHandler} />
                     <br />
                     <br />
                     <label>Gebruikersnaam*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Gebruikersnaam*' value={username} onChange={usernameHandler} />
+                    <input name='gebruikersnaam' className='btn bg-light border-dark text-dark' placeholder='Gebruikersnaam*' value={username} onChange={usernameHandler} />
                     <br />
                     <br />
                     <label>Wachtwoord*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Wachtwoord*' value={password} onChange={passwordHandler} />
+                    <input name='wachtwoord' className='btn bg-light border-dark text-dark' placeholder='Wachtwoord*' value={password} onChange={passwordHandler} />
                     <br />
                     <br />
                     <label>Geslacht*</label>
                     <br />
                     <div className='btn-group'>
-                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={geslacht} onChange={(e) => setGeslacht(e.target.value)} required>
-                            <option value={'Man'}>Man</option>
-                            <option value={'Vrouw'} >Vrouw</option>
-                            <option value={'Anders'} >Anders/zeg ik liever niet</option>
+                        <select id="geslacht-selectie" name='geslacht' className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={geslacht} onChange={(e) => setGeslacht(e.target.value)} required>
+                            <option name='Man' value={'Man'}>Man</option>
+                            <option name="Vrouw" value={'Vrouw'} >Vrouw</option>
+                            <option name='Anders' value={'Anders'} >Anders/zeg ik liever niet</option>
                         </select>
                     </div>
                     <br />
                     <br />
                     <label>Email*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Email*' type='email' value={email} onChange={emailHandler} />
+                    <input name='email' className='btn bg-light border-dark text-dark' placeholder='Email*' type='email' value={email} onChange={emailHandler} />
                     <br />
                     <br />
                     <label>Geboortedatum*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' type='date' placeholder='geboortedatum' max={'2005-01-20'} value={geboorteDatum} onChange={geboorteDHandler} />
+                    <input name='geboortedatum' className='btn bg-light border-dark text-dark' type='date' placeholder='geboortedatum' max={'2005-01-20'} value={geboorteDatum} onChange={geboorteDHandler} />
                     <br />
                     <br />
                     <label>Adres*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='Adres' value={adres} onChange={adresHandler} />
+                    <input name='adres' className='btn bg-light border-dark text-dark' placeholder='Adres' value={adres} onChange={adresHandler} />
                     <br />
                     <br />
                     <label>Telelefoonnummer*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler} />
+                    <input name='telnr' className='btn bg-light border-dark text-dark' placeholder='0612345678' type='tel' pattern='[0]{1}[6]{1}[0-9]{4}[0-9]{4}' value={telefoonnummer} onChange={telefoonnummerHandler} />
                     <br />
                     <br />
                     <label>Nieuwsbrief*</label>
                     <br />
                     <div className='btn-group'>
-                        <select id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={emailVoorkeur} onChange={(e) => setemailVoorkeur(e.target.value)} required>
-                            <option value={'geen'}>Geen</option>
-                            <option value={'nieuwsbrief'} >Nieuws</option>
-                            <option value={'belangrijke informatie'} >Belangrijk</option>
+                        <select name='nieuwsbrief' id="nieuwsbrief-selectie" className='form-select dropdown-icon-dark bg-light border-dark text-dark' defaultValue={emailVoorkeur} onChange={(e) => setemailVoorkeur(e.target.value)} required>
+                            <option name='geen' value={'geen'}>Geen</option>
+                            <option name='nieuwsbrief' value={'nieuwsbrief'} >Nieuws</option>
+                            <option name='belangrijk' value={'belangrijke informatie'} >Belangrijk</option>
                         </select>
                     </div>
                     <br />
                     <br />
                     <label>Bankrekening*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' value={bankGegevens} onChange={bankgegevensHandler} />
+                    <input name='bankrekening' className='btn bg-light border-dark text-dark' value={bankGegevens} onChange={bankgegevensHandler} />
                     <br />
                     <br />
-                    <button className='btn btn-secondary ' onClick={voegAdmin}>Aanmaken</button>
+                    <button name='adminAanmaken' className='btn btn-secondary ' onClick={voegAdmin}>Aanmaken</button>
                     <br />
-                    {res == true && <label className='text-success'>Admin account is succesvol aangemaakt!</label>}
-                    {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
+                    {res == true && <label name='success' className='text-success'>Admin account is succesvol aangemaakt!</label>}
+                    {res == false && <label name='failed' className='text-danger'>Er is iets fout gegaan!</label>}
                 </form>
             </div>
         );
