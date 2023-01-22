@@ -101,6 +101,7 @@ export function ResetModal({ isPwForgotten, SetIsPwForgotten }) {
 
                 <Modal isOpen={showModal}>
                     <ModalHeader >Reset uw wachtwoord</ModalHeader>
+                    
                     <ModalBody>
 
                         <InputGroup>
@@ -119,6 +120,7 @@ export function ResetModal({ isPwForgotten, SetIsPwForgotten }) {
                         <p>{PasswordError}</p>
 
                     </ModalBody>
+
                     <ModalFooter>
 
                         <Button color="secondary" onClick={toggle} hidden={hideStopBtn}>

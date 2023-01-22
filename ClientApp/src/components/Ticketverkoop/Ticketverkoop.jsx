@@ -12,7 +12,7 @@ export function Ticketverkoop() {
         if (query.get('optredenId') != null) {
             setOptredenId(query.get('optredenId'));
         }
-    },);
+    });
 
     function clickButton() {
         if (!click) {

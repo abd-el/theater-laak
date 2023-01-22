@@ -52,10 +52,7 @@ export function useEmailConfirmation() {
             userName: userName
         });
 
-        //is PwReset true dan wordt de gebruiker niet ingelogd.
-        //isPwReset wordt gebruikt door de PwResetModal component.
-        //Deze component heeft authorisatie nodig om het wachtwoord van de user te resetten.
-        //de gegevens die hiervoor nodig zijn zitten in resp.data
+
         if (resp.status == 200 && isPwReset) {
             return resp.data;
         }
@@ -63,7 +60,6 @@ export function useEmailConfirmation() {
             return null;
         }
 
-        //Is PwReset false, dan wordt de rest van de code uitgevoerd om de user in te loggen.
         if (resp.status == 200) {
             setMessage("login gelukt");
             dispatch({

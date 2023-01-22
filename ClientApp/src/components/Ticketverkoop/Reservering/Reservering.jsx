@@ -19,7 +19,7 @@ export function Reservering({ optredenId }) {
         setStoelen(stoelen);
 
         const getData = async () => {
-            const resp = await backendApi.get(`api/optreden/GetStoelen?optredenId=${optredenId}` );
+            const resp = await backendApi.get(`api/optreden/GetStoelen?optredenId=${optredenId}`);
             console.log(resp.statusText);
             console.log(resp.data);
         }
@@ -41,7 +41,6 @@ export function Reservering({ optredenId }) {
             rij.push({
                 stoelid: index + 1,
                 rijid: rijNummer,
-
             });
         }
         return rij;
@@ -69,8 +68,9 @@ export function Reservering({ optredenId }) {
         console.log(selectie);
     }, [selectie]);
 
-
+    
     const handleRangClick = (e) => {
+        console.log(e.target);
         setRangId(e.target.parentNode.id);
         setHideRangSelectie(true);
         setHideStoelen(false);
@@ -86,10 +86,12 @@ export function Reservering({ optredenId }) {
                     <CardTitle>1e rang</CardTitle>
                     <CardText>50€ per stoel</CardText>
                 </Card>
+
                 <Card className="cardBtn text-start mb-3 bg-dark h4" id={2} onClick={handleRangClick}>
                     <CardTitle>2e rang</CardTitle>
                     <CardText>25€ per stoel</CardText>
                 </Card>
+
                 <Card className="cardBtn text-start mb-3 bg-dark h4" id={3} onClick={handleRangClick}>
                     <CardTitle>3e rang</CardTitle>
                     <CardText>10€ per stoel</CardText>
@@ -98,7 +100,6 @@ export function Reservering({ optredenId }) {
 
             <Container fluid={true} className='col-md-10 position-relative' hidden={hideStoelen}>
                 <Figure />
-
                 <table className="stoeltabel table table-responsive d-flex table-hover table-bordered table-dark bg-dark position-relative">
                     <tbody>
                         <tr>
@@ -107,14 +108,15 @@ export function Reservering({ optredenId }) {
                                 Array.from(Stoelen)
                                     .slice(0, 50)
                                     .map((currentValue, index) => {
-                                        return (<td
-                                            onClick={handleStoelClick}
-                                            className="datacell p-3 h5"
-                                            key={index}
-                                            stoelid={currentValue.stoelid}
-                                            rijid={currentValue.rijid}>
-                                            Stoel {currentValue.stoelid}
-                                        </td>)
+                                        return (
+                                            <td
+                                                onClick={handleStoelClick}
+                                                className="datacell p-3 h5"
+                                                key={index}
+                                                stoelid={currentValue.stoelid}
+                                                rijid={currentValue.rijid}>
+                                                Stoel {currentValue.stoelid}
+                                            </td>)
                                     })
                             }
                         </tr>
@@ -123,14 +125,15 @@ export function Reservering({ optredenId }) {
                             {!Stoelen ? <td>Leeg</td> : Array.from(Stoelen).slice(50, 100)
 
                                 .map((currentValue, index) => {
-                                    return (<td
-                                        onClick={handleStoelClick}
-                                        className="datacell p-3 h5"
-                                        key={index}
-                                        stoelid={currentValue.stoelid}
-                                        rijid={currentValue.rijid}>
-                                        Stoel {currentValue.stoelid}
-                                    </td>)
+                                    return (
+                                        <td
+                                            onClick={handleStoelClick}
+                                            className="datacell p-3 h5"
+                                            key={index}
+                                            stoelid={currentValue.stoelid}
+                                            rijid={currentValue.rijid}>
+                                            Stoel {currentValue.stoelid}
+                                        </td>)
                                 })
 
                             }
@@ -139,14 +142,15 @@ export function Reservering({ optredenId }) {
                             <th scope="row">Rij 3</th>
                             {!Stoelen ? <td>Leeg</td> : Array.from(Stoelen).slice(100, 150)
                                 .map((currentValue, index) => {
-                                    return (<td
-                                        onClick={handleStoelClick}
-                                        className="datacell p-3 h5"
-                                        key={index}
-                                        stoelid={currentValue.stoelid}
-                                        rijid={currentValue.rijid}>
-                                        Stoel {currentValue.stoelid}
-                                    </td>)
+                                    return (
+                                        <td
+                                            onClick={handleStoelClick}
+                                            className="datacell p-3 h5"
+                                            key={index}
+                                            stoelid={currentValue.stoelid}
+                                            rijid={currentValue.rijid}>
+                                            Stoel {currentValue.stoelid}
+                                        </td>)
                                 })
                             }
                         </tr>
@@ -155,14 +159,15 @@ export function Reservering({ optredenId }) {
                             {!Stoelen ? <td>Leeg</td> : Array.from(Stoelen).slice(150, 200)
 
                                 .map((currentValue, index) => {
-                                    return (<td
-                                        onClick={handleStoelClick}
-                                        className="datacell p-3 h5"
-                                        key={index}
-                                        stoelid={currentValue.stoelid}
-                                        rijid={currentValue.rijid}>
-                                        Stoel {currentValue.stoelid}
-                                    </td>)
+                                    return (
+                                        <td
+                                            onClick={handleStoelClick}
+                                            className="datacell p-3 h5"
+                                            key={index}
+                                            stoelid={currentValue.stoelid}
+                                            rijid={currentValue.rijid}>
+                                            Stoel {currentValue.stoelid}
+                                        </td>)
                                 })
                             }
                         </tr>
@@ -170,8 +175,6 @@ export function Reservering({ optredenId }) {
                 </table>
                 <InfoTab optredenId={optredenId} gekozenStoelen={selectie} />
             </Container>
-
-
         </div>
     );
 }
