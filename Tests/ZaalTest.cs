@@ -3,11 +3,9 @@ namespace ZaalTest;
 using theater_laak.Models;
 using Xunit;
 
-public class ZaalTest
-{
+public class ZaalTest {
     [Fact]
-    public void AddRijTest()
-    {
+    public void AddRijTest() {
         // Arrange
         var zaal = new Zaal();
         var aantalStoelen = 10;
@@ -25,8 +23,7 @@ public class ZaalTest
     }
 
     [Fact]
-    public void AddRangTest()
-    {
+    public void AddRangTest() {
         // Arrange
         var zaal = new Zaal();
         var aantalStoelen = 10;
