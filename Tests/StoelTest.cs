@@ -1,4 +1,4 @@
-namespace ZaalTest;
+namespace StoelTest;
 
 using theater_laak.Models;
 using Xunit;
