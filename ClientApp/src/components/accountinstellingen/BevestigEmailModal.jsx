@@ -51,7 +51,7 @@ export function BevestigEmailModal({ username, veranderEmailBevestigd, isEmailNi
 
     return (
         <>
-            <Button type="button" className="btn btn-primary" onClick={toggle} disabled={isButtonDisabled}>
+            <Button type="button" className="btn btn-light" onClick={toggle} disabled={isButtonDisabled}>
                 {blockedMessage}
             </Button>
 
@@ -63,7 +63,7 @@ export function BevestigEmailModal({ username, veranderEmailBevestigd, isEmailNi
                     </ModalBody>
                     <ModalFooter>
                         <p>{error}</p>
-                        <Button color="primary" onClick={CloseHandler} >
+                        <Button color="light" onClick={CloseHandler} >
                             Ok
                         </Button>{' '}
                     </ModalFooter>
