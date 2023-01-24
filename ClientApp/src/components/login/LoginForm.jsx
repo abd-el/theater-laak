@@ -3,7 +3,7 @@ import './LoginForm.css';
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
-import { keys } from "./reCaptcha_Keys";
+import { getKeys } from "./reCaptcha_Keys";
 import { backendApi } from "../api";
 import { Route, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -11,9 +11,6 @@ import { TwoStepModal } from "./2StepModal";
 import { ResetModal } from "./ResetPWModal";
 import { useLogout } from "../hooks/useLogout";
 import { useEmailConfirmation } from "../hooks/useEmailConfirmation";
-
-
-
 
 export function LoginForm() {
     const [ErrorMessage, SetErrMsg] = useState();
@@ -88,7 +85,7 @@ export function LoginForm() {
                                         <input ref={password} type="password" name="password" id="password" className="form-control" />
                                     </div>
 
-                                    <ReCAPTCHA className="mt-2 mb-2" sitekey={keys.REACT_APP_SITE_KEY} ref={captcha} theme="dark" />
+                                    <ReCAPTCHA className="mt-2 mb-2" sitekey={getKeys().REACT_APP_SITE_KEY} ref={captcha} theme="dark" />
 
                                     <div className="form-group">
                                         

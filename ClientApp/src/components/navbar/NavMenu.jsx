@@ -35,7 +35,8 @@ export class NavMenu extends Component {
 
       // deze informatie halen we op uit de database
       artiest: true,
-      ingelogd: false
+      ingelogd: false,
+      admin: false,
     };
   }
 
@@ -66,11 +67,19 @@ export class NavMenu extends Component {
   componentDidUpdate() {
     const { authState } = this.context;
 
-    if (authState != null && this.state.ingelogd == false)
+    if (authState != null && this.state.ingelogd == false) {
       this.setState({ ingelogd: true });
+    }
 
-    if (authState == null && this.state.ingelogd == true)
+    if (authState == null && this.state.ingelogd == true) {
       this.setState({ ingelogd: false });
+    }
+
+    console.log(authState.user.role) // ??
+
+    if (authState?.user?.discriminator == "artiest") {
+      this.setState({ artiest: true });
+    }
   }
 
   ExpirationModal = () => {
@@ -92,7 +101,7 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"home" == this.state.geselecteerd} text="Home" to="/" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer" == this.state.geselecteerd} text="Doneer" to="/doneer" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering" == this.state.geselecteerd} text="Programmering" to="/programmering" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.ingelogd} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={this.state.artiest} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"dashboard" == this.state.geselecteerd} text="Dashboard" to="/dashboard" hidden={!this.state.ingelogd} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
               {this.ExpirationModal()}
