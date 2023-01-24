@@ -204,7 +204,7 @@ export class BoekenFormulier extends Component {
                     </div>
                 </div>
 
-                <button onClick={this.controleer} className="btn btn-light mt-3">
+                <button onClick={this.controleer} id="Maak-verzoek-button" className="btn btn-light mt-3">
                     Maak een verzoek voor een reservering
                 </button>
 
