@@ -325,7 +325,7 @@ export class AccountInstellingen extends Component {
 
                         <div className='col-sm-12 mt-3'>
                             <div className='d-inline'>
-                                <button className='btn btn-light' onClick={this.controleer}>Gegevens opslaan</button>
+                                <button className='btn btn-light' id="gegevens-opslaan" onClick={this.controleer}>Gegevens opslaan</button>
                             </div>
 
                             <div className='d-inline ms-3'>
