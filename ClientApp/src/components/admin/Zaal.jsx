@@ -131,35 +131,35 @@ export function Zaal(props) {
                     <br />
                     <label>Aantal Rang 1 stoelen (max. 200)*</label>
                     <br />
-                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR1stoelen} onChange={(e) => setR1stoelen(e.target.value)} required />
+                    <input name='rang1Stoelen' type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR1stoelen} onChange={(e) => setR1stoelen(e.target.value)} required />
                     <br />
                     <br />
                     <label>Aantal Rang 2 stoelen (max. 200)*</label>
                     <br />
-                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR2stoelen} onChange={(e) => setR2stoelen(e.target.value)} required />
+                    <input name='rang2Stoelen' type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR2stoelen} onChange={(e) => setR2stoelen(e.target.value)} required />
                     <br />
                     <br />
                     <label>Aantal Rang 3 stoelen (max. 200)*</label>
                     <br />
-                    <input type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR3stoelen} onChange={(e) => setR3stoelen(e.target.value)} required />
+                    <input name='rang3Stoelen' type='number' min='0' max='200' className='btn bg-light border-dark text-dark' value={aantalR3stoelen} onChange={(e) => setR3stoelen(e.target.value)} required />
                     <br />
                     <br />
                     <label>Aantal Rang 1 rijen (max. 10)*</label>
                     <br />
-                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR1rijen} onChange={(e) => setR1rijen(e.target.value)} required />
+                    <input name='rang1Rijen' type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR1rijen} onChange={(e) => setR1rijen(e.target.value)} required />
                     <br />
                     <br />
                     <label>Aantal Rang 2 rijen (max. 10)*</label>
                     <br />
-                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR2rijen} onChange={(e) => setR2rijen(e.target.value)} required />
+                    <input name='rang2Rijen' type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR2rijen} onChange={(e) => setR2rijen(e.target.value)} required />
                     <br />
                     <br />
                     <label>Aantal Rang 3 rijen (max. 10)*</label>
                     <br />
-                    <input type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR3rijen} onChange={(e) => setR3rijen(e.target.value)} required />
+                    <input name='rang3Rijen' type='number' min='0' max='10' className='btn bg-light border-dark text-dark' value={aantalR3rijen} onChange={(e) => setR3rijen(e.target.value)} required />
                     <br />
                     <br />
-                    <button className='btn btn-secondary' onClick={voegZaal}>Aanmaken</button>
+                    <button name='zaalAanmaken' className='btn btn-secondary' onClick={voegZaal}>Aanmaken</button>
                     <br />
                     {res == true && <label className='text-success'>Zaal is succesvol aangemaakt!</label>}
                     {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}

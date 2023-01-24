@@ -156,28 +156,28 @@ export function Voorstelling(props) {
                     <br />
                     <label>Titel*</label>
                     <br />
-                    <input maxLength={45}  className='btn bg-light border-dark text-dark'  value={titel} onChange={titelHandler} required />
+                    <input name='titel' maxLength={45}  className='btn bg-light border-dark text-dark'  value={titel} onChange={titelHandler} required />
                     <br />
                     <br />
                     <label>Beschrijving*</label>
                     <br />
-                    <input maxLength={250} className='btn bg-light border-dark text-dark'  value={beschrijving} onChange={beschrijvingHandler} required />
+                    <input name='beschrijving' maxLength={250} className='btn bg-light border-dark text-dark'  value={beschrijving} onChange={beschrijvingHandler} required />
                     <br />
                     <br />
                     <label>Tijdsduur (minuten)*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' type='number' min={1} max={180} value={tijdsduur} onChange={tijdsduurHandler} required />
+                    <input name='tijdsduur' className='btn bg-light border-dark text-dark' type='number' min={1} max={180} value={tijdsduur} onChange={tijdsduurHandler} required />
                     <br />
                     <br />
                     <label>Afbeelding url*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' type='url' value={afbeelding} onChange={afbeeldingHandler} required />
+                    <input name='url' className='btn bg-light border-dark text-dark' type='url' value={afbeelding} onChange={afbeeldingHandler} required />
                     <br />
                     <br />
                     <img className='rounded shadow' src={afbeelding} alt='afbeelding voorbeeld' height={150} width={100} />
                     <br />
                     <br />
-                    <button className='btn btn-secondary' onClick={voegVoorstelling}>Aanmaken</button>
+                    <button name='voorstellingAanmaken' className='btn btn-secondary' onClick={voegVoorstelling}>Aanmaken</button>
                     <br />
                     {res == true && <label className='text-success'>Voorstelling is succesvol toegevoegd!</label>}
                     {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
