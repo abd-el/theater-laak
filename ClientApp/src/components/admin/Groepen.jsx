@@ -138,15 +138,15 @@ export function Groep(props) {
                     <br />
                     <label>Groepsnaam*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' value={groepsNaam} onChange={groepsNaamHandler} required />
+                    <input name='groepsnaam' className='btn bg-light border-dark text-dark' value={groepsNaam} onChange={groepsNaamHandler} required />
                     <br />
                     <br />
                     <label>Email*</label>
                     <br />
-                    <input className='btn bg-light border-dark text-dark' value={email} onChange={emailHandler} required />
+                    <input name='email' className='btn bg-light border-dark text-dark' value={email} onChange={emailHandler} required />
                     <br />
                     <br />
-                    <button className='btn btn-secondary' onClick={voegGroep}>Aanmaken</button>
+                    <button name='groepAanmaken' className='btn btn-secondary' onClick={voegGroep}>Aanmaken</button>
                     <br />
                     {res == true && <label className='text-success'>Groep is succesvol aangemaakt!</label>}
                     {res == false && <label className='text-danger'>Er is iets fout gegaan!</label>}
