@@ -81,12 +81,6 @@ export class NavMenu extends Component {
     if (authState == null && this.state.ingelogd == true) {
       this.setState({ ingelogd: false, artiest: false, admin: false });
     }
-
-    //console.log(authState.user.role) // ??
-
-    // if (authState?.user?.discriminator == "Artiest") {
-    //   this.setState({ artiest: true });
-    // }
   }
 
   ExpirationModal = () => {
