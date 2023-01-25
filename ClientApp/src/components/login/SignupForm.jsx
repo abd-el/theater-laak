@@ -17,7 +17,7 @@ async function passwordCheck(wachtwoord) {
 
 	if (statusCode == 400) {
 		if (responseMsg == 'bevatWoord') {
-			return "uw wachtwoord mag geen woorden bevatten"
+			return "uw wachtwoord mag niet overeenkomen met een woord"
 		}
 		if (responseMsg == 'PwOnveilig') {
 			return "dit wachtwoord is in een data leak gevonden"
