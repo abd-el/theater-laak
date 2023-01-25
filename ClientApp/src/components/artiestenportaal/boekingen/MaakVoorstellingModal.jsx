@@ -86,7 +86,7 @@ export class MaakVoorstellingModal extends Component {
     render() {
         return (            
             <div>
-                <div className="groepsnaam btn btn-light mt-3" data-bs-toggle="modal" data-bs-target={`#MaakVoorstellingModal`}>
+                <div className="groepsnaam btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target={`#MaakVoorstellingModal`}>
                     Maak voorstelling aan 
                 </div>
                 
