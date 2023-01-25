@@ -34,7 +34,7 @@ export class NavMenu extends Component {
       geselecteerd: this.links[window.location.pathname] || "home",
 
       // deze informatie halen we op uit de database
-      artiest: true,
+      artiest: false,
       ingelogd: false,
       admin: false,
     };
@@ -69,17 +69,24 @@ export class NavMenu extends Component {
 
     if (authState != null && this.state.ingelogd == false) {
       this.setState({ ingelogd: true });
+
+      if (authState?.user?.discriminator == "Artiest") {
+        this.setState({ artiest: true });
+      }
+      else if(authState?.user?.discriminator == "Admin"){
+        this.setState({ admin: true });
+      }
     }
 
     if (authState == null && this.state.ingelogd == true) {
-      this.setState({ ingelogd: false });
+      this.setState({ ingelogd: false, artiest: false, admin: false });
     }
 
-    console.log(authState.user.role) // ??
+    //console.log(authState.user.role) // ??
 
-    if (authState?.user?.discriminator == "artiest") {
-      this.setState({ artiest: true });
-    }
+    // if (authState?.user?.discriminator == "Artiest") {
+    //   this.setState({ artiest: true });
+    // }
   }
 
   ExpirationModal = () => {
@@ -101,8 +108,8 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"home" == this.state.geselecteerd} text="Home" to="/" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"doneer" == this.state.geselecteerd} text="Doneer" to="/doneer" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering" == this.state.geselecteerd} text="Programmering" to="/programmering" />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={this.state.artiest} />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"dashboard" == this.state.geselecteerd} text="Dashboard" to="/dashboard" hidden={!this.state.ingelogd} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
+              <NavigatieItem onClick={this.selecteer} geselecteerd={"dashboard" == this.state.geselecteerd} text="Dashboard" to="/dashboard" hidden={!this.state.admin} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
               {this.ExpirationModal()}
               {this.loginMenu()}

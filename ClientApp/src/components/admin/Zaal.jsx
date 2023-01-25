@@ -48,7 +48,7 @@ export function Zaal(props) {
             rangEenAantalRijen: aantalR1rijen,
             rangTweeAantalStoelen: aantalR2stoelen,
             rangTweeAantalRijen: aantalR2rijen,
-            rangDrieAantalStoelen: aantalR2stoelen,
+            rangDrieAantalStoelen: aantalR3stoelen,
             rangDrieAantalRijen: aantalR3rijen
         };
 

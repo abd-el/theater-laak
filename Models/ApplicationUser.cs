@@ -37,4 +37,5 @@ public class ApplicationUser : IdentityUser
     public int? FailedAttempts { get; set; }
     public bool? lockout { get; set; }
     public DateTime? unlockDate { get; set; }
+    public string Discriminator {get; set;}
 }

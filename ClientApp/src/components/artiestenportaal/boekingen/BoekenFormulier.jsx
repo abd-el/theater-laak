@@ -153,7 +153,7 @@ export class BoekenFormulier extends Component {
 
                 <div className='mb-2'>
                     <div>Voorstelling*</div>
-                    <select onChange={this.veranderVoorstellingId} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
+                    <select name='select-voorstelling' onChange={this.veranderVoorstellingId} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een voorstelling'>
                         <option id="voorstelling-invoer" value="0">Geen</option>
                         {this.props.voorstellingen.map((voorstelling, index) => {
                             return <option id="voorstelling-invoer" key={index} value={voorstelling.voorstellingId}>{voorstelling.titel}</option>
@@ -163,7 +163,7 @@ export class BoekenFormulier extends Component {
 
                 <div className='mb-2'>
                     <div>Groep</div>
-                    <select onChange={this.veranderGroep} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een groep'>
+                    <select name='select-groep' onChange={this.veranderGroep} className='form-select dropdown-icon bg-dark border-grey text-white' placeholder='Kies een groep'>
                         <option id="groep-invoer" value="0">Geen</option>
                         {this.props.groepen.map((groep, index) => {
                             if(groep.isClientLid === true){
@@ -175,7 +175,7 @@ export class BoekenFormulier extends Component {
 
                 <div className='mb-2'>
                     <div>Zaal*</div>
-                    <select onChange={this.veranderZaal} className='form-select dropdown-icon bg-dark border-grey text-white'>
+                    <select name='select-zaal' onChange={this.veranderZaal} className='form-select dropdown-icon bg-dark border-grey text-white'>
                         <option id="zaal-invoer" value="geen">Kies een zaal</option>
                         {this.props.zalen.map((zaal, index) => {
                             return <option id="zaal-invoer" key={index} value={zaal.zaalId}>{zaal.zaalId}</option>
