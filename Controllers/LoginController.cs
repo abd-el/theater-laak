@@ -64,7 +64,7 @@ public class LoginController : ControllerBase
     //Als het wachtwoord niet correct is, wordt de gebruiker geblokkeerd als hij minstens drie mislukte inlogpogingen heeft gehad.
     //Als het wachtwoord correct is, wordt de FailedAttempts-eigenschap van de gebruiker op null gezet.
     //Als de TwoFactorEnabled-eigenschap van de gebruiker op true is ingesteld, wordt een e-mail verzonden met een 2FA-token.
-    //Als alles succesvol is afgerond wordt er een Swt-Token gegenereerd en teruggestuurd als antwoord.
+    //Als alles succesvol is afgerond wordt er een Jwt-Token gegenereerd en teruggestuurd als antwoord.
 
     [HttpPost]
     public async Task<ActionResult> login([FromBody] loginJsonObject credentials)
@@ -221,13 +221,13 @@ public class LoginController : ControllerBase
     }
 
 
-    //De methode is beschikbaar onder de route "validateSwtToken" en is beveiligd met de Authorize-attribuut,
-    //dit betekent dat alleen gebruikers met een geldige swt token kunnen toegang krijgen tot deze route.
+    //De methode is beschikbaar onder de route "validateJwtToken" en is beveiligd met de Authorize-attribuut,
+    //dit betekent dat alleen gebruikers met een geldige Jwt token kunnen toegang krijgen tot deze route.
     //De methode retourneert een "Ok" HTTP-statuscode, dit betekent dat de aanvraag succesvol is afgerond.
     [HttpGet]
-    [Route("validateSwtToken")]
+    [Route("validateJwtToken")]
     [Authorize]
-    public ActionResult validateSwtToken()
+    public ActionResult validateJwtToken()
     {
         return Ok();
     }
@@ -255,7 +255,7 @@ public class LoginController : ControllerBase
         return randomstring;
     }
 
-    //De methode genereerd SWT-Token Options en stuurt deze terug. Zodat de methode de swt-token kan signen met deze options.
+    //De methode genereerd Jwt-Token Options en stuurt deze terug. Zodat de methode de Jwt-token kan signen met deze options.
     //De signature is het resultaat van het hashen van de header en payload met een geheime sleutel.
     //Dit zorgt ervoor dat alleen partijen met de juiste sleutel het token kunnen verifiëren en de claims kunnen lezen.
     private async Task<JwtSecurityToken> GenerateJwt(ApplicationUser user)

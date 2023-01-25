@@ -13,7 +13,7 @@ const context =  [
   "/_framework",
   "/api/login",
   "/api/login/ReCaptcha",
-  "/api/login/validateSwtToken",
+  "/api/login/validateJwtToken",
   "/api/login/isTokenValid",
   "/api/login/mailToConfirmedAddress",
   "/api/login/mailToUnconfirmedAddress",
