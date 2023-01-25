@@ -1,6 +1,5 @@
 @startuml
 !include .\\Program.puml
-!include .\\WeatherForecast.puml
 !include .\\Controllers\AccountController.puml
 !include .\\Controllers\ArtiestenportaalController.puml
 !include .\\Controllers\DonatieController.puml
@@ -10,7 +9,6 @@
 !include .\\Controllers\OptredenController.puml
 !include .\\Controllers\ProgrammeringController.puml
 !include .\\Controllers\TicketVerkoopController.puml
-!include .\\Controllers\WeatherForecastController.puml
 !include .\\Controllers\ZaalController.puml
 !include .\\Data\ApplicationDbContext.puml
 !include .\\Models\Admin.puml

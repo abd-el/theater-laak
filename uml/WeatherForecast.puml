@@ -1,8 +1,0 @@
-@startuml
-class WeatherForecast {
-    + Date : DateTime <<get>> <<set>>
-    + TemperatureC : int <<get>> <<set>>
-    + TemperatureF : int <<get>>
-    + Summary : string? <<get>> <<set>>
-}
-@enduml

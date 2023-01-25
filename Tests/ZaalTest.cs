@@ -17,8 +17,8 @@ public class ZaalTest {
         // Act
         zaal.AddRij(aantalStoelen, rang, rij);
         var actualAantalStoelen = zaal.Stoelen.Count;
-        // Assert
 
+        // Assert
         Assert.Equal(expectedAantalStoelen, actualAantalStoelen);
     }
 
