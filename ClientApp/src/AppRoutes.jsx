@@ -1,5 +1,4 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Counter } from "./components/Counter";
 import { Navigate } from 'react-router-dom';
 import { RequireAuth } from './components/RequireAuth';
 import { Home } from "./components/Home/Home";
@@ -19,10 +18,6 @@ const AppRoutes = [
   {
     index: true,
     element: <Home />
-  },
-  {
-    path: '/counter',
-    element: <RequireAuth AllowedRoles={['Artiest', 'Admin']}><Counter /></RequireAuth>
   },
   {
     path: '/doneer',

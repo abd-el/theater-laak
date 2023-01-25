@@ -243,29 +243,29 @@ export function Programmering() {
             {enteredDatum == today &&
                 <div className='buttons'>
                     <button className="btn btn-danger" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
-                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
-                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button className="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button className="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
                 </div>
             }
             {enteredDatum == tomorrow &&
                 <div className='buttons'>
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
-                    <button class="btn btn-danger" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
-                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button className="btn btn-danger" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button className="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
                 </div>
             }
             {enteredDatum == overmorgen &&
                 <div className='buttons'>
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
-                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
-                    <button class="btn btn-danger" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button className="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button className="btn btn-danger" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
                 </div>
             }
             {enteredDatum == '' &&
                 <div className='buttons'>
                     <button className="btn btn-dark" id='today' onClick={Vandaag}>Vandaag</button>&nbsp;
-                    <button class="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
-                    <button class="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
+                    <button className="btn btn-dark" id='tomorrow' onClick={Morgen}>Morgen</button>&nbsp;
+                    <button className="btn btn-dark" id='dag1' onClick={Overmorgen}>Overmorgen</button>&nbsp;
                 </div>
             }
             <br />

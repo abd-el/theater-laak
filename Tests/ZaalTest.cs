@@ -39,4 +39,21 @@ public class ZaalTest {
         // Assert
         Assert.Equal(expectedAantalStoelen, actualAantalStoelen);
     }
+
+    [Fact]
+    public void AddDrieRangenTest() {
+        // Arrange
+        var zaal = new Zaal();
+
+        var expectedAantalStoelen = 240;
+        
+        // Act
+        zaal.AddRang(20, 1, 1);
+        zaal.AddRang(100, 5, 2);
+        zaal.AddRang(120, 6, 3);
+        var actualAantalStoelen = zaal.Stoelen.Count;
+
+        // Assert
+        Assert.Equal(expectedAantalStoelen, actualAantalStoelen);
+    }
 }

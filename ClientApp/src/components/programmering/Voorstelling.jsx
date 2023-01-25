@@ -56,7 +56,7 @@ export function Voorstelling(props) {
                 </button>}
                 {new Date() < new Date(props.array.datumTijdstip) && <a href={`/ticketverkoop?optredenId=${props.array.optredenId}`} className="btn btn-danger fs-6 fw-bold shadow" title='Tickets'>
                     {props.array.datumTijdstip.split('T')[1].substring(0, 5)} - {einde(props.array.datumTijdstip, props.array.voorstelling[props.array.voorstellingId - 1].tijdsduurInMinuten).split('T')[1].substring(0, 5)}
-                    <hr class="hr" style={{ backgroundColor: "black", margin: "0rem", height: "2px"}} /></a>}
+                    <hr className="hr" style={{ backgroundColor: "black", margin: "0rem", height: "2px"}} /></a>}
             </td>
         </tr>
     );

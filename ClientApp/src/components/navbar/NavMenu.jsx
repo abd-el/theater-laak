@@ -18,7 +18,6 @@ export class NavMenu extends Component {
 
     this.links = {
       "/": "home",
-      "/counter": "counter",
       "/login": "login",
       "/doneer": "doneer",
       "/programmering": "programmering",

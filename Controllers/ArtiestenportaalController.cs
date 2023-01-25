@@ -35,8 +35,8 @@ public class ArtiestenportaalController : ControllerBase {
             .Include(g => g.Artiesten)
             .ToListAsync();
 
-        var claimsIdentity = User.Identities.First();        
-        var userName = claimsIdentity.Name;          
+        var claimsIdentity = User.Identities.First();
+        var userName = claimsIdentity.Name;
         var user = await _userManager.FindByNameAsync(userName);
 
         var groupOfUser = groepen

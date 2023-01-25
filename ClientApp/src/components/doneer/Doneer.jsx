@@ -110,7 +110,7 @@ export class Doneer extends Component {
                         Naar donateursportaal
                     </button>
 
-                    <a href={`https://ikdoneer.azurewebsites.net/Toegang?url=https://https://het-theater-laak.azurewebsites.net/api/donatie/Autoriseer`}>
+                    <a href={`https://ikdoneer.azurewebsites.net/Toegang?url=${window.location.origin}/api/donatie/Autoriseer`}>
                         <button id="donateursportaal-knop" className={`btn btn-lg btn-dark mt-4`}>
                             Verleen toegang tot jouw IkDoneer.nl account aan Theater Laak
                         </button>
