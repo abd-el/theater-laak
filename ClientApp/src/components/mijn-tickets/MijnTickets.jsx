@@ -64,10 +64,10 @@ export function MijnTickets() {
             content = tickets.map((list, index) => (
 
                 <tr key={index}>
-                    <td className="voorstelling rounded shadow">
+                    <td className="voorstelling">
                         {list.optreden.voorstelling.titel}
                         <br />
-                        <img src={list.optreden.voorstelling.afbeelding} width={100}></img>
+                        <img className='rounded shadow' src={list.optreden.voorstelling.afbeelding} width={100}></img>
                     </td>
                     <td className="zaal">
                         {list.optreden.zaalId}
