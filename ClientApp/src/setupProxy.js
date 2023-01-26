@@ -5,7 +5,6 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:48256';
 
 const context =  [
-  "/weatherforecast",
   "/_configuration",
   "/.well-known",
   "/Identity",
@@ -14,7 +13,7 @@ const context =  [
   "/_framework",
   "/api/login",
   "/api/login/ReCaptcha",
-  "/api/login/validateSwtToken",
+  "/api/login/validateJwtToken",
   "/api/login/isTokenValid",
   "/api/login/mailToConfirmedAddress",
   "/api/login/mailToUnconfirmedAddress",

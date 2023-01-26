@@ -57,7 +57,7 @@ export function ResetModal({ isPwForgotten, SetIsPwForgotten }) {
             const data = await confirmToken(token, userName, false, true);
             if (data != null) {
                 setTokenError('✔️');
-                localStorage.setItem('swt', data.token);
+                localStorage.setItem('Jwt', data.token);
                 setHidePw(false);
                 setHideStop(false);
             }
@@ -68,15 +68,15 @@ export function ResetModal({ isPwForgotten, SetIsPwForgotten }) {
 
     const PwClickHandler = async () => {
         const NewPass = PasswordRef.current.value;
-        const SWT = localStorage.getItem('swt');
+        const Jwt = localStorage.getItem('Jwt');
         const resp = await backendApi.put('/api/account/UpdateVergetenWachtwoord', {
             nieuwWachtwoord: NewPass
-        }, { headers: { 'Authorization': 'Bearer ' + SWT } });
+        }, { headers: { 'Authorization': 'Bearer ' + Jwt } });
 
         if (resp.status == 200) {
             setPasswordErr('🔑 Uw wachtwoord is aangepast ✔️');
             setHideKlaar(true);
-            localStorage.removeItem('swt');
+            localStorage.removeItem('Jwt');
         }
         else {
             setPasswordErr('🔑 Het opgegeven wachtwoord is niet sterk genoeg. ❌');

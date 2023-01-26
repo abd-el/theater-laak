@@ -1,7 +1,5 @@
 import ApiAuthorzationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { Counter } from "./components/Counter";
 import { Navigate } from 'react-router-dom';
-import { FetchData } from "./components/FetchData";
 import { RequireAuth } from './components/RequireAuth';
 import { Home } from "./components/Home/Home";
 import { Doneer } from "./components/doneer/Doneer";
@@ -15,15 +13,12 @@ import { AdminPanel } from './components/admin/AdminPanel';
 import { Ticketverkoop } from './components/Ticketverkoop/Ticketverkoop';
 import { RondBestellingAf } from './components/Ticketverkoop/RondBestellingAf';
 import { Reservering } from './components/Ticketverkoop/Reservering/Reservering'
+import { MijnTickets } from './components/mijn-tickets/MijnTickets';
 
 const AppRoutes = [
   {
     index: true,
     element: <Home />
-  },
-  {
-    path: '/counter',
-    element: <RequireAuth AllowedRoles={['Artiest', 'Admin']}><Counter /></RequireAuth>
   },
   {
     path: '/doneer',
@@ -64,6 +59,10 @@ const AppRoutes = [
   {
     path: '/dashboard',
     element: <RequireAuth AllowedRoles={['Admin', 'Medewerker']}><AdminPanel /></RequireAuth>
+  },
+  {
+    path: '/mijn-tickets',
+    element: <RequireAuth AllowedRoles={['Admin', 'Medewerker', 'Artiest', 'Klant']}><MijnTickets /></RequireAuth>
   },
   ...ApiAuthorzationRoutes
 ];

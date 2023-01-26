@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 import './NavMenu.css';
 import { NavigatieItem } from './NavigatieItem'
 import { ExpirationModal } from '../ExpirationModal';
-
+import logo from '../images/logo_TL.png';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
   static contextType = AuthContext;
@@ -18,7 +18,6 @@ export class NavMenu extends Component {
 
     this.links = {
       "/": "home",
-      "/counter": "counter",
       "/login": "login",
       "/doneer": "doneer",
       "/programmering": "programmering",
@@ -94,7 +93,7 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-dark bg-dark navbar-toggleable-sm ng-white box-shadow mb-3 position-relative" container light>
-          <NavbarBrand onClick={this.selecteer} tag={Link} to="/">theater laak</NavbarBrand>
+          <NavbarBrand onClick={this.selecteer} tag={Link} to="/"><img src={logo} alt='theater laak logo' width={280}></img></NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow opacity-75">
@@ -104,7 +103,7 @@ export class NavMenu extends Component {
               <NavigatieItem onClick={this.selecteer} geselecteerd={"programmering" == this.state.geselecteerd} text="Programmering" to="/programmering" />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"artiestenportaal" == this.state.geselecteerd} text="Artiestenportaal" to="/artiestenportaal" hidden={!this.state.artiest} />
               <NavigatieItem onClick={this.selecteer} geselecteerd={"dashboard" == this.state.geselecteerd} text="Dashboard" to="/dashboard" hidden={!this.state.admin} />
-              <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} />
+              {/* <NavigatieItem onClick={this.selecteer} geselecteerd={"instellingen" == this.state.geselecteerd} text="⚙️" to="/accountinstellingen" hidden={!this.state.ingelogd} /> */}
               {this.ExpirationModal()}
               {this.loginMenu()}
 

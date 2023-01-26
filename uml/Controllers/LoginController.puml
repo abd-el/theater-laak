@@ -29,7 +29,7 @@ class LoginController {
     + <<async>> MailToConfirmedAddress(json:usernameJsonObject) : Task<ActionResult>
     + <<async>> MailToUnconfirmedAddress(json:usernameJsonObject) : Task<ActionResult>
     + <<async>> test(_captchaResponse:captchaJsonObject) : Task<ActionResult>
-    + validateSwtToken() : ActionResult
+    + validateJwtToken() : ActionResult
     - <<async>> SendTokenToEmail(user:ApplicationUser) : Task
     - <<async>> Create2FaToken(user:ApplicationUser) : Task<string>
     - <<async>> GenerateJwt(user:ApplicationUser) : Task<JwtSecurityToken>
