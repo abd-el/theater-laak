@@ -13,6 +13,7 @@ import { AdminPanel } from './components/admin/AdminPanel';
 import { Ticketverkoop } from './components/Ticketverkoop/Ticketverkoop';
 import { RondBestellingAf } from './components/Ticketverkoop/RondBestellingAf';
 import { Reservering } from './components/Ticketverkoop/Reservering/Reservering'
+import { MijnTickets } from './components/mijn-tickets/MijnTickets';
 
 const AppRoutes = [
   {
@@ -58,6 +59,10 @@ const AppRoutes = [
   {
     path: '/dashboard',
     element: <RequireAuth AllowedRoles={['Admin', 'Medewerker']}><AdminPanel /></RequireAuth>
+  },
+  {
+    path: '/mijn-tickets',
+    element: <RequireAuth AllowedRoles={['Admin', 'Medewerker', 'Artiest', 'Klant']}><MijnTickets /></RequireAuth>
   },
   ...ApiAuthorzationRoutes
 ];

@@ -20,12 +20,11 @@ export function LogoutMenu() {
         <div>
             <NavItem>
             <div class="dropdown">
-                <button class="dropdown-btn text-light bg-dark">👤 {message}</button>
-                <div class="dropdown-content">
-                    <a href="#">🎟️ Mijn tickets</a>
+                <button class="dropdown-btn text-light bg-dark" id="dropdown-content-link" tabIndex={0}>👤 {message}</button>
+                <div class="dropdown-content" aria-labelledby="dropdown-content-link">
+                    <a href="/mijn-tickets">🎟️ Mijn tickets</a>
                     <a href="/accountinstellingen">⚙️ Instellingen</a>
                     <a href="" onClick={logout}>🚪 Log uit</a>
-                    {/* <NavLink tag={Link} onClick={logout} className="text-light bg-dark" to='' >Log uit</NavLink> */}
                 </div>
             </div>
             </NavItem>

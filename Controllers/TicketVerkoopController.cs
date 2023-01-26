@@ -193,6 +193,7 @@ public class TicketVerkoopController : ControllerBase
 
         var tickets = await _context.Tickets
             .Include(t => t.Optreden)
+            .Include(t => t.Optreden.Voorstelling)
             .Include(t => t.Stoel)
             .Where(t => t.UserId == user.Id)
             .ToListAsync();
