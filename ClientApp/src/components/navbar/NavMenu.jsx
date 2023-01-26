@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 import './NavMenu.css';
 import { NavigatieItem } from './NavigatieItem'
 import { ExpirationModal } from '../ExpirationModal';
-
+import logo from '../images/logo_TL.png';
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
   static contextType = AuthContext;
@@ -93,7 +93,7 @@ export class NavMenu extends Component {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-dark bg-dark navbar-toggleable-sm ng-white box-shadow mb-3 position-relative" container light>
-          <NavbarBrand onClick={this.selecteer} tag={Link} to="/">theater laak</NavbarBrand>
+          <NavbarBrand onClick={this.selecteer} tag={Link} to="/"><img src={logo} alt='theater laak logo' width={280}></img></NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow opacity-75">
